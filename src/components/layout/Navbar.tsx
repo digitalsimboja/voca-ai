@@ -61,7 +61,7 @@ export default function Navbar() {
             href="#contact"
             className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 transition-colors"
           >
-            Get Started
+            Request Demo
           </Link>
         </div>
       </nav>
