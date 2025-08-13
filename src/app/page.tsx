@@ -528,7 +528,7 @@ export default function HomePage() {
                 Start free trial
               </Link>
               <Link
-                href="#contact"
+                href="/contact"
                 className="text-sm font-semibold leading-6 text-white hover:text-blue-100"
               >
                 Contact sales <ArrowRight className="inline h-4 w-4 ml-1" />
