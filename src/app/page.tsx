@@ -238,7 +238,7 @@ export default function HomePage() {
               <span className="text-blue-600">Voca AI Phone Agents</span>
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              AI phone agents that sound human, solve problems, and grow your
+              AI phone agents that sound human, resolve problems, and grow your
               business — perfect for microfinance and online retail.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
