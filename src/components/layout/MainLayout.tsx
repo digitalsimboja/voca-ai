@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+
 import Sidebar from './Sidebar'
 import Header from './Header'
 
@@ -9,7 +9,6 @@ interface MainLayoutProps {
 }
 
 export default function MainLayout({ children }: MainLayoutProps) {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
   return (
     <div className="flex h-screen bg-gray-50">

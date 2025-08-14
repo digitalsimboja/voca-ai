@@ -7,13 +7,13 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     
     // Validate required fields
-    const { firstName, lastName, email, password, companyName, businessType } = body
+    const { email, password } = body
     
-    if (!firstName || !lastName || !email || !password || !companyName || !businessType) {
+    if (!email || !password) {
       return NextResponse.json(
         { 
           error: 'Missing required fields',
-          details: 'firstName, lastName, email, password, companyName, and businessType are required'
+          details: 'Email and password are required'
         },
         { status: 400 }
       )
@@ -28,39 +28,17 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Validate password strength
-    if (password.length < 8) {
-      return NextResponse.json(
-        { error: 'Password must be at least 8 characters long' },
-        { status: 400 }
-      )
-    }
-
-    // Validate business type
-    const validBusinessTypes = ['banking', 'retail']
-    if (!validBusinessTypes.includes(businessType)) {
-      return NextResponse.json(
-        { error: `Business type must be one of: ${validBusinessTypes.join(', ')}` },
-        { status: 400 }
-      )
-    }
-
     // Prepare the request payload for the auth service
     const authServicePayload = {
-      first_name: firstName.trim(),
-      last_name: lastName.trim(),
       email: email.toLowerCase().trim(),
-      password: password,
-      company_name: companyName.trim(),
-      business_type: businessType,
-      marketing_consent: body.agreeToMarketing || false
+      password: password
     }
 
     // Call the auth service
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.TIMEOUT)
 
-    const authResponse = await fetch(buildApiUrl('AUTH', API_ENDPOINTS.AUTH.SIGNUP), {
+    const authResponse = await fetch(buildApiUrl('AUTH', API_ENDPOINTS.AUTH.LOGIN), {
       method: 'POST',
       headers: getAuthHeaders(),
       body: JSON.stringify(authServicePayload),
@@ -73,10 +51,10 @@ export async function POST(request: NextRequest) {
       const errorData = await authResponse.json().catch(() => ({}))
       
       // Handle specific error cases
-      if (authResponse.status === 409) {
+      if (authResponse.status === 401) {
         return NextResponse.json(
-          { error: 'User with this email already exists' },
-          { status: 409 }
+          { error: 'Invalid email or password' },
+          { status: 401 }
         )
       }
       
@@ -101,7 +79,7 @@ export async function POST(request: NextRequest) {
     // Store authentication token in secure cookie
     const response = NextResponse.json({
       success: true,
-      message: 'Account created successfully',
+      message: 'Login successful',
       data: {
         userId: authData.data?.user_id,
         email: authData.data?.email,
@@ -110,8 +88,7 @@ export async function POST(request: NextRequest) {
         lastName: authData.data?.last_name,
         businessType: authData.data?.business_type,
         role: authData.data?.role,
-        isVerified: authData.data?.is_verified,
-        requiresVerification: authData.data?.requires_verification || false
+        isVerified: authData.data?.is_verified
       }
     })
 

@@ -1,12 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Eye, EyeOff, Mail, Lock, ArrowLeft, AlertCircle, CheckCircle } from 'lucide-react'
+import { useAuth } from '@/hooks/useAuth'
 
-export default function LoginPage() {
+function LoginPageContent() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const { login, user, loading } = useAuth()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -51,6 +54,14 @@ export default function LoginPage() {
     }
   }
 
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (user && !loading) {
+      const redirectTo = searchParams.get('redirect') || '/dashboard'
+      router.push(redirectTo)
+    }
+  }, [user, loading, router, searchParams])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
@@ -59,21 +70,21 @@ export default function LoginPage() {
     }
 
     setIsLoading(true)
+    setErrors({})
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      const result = await login(formData.email, formData.password)
       
-      // For demo purposes, accept any valid email/password combination
-      if (formData.email && formData.password.length >= 6) {
+      if (result.success) {
         setLoginSuccess(true)
+        const redirectTo = searchParams.get('redirect') || '/dashboard'
         setTimeout(() => {
-          router.push('/dashboard')
+          router.push(redirectTo)
         }, 1000)
       } else {
-        setErrors({ general: 'Invalid email or password' })
+        setErrors({ general: result.error || 'Login failed' })
       }
-    } catch (error) {
+    } catch {
       setErrors({ general: 'An error occurred. Please try again.' })
     } finally {
       setIsLoading(false)
@@ -293,5 +304,20 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    }>
+      <LoginPageContent />
+    </Suspense>
   )
 }

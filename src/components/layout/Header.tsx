@@ -1,7 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { cn } from '@/lib/utils'
+import { useAuth } from '@/hooks/useAuth'
+import { getInitials } from '@/lib/utils'
 import {
   Bell,
   Search,
@@ -10,10 +12,14 @@ import {
   MoreVertical,
   Phone,
   MessageCircle,
-  Mail
+  Mail,
+  LogOut
 } from 'lucide-react'
 
 export default function Header() {
+  const { user, logout } = useAuth()
+  const userMenuRef = useRef<HTMLDivElement>(null)
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
   const [notifications] = useState([
     { id: 1, type: 'conversation', message: 'New conversation from Sarah Johnson', time: '2 min ago' },
     { id: 2, type: 'system', message: 'Amazon Connect integration updated', time: '1 hour ago' },
@@ -21,6 +27,33 @@ export default function Header() {
   ])
 
   const [showNotifications, setShowNotifications] = useState(false)
+  const [showUserMenu, setShowUserMenu] = useState(false)
+
+  // Close menus when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setShowUserMenu(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true)
+    setShowUserMenu(false)
+    try {
+      await logout()
+    } catch (error) {
+      console.error('Logout error:', error)
+    } finally {
+      setIsLoggingOut(false)
+    }
+  }
 
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4">
@@ -116,10 +149,54 @@ export default function Header() {
             <Filter className="w-5 h-5 text-gray-600" />
           </button>
 
-          {/* More Options */}
-          <button className="p-2 rounded-lg hover:bg-gray-100">
-            <MoreVertical className="w-5 h-5 text-gray-600" />
-          </button>
+          {/* User Menu */}
+          <div className="relative" ref={userMenuRef}>
+            <button
+              onClick={() => setShowUserMenu(!showUserMenu)}
+              className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100"
+            >
+              <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                <span className="text-xs font-medium text-white">
+                  {user ? getInitials(`${user.firstName} ${user.lastName}`) : 'U'}
+                </span>
+              </div>
+              <span className="text-sm font-medium text-gray-700 hidden md:block">
+                {user?.firstName || 'User'}
+              </span>
+              <MoreVertical className="w-4 h-4 text-gray-600" />
+            </button>
+
+            {/* User Menu Dropdown */}
+            {showUserMenu && (
+              <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                <div className="p-3 border-b border-gray-200">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                      <span className="text-xs font-medium text-white">
+                        {user ? getInitials(`${user.firstName} ${user.lastName}`) : 'U'}
+                      </span>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">
+                        {user?.firstName} {user?.lastName}
+                      </p>
+                      <p className="text-xs text-gray-500">{user?.email}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-1">
+                  <button
+                    onClick={handleLogout}
+                    disabled={isLoggingOut}
+                    className="w-full flex items-center space-x-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>{isLoggingOut ? 'Signing Out...' : 'Sign Out'}</span>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </header>

@@ -5,7 +5,6 @@ import MainLayout from '@/components/layout/MainLayout'
 import { Card, CardHeader, CardContent } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import {
-  Zap,
   Settings,
   CheckCircle,
   AlertCircle,
@@ -115,11 +114,7 @@ const statusColors = {
   error: 'error'
 } as const
 
-const statusIcons = {
-  active: CheckCircle,
-  inactive: Clock,
-  error: AlertCircle
-} as const
+
 
 export default function IntegrationsPage() {
   const [selectedIntegration, setSelectedIntegration] = useState<string | null>(null)
@@ -208,7 +203,6 @@ export default function IntegrationsPage() {
           <CardContent>
             <div className="space-y-4">
               {mockIntegrations.map((integration) => {
-                const StatusIcon = statusIcons[integration.status]
                 const lastSyncDate = new Date(integration.lastSync)
                 
                 return (

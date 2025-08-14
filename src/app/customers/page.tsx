@@ -7,7 +7,6 @@ import { Badge } from '@/components/ui/Badge'
 import {
   Users,
   Search,
-  Filter,
   Plus,
   Phone,
   Mail,
@@ -18,8 +17,7 @@ import {
   User,
   MoreVertical,
   Eye,
-  Edit,
-  Trash2
+  Edit
 } from 'lucide-react'
 import { formatPhoneNumber, getInitials } from '@/lib/utils'
 
@@ -113,7 +111,7 @@ export default function CustomersPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [typeFilter, setTypeFilter] = useState('all')
   const [statusFilter, setStatusFilter] = useState('all')
-  const [selectedCustomer, setSelectedCustomer] = useState<string | null>(null)
+
 
   const filteredCustomers = mockCustomers.filter(customer => {
     const matchesSearch = customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -281,7 +279,7 @@ export default function CustomersPage() {
                           <Badge variant={statusColors[customer.status]} size="sm">
                             {customer.status}
                           </Badge>
-                          <Badge variant={customerTypeColors[customer.customerType] as any} size="sm">
+                          <Badge variant={customerTypeColors[customer.customerType] as "default" | "success" | "warning" | "info"} size="sm">
                             {customer.customerType}
                           </Badge>
                         </div>

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import MainLayout from '@/components/layout/MainLayout'
 import { Card, CardHeader, CardContent } from '@/components/ui/Card'
-import { Badge } from '@/components/ui/Badge'
+
 import {
   BarChart3,
   TrendingUp,
@@ -17,7 +17,7 @@ import {
   Calendar,
   Download
 } from 'lucide-react'
-import { formatDuration, formatCurrency } from '@/lib/utils'
+import { formatDuration } from '@/lib/utils'
 
 // Mock data
 const mockAnalytics = {

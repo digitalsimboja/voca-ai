@@ -1,4 +1,4 @@
-import Link from 'next/link'
+
 import { Headphones, Mail, Phone, MapPin, Twitter, Linkedin, Facebook, Instagram } from 'lucide-react'
 
 const navigation = {

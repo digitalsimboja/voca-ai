@@ -7,17 +7,11 @@ import { Badge } from '@/components/ui/Badge'
 import {
   Settings,
   Save,
-  Globe,
-  Clock,
   MessageSquare,
-  Users,
   Shield,
   Bell,
-  Palette,
   Database,
-  Zap,
-  Eye,
-  EyeOff
+  Zap
 } from 'lucide-react'
 
 // Mock data
@@ -87,7 +81,7 @@ const mockSettings = {
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('general')
   const [settings, setSettings] = useState(mockSettings)
-  const [showPassword, setShowPassword] = useState(false)
+
 
   const tabs = [
     { id: 'general', name: 'General', icon: Settings },
@@ -173,7 +167,7 @@ export default function SettingsPage() {
                       value={settings.organization.industry}
                       onChange={(e) => setSettings({
                         ...settings,
-                        organization: { ...settings.organization, industry: e.target.value as any }
+                        organization: { ...settings.organization, industry: e.target.value as 'microfinance' }
                       })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >

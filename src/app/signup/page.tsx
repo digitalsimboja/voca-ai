@@ -1,14 +1,17 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Eye, EyeOff, Mail, Lock, ArrowLeft, AlertCircle, CheckCircle, User, Building, CreditCard, ShoppingCart } from 'lucide-react'
+import { useAuth } from '@/hooks/useAuth'
 
-type BusinessType = 'banking' | 'retail' | ''
+type BusinessType = 'banking' | 'retail'
 
-export default function SignupPage() {
+function SignupPageContent() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const { signup, user, loading } = useAuth()
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -16,7 +19,7 @@ export default function SignupPage() {
     password: '',
     confirmPassword: '',
     companyName: '',
-    businessType: '' as BusinessType,
+    businessType: 'banking' as BusinessType,
     agreeToTerms: false,
     agreeToMarketing: false
   })
@@ -132,6 +135,14 @@ export default function SignupPage() {
     }
   }
 
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (user && !loading) {
+      const redirectTo = searchParams.get('redirect') || '/dashboard'
+      router.push(redirectTo)
+    }
+  }, [user, loading, router, searchParams])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
@@ -140,53 +151,20 @@ export default function SignupPage() {
     }
 
     setIsLoading(true)
+    setErrors({})
     
     try {
-      // Call the signup API
-      const response = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          firstName: formData.firstName.trim(),
-          lastName: formData.lastName.trim(),
-          email: formData.email.trim(),
-          password: formData.password,
-          companyName: formData.companyName.trim(),
-          businessType: formData.businessType,
-          agreeToMarketing: formData.agreeToMarketing
-        })
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        // Handle specific error cases
-        if (response.status === 409) {
-          setErrors({ email: 'An account with this email already exists' })
-        } else if (response.status === 422) {
-          setErrors({ general: data.error || 'Invalid data provided' })
-        } else {
-          setErrors({ general: data.error || 'An error occurred during signup' })
-        }
-        return
+      const result = await signup(formData)
+      
+      if (result.success) {
+        setSignupSuccess(true)
+        const redirectTo = searchParams.get('redirect') || '/dashboard'
+        setTimeout(() => {
+          router.push(redirectTo)
+        }, 1500)
+      } else {
+        setErrors({ general: result.error || 'Signup failed' })
       }
-
-      // Success - show success message and redirect
-      setSignupSuccess(true)
-      
-      // Store user data in localStorage or session storage if needed
-      if (data.data) {
-        localStorage.setItem('voca_user_id', data.data.userId)
-        localStorage.setItem('voca_business_type', data.data.businessType)
-      }
-      
-      // Redirect to dashboard after a short delay
-      setTimeout(() => {
-        router.push('/dashboard')
-      }, 1500)
-      
     } catch (error) {
       console.error('Signup error:', error)
       setErrors({ general: 'Network error. Please check your connection and try again.' })
@@ -597,5 +575,20 @@ export default function SignupPage() {
         </p>
       </div>
     </div>
+  )
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    }>
+      <SignupPageContent />
+    </Suspense>
   )
 }

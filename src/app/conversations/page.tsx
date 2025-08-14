@@ -10,7 +10,6 @@ import {
   Mail,
   MessageSquare,
   Search,
-  Filter,
   MoreVertical,
   Eye,
   PhoneCall,

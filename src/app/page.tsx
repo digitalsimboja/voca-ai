@@ -1,26 +1,17 @@
 "use client";
 
-import { useState } from "react";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import {
-  Headphones,
   Phone,
-  MessageCircle,
-  Mail,
-  MessageSquare,
   Zap,
-  Shield,
   Globe,
-  Users,
-  TrendingUp,
-  Clock,
   CheckCircle,
   ArrowRight,
   Play,
-  Building,
   ShoppingCart,
   CreditCard,
   BarChart3,
@@ -29,7 +20,6 @@ import {
   Database,
   Cloud,
   Star,
-  ChevronRight,
 } from "lucide-react";
 
 const features = [
@@ -151,7 +141,7 @@ const testimonials = [
   },
   {
     content:
-      "Our online store saw a 40% increase in sales after implementing Voca AI's intelligent customer support.",
+              "Our online store saw a 40% increase in sales after implementing Voca AI&apos;s intelligent customer support.",
     author: "Opeyemi Ogundele",
     role: "Operations Director",
     company: "RetailCorp Inc",
@@ -218,7 +208,7 @@ const pricingPlans = [
 ];
 
 export default function HomePage() {
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  
   const router = useRouter();
 
   return (
@@ -249,7 +239,7 @@ export default function HomePage() {
                 Get started
               </Link>
               <button
-                onClick={() => setIsVideoPlaying(true)}
+                onClick={() => {}}
                 className="flex items-center space-x-2 text-sm font-semibold leading-6 text-gray-900"
               >
                 <Play className="h-5 w-5" />
@@ -275,7 +265,7 @@ export default function HomePage() {
               Purpose-built for financial services and e-commerce
             </p>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Leveraging AWS's enterprise-grade infrastructure, Voca AI delivers
+              Leveraging AWS&apos;s enterprise-grade infrastructure, Voca AI delivers
               intelligent conversations that understand industry-specific needs
               and regulatory requirements.
             </p>
@@ -420,7 +410,7 @@ export default function HomePage() {
                       />
                     ))}
                   </div>
-                  <p className="text-gray-600 mb-6">"{testimonial.content}"</p>
+                  <p className="text-gray-600 mb-6">&quot;{testimonial.content}&quot;</p>
                   <div>
                     <p className="font-semibold text-gray-900">
                       {testimonial.author}

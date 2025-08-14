@@ -53,7 +53,7 @@ export interface Customer {
   totalConversations: number
   lastInteraction: string
   tags: string[]
-  metadata: Record<string, any>
+  metadata: Record<string, unknown>
 }
 
 // Analytics Types
@@ -91,7 +91,7 @@ export interface Integration {
   name: string
   type: 'amazon_connect' | 'bedrock' | 'dynamodb' | 's3' | 'whatsapp' | 'sms'
   status: 'active' | 'inactive' | 'error'
-  config: Record<string, any>
+  config: Record<string, unknown>
   lastSync: string
   errorMessage?: string
 }

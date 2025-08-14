@@ -1,9 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import MainLayout from '@/components/layout/MainLayout'
 import { Card, CardHeader, CardContent } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
+import { useAuth } from '@/hooks/useAuth'
 import {
   Phone,
   MessageCircle,
@@ -13,10 +15,9 @@ import {
   Users,
   Clock,
   CheckCircle,
-  AlertCircle,
   Activity
 } from 'lucide-react'
-import { formatDuration, formatCurrency } from '@/lib/utils'
+import { formatDuration } from '@/lib/utils'
 
 // Mock data
 const mockAnalytics = {
@@ -87,6 +88,32 @@ const sentimentColors = {
 
 export default function DashboardPage() {
   const [timeRange, setTimeRange] = useState('24h')
+  const { user, loading } = useAuth()
+  const router = useRouter()
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login')
+    }
+  }, [user, loading, router])
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Show login page if not authenticated
+  if (!user) {
+    return null
+  }
 
   return (
     <MainLayout>

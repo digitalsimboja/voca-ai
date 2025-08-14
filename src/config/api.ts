@@ -134,15 +134,16 @@ export const getAuthHeaders = (token?: string) => {
 }
 
 // Error handling utilities
-export const handleApiError = (error: any, defaultMessage = 'An error occurred') => {
+export const handleApiError = (error: unknown, defaultMessage = 'An error occurred') => {
   console.error('API Error:', error)
   
-  if (error.name === 'AbortError') {
+  if (error && typeof error === 'object' && 'name' in error && error.name === 'AbortError') {
     return { error: 'Request timeout - please try again' }
   }
   
-  if (error.response) {
-    return { error: error.response.data?.error || defaultMessage }
+  if (error && typeof error === 'object' && 'response' in error && error.response && typeof error.response === 'object' && 'data' in error.response) {
+    const responseData = error.response.data as { error?: string }
+    return { error: responseData.error || defaultMessage }
   }
   
   return { error: defaultMessage }

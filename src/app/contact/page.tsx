@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+
 import { 
   ArrowLeft, 
   Mail, 
@@ -21,7 +21,6 @@ import {
 type BusinessType = 'banking' | 'retail' | 'other' | ''
 
 export default function ContactPage() {
-  const router = useRouter()
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -124,7 +123,7 @@ export default function ContactPage() {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000))
       setSubmitSuccess(true)
-    } catch (error) {
+    } catch {
       setErrors({ general: 'An error occurred. Please try again.' })
     } finally {
       setIsLoading(false)
@@ -177,7 +176,7 @@ export default function ContactPage() {
                     Thank you for your message!
                   </h3>
                   <p className="text-gray-600 mb-6">
-                    We've received your inquiry and will get back to you within 24 hours.
+                    We&apos;ve received your inquiry and will get back to you within 24 hours.
                   </p>
                   <Link
                     href="/"
