@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import {
@@ -218,6 +219,7 @@ const pricingPlans = [
 
 export default function HomePage() {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const router = useRouter();
 
   return (
     <div className="bg-white">
@@ -492,6 +494,13 @@ export default function HomePage() {
                   </ul>
                   <div className="mt-8">
                     <button
+                      onClick={() => {
+                        if (plan.cta === "Start Free Trial") {
+                          router.push("/login");
+                        } else if (plan.cta === "Contact Sales") {
+                          router.push("/contact");
+                        }
+                      }}
                       className={`w-full rounded-lg px-4 py-2 font-semibold transition-colors ${
                         plan.popular
                           ? "bg-blue-600 text-white hover:bg-blue-500"
