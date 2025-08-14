@@ -211,7 +211,7 @@ export default function ContactPage() {
                         name="firstName"
                         value={formData.firstName}
                         onChange={handleInputChange}
-                        className={`mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
+                        className={`mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-900 placeholder-gray-500 ${
                           errors.firstName ? 'border-red-300' : 'border-gray-300'
                         }`}
                         placeholder="Enter your first name"
@@ -231,7 +231,7 @@ export default function ContactPage() {
                         name="lastName"
                         value={formData.lastName}
                         onChange={handleInputChange}
-                        className={`mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
+                        className={`mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-900 placeholder-gray-500 ${
                           errors.lastName ? 'border-red-300' : 'border-gray-300'
                         }`}
                         placeholder="Enter your last name"
@@ -254,7 +254,7 @@ export default function ContactPage() {
                         name="email"
                         value={formData.email}
                         onChange={handleInputChange}
-                        className={`mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
+                        className={`mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-900 placeholder-gray-500 ${
                           errors.email ? 'border-red-300' : 'border-gray-300'
                         }`}
                         placeholder="Enter your email"
@@ -274,7 +274,7 @@ export default function ContactPage() {
                         name="company"
                         value={formData.company}
                         onChange={handleInputChange}
-                        className={`mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
+                        className={`mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-900 placeholder-gray-500 ${
                           errors.company ? 'border-red-300' : 'border-gray-300'
                         }`}
                         placeholder="Enter your company name"
@@ -336,7 +336,7 @@ export default function ContactPage() {
                         name="phone"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-900 placeholder-gray-500"
                         placeholder="Enter your phone number"
                       />
                     </div>
@@ -350,7 +350,7 @@ export default function ContactPage() {
                         name="budget"
                         value={formData.budget}
                         onChange={handleInputChange}
-                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-900"
                       >
                         <option value="">Select budget range</option>
                         {budgetRanges.map((budget) => (
@@ -372,7 +372,7 @@ export default function ContactPage() {
                       name="timeline"
                       value={formData.timeline}
                       onChange={handleInputChange}
-                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-900"
                     >
                       <option value="">Select timeline</option>
                       {timelineOptions.map((timeline) => (
@@ -394,7 +394,7 @@ export default function ContactPage() {
                       rows={4}
                       value={formData.message}
                       onChange={handleInputChange}
-                      className={`mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
+                      className={`mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-900 placeholder-gray-500 ${
                         errors.message ? 'border-red-300' : 'border-gray-300'
                       }`}
                       placeholder="Describe your customer service challenges and how Voca AI can help..."
@@ -464,7 +464,17 @@ export default function ContactPage() {
                   <Phone className="h-5 w-5 text-blue-600 mt-0.5 mr-3" />
                   <div>
                     <p className="text-sm font-medium text-gray-900">Phone</p>
-                    <p className="text-sm text-gray-600">+234 123 456 7890</p>
+                    <p className="text-sm text-gray-600">+234 808 083 4882</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="h-5 w-5 bg-green-100 rounded-full flex items-center justify-center mt-0.5 mr-3">
+                    <span className="text-green-600 text-xs font-bold">AI</span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">AI Agent Contact</p>
+                    <p className="text-sm text-green-600 font-medium">Available 24/7</p>
+                    <p className="text-sm text-gray-600">1-800-VOCA-AI (1-800-862-224)</p>
                   </div>
                 </div>
                 <div className="flex items-start">
@@ -482,6 +492,8 @@ export default function ContactPage() {
                   <div>
                     <p className="text-sm font-medium text-gray-900">Business Hours</p>
                     <p className="text-sm text-gray-600">
+                      <span className="font-medium text-green-600">🤖 AI Agent: 24/7 Available</span><br />
+                      <span className="text-gray-500">👥 Human Support:</span><br />
                       Mon - Fri: 9:00 AM - 6:00 PM<br />
                       Sat: 10:00 AM - 2:00 PM
                     </p>
