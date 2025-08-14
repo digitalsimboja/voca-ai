@@ -1,8 +1,19 @@
 // API Configuration for Voca AI Frontend
 
 export const API_CONFIG = {
-  // Base URL for all microservices
-  BASE_URL: process.env.API_BASE_URL || 'http://localhost:8000',
+  // Base URLs for each microservice in development
+  SERVICES: {
+    AUTH: process.env.AUTH_SERVICE_URL || 'http://localhost:8001',
+    USER: process.env.USER_SERVICE_URL || 'http://localhost:8002',
+    AI: process.env.AI_SERVICE_URL || 'http://localhost:8003',
+    ANALYTICS: process.env.ANALYTICS_SERVICE_URL || 'http://localhost:8004',
+    BILLING: process.env.BILLING_SERVICE_URL || 'http://localhost:8005',
+    CONTACT: process.env.CONTACT_SERVICE_URL || 'http://localhost:8006',
+    CONVERSATION: process.env.CONVERSATION_SERVICE_URL || 'http://localhost:8007',
+    CUSTOMER: process.env.CUSTOMER_SERVICE_URL || 'http://localhost:8008',
+    INTEGRATION: process.env.INTEGRATION_SERVICE_URL || 'http://localhost:8009',
+    SETTINGS: process.env.SETTINGS_SERVICE_URL || 'http://localhost:8010',
+  },
   
   // API Settings
   TIMEOUT: parseInt(process.env.API_TIMEOUT || '10000'),
@@ -16,9 +27,9 @@ export const API_CONFIG = {
   } as Record<string, string>
 }
 
-// API Endpoints with URL prefixes
+// API Endpoints (without service prefixes - handled by service-specific URLs)
 export const API_ENDPOINTS = {
-  // Authentication Service (v1/auth)
+  // Authentication Service
   AUTH: {
     SIGNUP: '/v1/auth/signup',
     LOGIN: '/v1/auth/login',
@@ -27,15 +38,15 @@ export const API_ENDPOINTS = {
     REFRESH: '/v1/auth/refresh',
   },
 
-  // User Management Service (v1/user)
+  // User Management Service
   USER: {
-    PROFILE: '/v1/user/profile',
-    UPDATE: '/v1/user/update',
-    DELETE: '/v1/user/delete',
-    PREFERENCES: '/v1/user/preferences',
+    PROFILE: '/v1/users/profile',
+    UPDATE: '/v1/users/update',
+    DELETE: '/v1/users/delete',
+    PREFERENCES: '/v1/users/preferences',
   },
 
-  // Conversation Service (v1/conversation)
+  // Conversation Service
   CONVERSATION: {
     CREATE: '/v1/conversation/create',
     LIST: '/v1/conversation/list',
@@ -45,7 +56,7 @@ export const API_ENDPOINTS = {
     MESSAGES: '/v1/conversation/{id}/messages',
   },
 
-  // Analytics Service (v1/analytics)
+  // Analytics Service
   ANALYTICS: {
     DASHBOARD: '/v1/analytics/dashboard',
     REPORTS: '/v1/analytics/reports',
@@ -53,7 +64,7 @@ export const API_ENDPOINTS = {
     EXPORT: '/v1/analytics/export',
   },
 
-  // Integration Service (v1/integration)
+  // Integration Service
   INTEGRATION: {
     LIST: '/v1/integration/list',
     CONNECT: '/v1/integration/connect',
@@ -61,7 +72,7 @@ export const API_ENDPOINTS = {
     STATUS: '/v1/integration/status',
   },
 
-  // Billing Service (v1/billing)
+  // Billing Service
   BILLING: {
     PLANS: '/v1/billing/plans',
     SUBSCRIPTION: '/v1/billing/subscription',
@@ -69,7 +80,7 @@ export const API_ENDPOINTS = {
     PAYMENT_METHODS: '/v1/billing/payment-methods',
   },
 
-  // AI Service (v1/ai)
+  // AI Service
   AI: {
     CHAT: '/v1/ai/chat',
     TRAIN: '/v1/ai/train',
@@ -77,7 +88,7 @@ export const API_ENDPOINTS = {
     CONFIG: '/v1/ai/config',
   },
 
-  // Customer Service (v1/customer)
+  // Customer Service
   CUSTOMER: {
     LIST: '/v1/customer/list',
     CREATE: '/v1/customer/create',
@@ -86,7 +97,7 @@ export const API_ENDPOINTS = {
     DELETE: '/v1/customer/{id}',
   },
 
-  // Settings Service (v1/settings)
+  // Settings Service
   SETTINGS: {
     GENERAL: '/v1/settings/general',
     NOTIFICATIONS: '/v1/settings/notifications',
@@ -94,16 +105,21 @@ export const API_ENDPOINTS = {
     INTEGRATIONS: '/v1/settings/integrations',
   },
 
-  // Contact Service (v1/contact)
+  // Contact Service
   CONTACT: {
     SUBMIT: '/v1/contact/submit',
     INQUIRIES: '/v1/contact/inquiries',
   }
 }
 
-// Helper function to build full API URLs
-export const buildApiUrl = (endpoint: string): string => {
-  return `${API_CONFIG.BASE_URL}${endpoint}`
+// Helper function to build full API URLs for specific services
+export const buildApiUrl = (service: keyof typeof API_CONFIG.SERVICES, endpoint: string): string => {
+  return `${API_CONFIG.SERVICES[service]}${endpoint}`
+}
+
+// Helper function to build API URL with custom base URL (for backward compatibility)
+export const buildApiUrlWithBase = (baseUrl: string, endpoint: string): string => {
+  return `${baseUrl}${endpoint}`
 }
 
 // Helper function to get auth headers
@@ -131,3 +147,28 @@ export const handleApiError = (error: any, defaultMessage = 'An error occurred')
   
   return { error: defaultMessage }
 }
+
+// Usage Examples:
+// 
+// 1. Making API calls to specific services:
+//    const authUrl = buildApiUrl('AUTH', API_ENDPOINTS.AUTH.LOGIN);
+//    const userUrl = buildApiUrl('USER', API_ENDPOINTS.USER.PROFILE);
+//    const aiUrl = buildApiUrl('AI', API_ENDPOINTS.AI.CHAT);
+//
+// 2. Environment variables for production:
+//    AUTH_SERVICE_URL=https://auth.voca-ai.com
+//    USER_SERVICE_URL=https://user.voca-ai.com
+//    AI_SERVICE_URL=https://ai.voca-ai.com
+//    etc.
+//
+// 3. Development ports (default):
+//    Auth Service: 8001
+//    User Service: 8002
+//    AI Service: 8003
+//    Analytics Service: 8004
+//    Billing Service: 8005
+//    Contact Service: 8006
+//    Conversation Service: 8007
+//    Customer Service: 8008
+//    Integration Service: 8009
+//    Settings Service: 8010

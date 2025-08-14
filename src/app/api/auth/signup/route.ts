@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.TIMEOUT)
 
-    const authResponse = await fetch(buildApiUrl(API_ENDPOINTS.AUTH.SIGNUP), {
+    const authResponse = await fetch(buildApiUrl('AUTH', API_ENDPOINTS.AUTH.SIGNUP), {
       method: 'POST',
       headers: getAuthHeaders(),
       body: JSON.stringify(authServicePayload),
