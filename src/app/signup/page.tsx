@@ -142,15 +142,54 @@ export default function SignupPage() {
     setIsLoading(true)
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
+      // Call the signup API
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName: formData.firstName.trim(),
+          lastName: formData.lastName.trim(),
+          email: formData.email.trim(),
+          password: formData.password,
+          companyName: formData.companyName.trim(),
+          businessType: formData.businessType,
+          agreeToMarketing: formData.agreeToMarketing
+        })
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        // Handle specific error cases
+        if (response.status === 409) {
+          setErrors({ email: 'An account with this email already exists' })
+        } else if (response.status === 422) {
+          setErrors({ general: data.error || 'Invalid data provided' })
+        } else {
+          setErrors({ general: data.error || 'An error occurred during signup' })
+        }
+        return
+      }
+
+      // Success - show success message and redirect
       setSignupSuccess(true)
+      
+      // Store user data in localStorage or session storage if needed
+      if (data.data) {
+        localStorage.setItem('voca_user_id', data.data.userId)
+        localStorage.setItem('voca_business_type', data.data.businessType)
+      }
+      
+      // Redirect to dashboard after a short delay
       setTimeout(() => {
         router.push('/dashboard')
       }, 1500)
+      
     } catch (error) {
-      setErrors({ general: 'An error occurred. Please try again.' })
+      console.error('Signup error:', error)
+      setErrors({ general: 'Network error. Please check your connection and try again.' })
     } finally {
       setIsLoading(false)
     }
