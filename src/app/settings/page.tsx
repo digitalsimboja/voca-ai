@@ -20,7 +20,7 @@ const mockSettings = {
     name: 'Voca AI Solutions',
     industry: 'microfinance' as const,
     timezone: 'America/New_York',
-    supportedLanguages: ['English', 'Spanish', 'French'],
+    supportedLanguages: ['English', 'Igbo', 'Yoruba', 'Hausa'],
     businessHours: {
       start: '09:00',
       end: '17:00',
@@ -201,7 +201,7 @@ export default function SettingsPage() {
                       Supported Languages
                     </label>
                     <div className="space-y-2">
-                      {['English', 'Spanish', 'French', 'German', 'Portuguese'].map((lang) => (
+                      {['English', 'Igbo', 'Yoruba', 'Hausa', 'Spanish', 'French'].map((lang) => (
                         <label key={lang} className="flex items-center">
                           <input
                             type="checkbox"
