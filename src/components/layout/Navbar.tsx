@@ -58,7 +58,7 @@ export default function Navbar() {
             Log in
           </Link>
           <Link
-            href="#contact"
+            href="/contact"
             className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 transition-colors"
           >
             Request Demo
@@ -110,7 +110,7 @@ export default function Navbar() {
                     Log in
                   </Link>
                   <Link
-                    href="#contact"
+                    href="/contact"
                     className="block rounded-lg bg-blue-600 px-4 py-2 text-base font-semibold text-white text-center hover:bg-blue-500 transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >

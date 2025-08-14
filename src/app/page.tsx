@@ -234,13 +234,12 @@ export default function HomePage() {
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Transform Customer Service with{" "}
+              Meet the Future of Service Agents —{" "}
               <span className="text-blue-600">Voca AI Phone Agents</span>
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Deploy Enterprise-Ready Smart voice agents for microfinance and
-              online retail — resolving inquiries and driving growth with
-              human-like conversations
+              AI phone agents that sound human, solve problems, and grow your
+              business — perfect for microfinance and online retail.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link
