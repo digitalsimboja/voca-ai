@@ -19,7 +19,7 @@ function SignupPageContent() {
     password: '',
     confirmPassword: '',
     companyName: '',
-    businessType: 'banking' as BusinessType,
+    businessType: 'retail' as BusinessType,
     agreeToTerms: false,
     agreeToMarketing: false
   })
