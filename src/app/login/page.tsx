@@ -262,7 +262,7 @@ function LoginPageContent() {
               <div className="mt-4 p-4 bg-gray-50 rounded-md">
                 <p className="text-xs text-gray-600 mb-2 font-medium">Demo Credentials:</p>
                 <p className="text-xs text-gray-500">Email: demo@vocaai.com</p>
-                <p className="text-xs text-gray-500">Password: demo123</p>
+                <p className="text-xs text-gray-500">Password: Admin@123</p>
               </div>
             </form>
           )}

@@ -4,19 +4,42 @@ import { useState } from 'react'
 import MainLayout from '@/components/layout/MainLayout'
 import { Card, CardHeader, CardContent } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
-import CreateAgentModal from '@/components/modals/CreateAgentModal'
+import CreateMicrofinanceAgentModal from '@/components/modals/CreateMicrofinanceAgentModal'
+import CreateRetailAgentModal from '@/components/modals/CreateRetailAgentModal'
+import KnowledgeBaseModal from '@/components/modals/KnowledgeBaseModal'
+import { useBusinessType } from '@/hooks/useBusinessType'
+
+
 import {
   Settings,
-  Save,
   MessageSquare,
   Shield,
   Bell,
   Database,
   Zap,
-  UserPlus
+  User
 } from 'lucide-react'
 
 // Mock data
+interface Agent {
+  id: string
+  name: string
+  role: string
+  businessType: string
+  status: string
+  channels: string[]
+  languages: string[]
+  createdAt: string
+  lastActive: string
+  knowledgeBase: boolean
+  knowledgeBaseData: {
+    name?: string
+    fileCount?: number
+    sourceCount?: number
+    lastUpdated?: string
+  } | null
+}
+
 const mockSettings = {
   organization: {
     name: 'Voca AI Solutions',
@@ -77,31 +100,112 @@ const mockSettings = {
     sms: false,
     webhook: true,
     webhookUrl: 'https://api.vocaai.com/webhook/notifications'
-  }
+  },
+  agents: [
+    {
+      id: '1',
+      name: 'Sarah Johnson',
+      role: 'Loan Officer',
+      businessType: 'microfinance',
+      status: 'active',
+      channels: ['voice', 'chat', 'email'],
+      languages: ['English', 'Igbo'],
+      createdAt: '2024-01-15',
+      lastActive: '2024-01-20 14:30',
+      knowledgeBase: true,
+      knowledgeBaseData: {
+        name: 'Loan Processing KB',
+        fileCount: 3,
+        sourceCount: 2,
+        lastUpdated: '2024-01-20'
+      }
+    } as Agent,
+    {
+      id: '2',
+      name: 'Mike Chen',
+      role: 'Customer Service',
+      businessType: 'retail',
+      status: 'inactive',
+      channels: ['whatsapp', 'instagram', 'chat'],
+      languages: ['English', 'Yoruba'],
+      createdAt: '2024-01-10',
+      lastActive: '2024-01-18 09:15',
+      knowledgeBase: false,
+      knowledgeBaseData: null
+    } as Agent
+  ] as Agent[]
 }
 
 export default function SettingsPage() {
+  const { businessType: detectedBusinessType } = useBusinessType()
   const [activeTab, setActiveTab] = useState('general')
   const [settings, setSettings] = useState(mockSettings)
   const [showCreateAgent, setShowCreateAgent] = useState(false)
+  const [showKnowledgeBaseModal, setShowKnowledgeBaseModal] = useState(false)
+  const [selectedAgentForKB, setSelectedAgentForKB] = useState<Agent | null>(null)
 
   const tabs = [
     { id: 'general', name: 'General', icon: Settings },
     { id: 'routing', name: 'Routing Rules', icon: MessageSquare },
     { id: 'security', name: 'Security', icon: Shield },
     { id: 'notifications', name: 'Notifications', icon: Bell },
-    { id: 'integrations', name: 'Integrations', icon: Zap }
+    { id: 'integrations', name: 'Integrations', icon: Zap },
+    { id: 'agents', name: 'Agents', icon: User }
   ]
 
-  const handleSave = () => {
-    console.log('Saving settings:', settings)
-    // Mock save - would call actual API
-  }
 
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleCreateAgent = (agentData: any) => {
     console.log('Creating agent:', agentData)
     // Mock create agent - would call actual API
+    const profile = agentData.profile || {}
+    const communication = agentData.communication || {}
+    const channels = communication.channels || {}
+    
+    const newAgent: Agent = {
+      id: Date.now().toString(),
+      name: profile.name || '',
+      role: profile.role || '',
+      businessType: agentData.businessType || detectedBusinessType || 'retail',
+      status: 'active',
+      channels: Object.keys(channels).filter(key => channels[key]),
+      languages: communication.languages || [],
+      createdAt: new Date().toISOString().split('T')[0],
+      lastActive: new Date().toLocaleString(),
+      knowledgeBase: false,
+      knowledgeBaseData: null
+    }
+    
+    setSettings({
+      ...settings,
+      agents: [...(settings.agents || []), newAgent] as Agent[]
+    })
     setShowCreateAgent(false)
+  }
+
+  const handleConnectKnowledgeBase = (agentId: string) => {
+    const agent = settings.agents?.find(a => a.id === agentId)
+    if (agent) {
+      setSelectedAgentForKB(agent)
+      setShowKnowledgeBaseModal(true)
+    }
+  }
+
+  const handleKnowledgeBaseSubmit = (knowledgeBaseData: Record<string, unknown>) => {
+    console.log('Saving knowledge base:', knowledgeBaseData)
+    // Mock knowledge base save - would call actual API
+    const newAgents = settings.agents?.map(agent => 
+      agent.id === selectedAgentForKB?.id 
+        ? { ...agent, knowledgeBase: true, knowledgeBaseData } as Agent
+        : agent
+    )
+    setSettings({
+      ...settings,
+      agents: newAgents as Agent[]
+    })
+    setShowKnowledgeBaseModal(false)
+    setSelectedAgentForKB(null)
   }
 
   return (
@@ -113,29 +217,31 @@ export default function SettingsPage() {
             <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
             <p className="text-gray-600">Configure your Voca AI organization</p>
           </div>
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={() => setShowCreateAgent(true)}
-              className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
-            >
-              <UserPlus className="w-4 h-4" />
-              <span>Create Agent</span>
-            </button>
-            <button
-              onClick={handleSave}
-              className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              <Save className="w-4 h-4" />
-              <span>Save Changes</span>
-            </button>
-          </div>
+           
         </div>
 
-        {/* Create Agent Modal */}
-        <CreateAgentModal
-          isOpen={showCreateAgent}
+        {/* Create Agent Modals */}
+        <CreateMicrofinanceAgentModal
+          isOpen={showCreateAgent && (detectedBusinessType === 'microfinance' || detectedBusinessType === 'banking')}
           onClose={() => setShowCreateAgent(false)}
           onSubmit={handleCreateAgent}
+        />
+        <CreateRetailAgentModal
+          isOpen={showCreateAgent && (detectedBusinessType === 'retail' || detectedBusinessType === 'ecommerce' || detectedBusinessType === 'social_media')}
+          onClose={() => setShowCreateAgent(false)}
+          onSubmit={handleCreateAgent}
+        />
+
+        {/* Knowledge Base Modal */}
+        <KnowledgeBaseModal
+          isOpen={showKnowledgeBaseModal}
+          onClose={() => {
+            setShowKnowledgeBaseModal(false)
+            setSelectedAgentForKB(null)
+          }}
+          onSubmit={handleKnowledgeBaseSubmit}
+          agentName={selectedAgentForKB?.name || ''}
+          currentKnowledgeBase={selectedAgentForKB?.knowledgeBaseData || undefined}
         />
 
         {/* Settings Tabs */}
@@ -542,6 +648,113 @@ export default function SettingsPage() {
                       Configure
                     </button>
                   </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* Agents Settings */}
+        {activeTab === 'agents' && (
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold text-gray-900">Agent Management</h3>
+                  <button
+                    onClick={() => setShowCreateAgent(true)}
+                    className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+                  >
+                    <User className="w-4 h-4" />
+                    <span>Create Agent</span>
+                  </button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {settings.agents?.map((agent) => (
+                    <div key={agent.id} className="border border-gray-200 rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <User className="w-5 h-5 text-blue-600" />
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-medium text-gray-900">{agent.name}</h4>
+                            <p className="text-xs text-gray-500">{agent.role} • {agent.businessType}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <Badge variant={agent.status === 'active' ? 'success' : 'default'}>
+                            {agent.status === 'active' ? 'Active' : 'Inactive'}
+                          </Badge>
+                          <label className="relative inline-flex items-center cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={agent.status === 'active'}
+                              onChange={(e) => {
+                                const newAgents = settings.agents?.map(a => 
+                                  a.id === agent.id 
+                                    ? { ...a, status: e.target.checked ? 'active' : 'inactive' }
+                                    : a
+                                )
+                                setSettings({
+                                  ...settings,
+                                  agents: newAgents
+                                })
+                              }}
+                              className="sr-only peer"
+                            />
+                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                          </label>
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                        <div>
+                          <p className="text-gray-600">Channels: {agent.channels.join(', ')}</p>
+                          <p className="text-gray-600">Languages: {agent.languages.join(', ')}</p>
+                        </div>
+                        <div>
+                          <p className="text-gray-600">Created: {agent.createdAt}</p>
+                          <p className="text-gray-600">Last Active: {agent.lastActive}</p>
+                        </div>
+                        <div>
+                          <p className="text-gray-600">
+                            Knowledge Base: 
+                            <span className={`ml-1 ${agent.knowledgeBase ? 'text-green-600' : 'text-red-600'}`}>
+                              {agent.knowledgeBase ? 'Connected' : 'Not Connected'}
+                            </span>
+                          </p>
+                          <button
+                            onClick={() => handleConnectKnowledgeBase(agent.id)}
+                            className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                          >
+                            {agent.knowledgeBase ? 'Manage' : 'Connect'}
+                          </button>
+                          {agent.knowledgeBase && agent.knowledgeBaseData && (
+                            <p className="text-xs text-gray-500 mt-1">
+                              {agent.knowledgeBaseData.fileCount || 0} files, {agent.knowledgeBaseData.sourceCount || 0} sources
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  {(!settings.agents || settings.agents.length === 0) && (
+                    <div className="text-center py-8">
+                      <User className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                      <h3 className="text-lg font-medium text-gray-900 mb-2">No Agents Created</h3>
+                      <p className="text-gray-600 mb-4">Create your first agent to start managing customer interactions</p>
+                      <button
+                        onClick={() => setShowCreateAgent(true)}
+                        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                      >
+                        Create Your First Agent
+                      </button>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>

@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { Card, CardHeader, CardContent } from '@/components/ui/Card'
 import {
-  UserPlus,
   Phone,
   MessageCircle,
   Mail,
@@ -160,13 +159,13 @@ const initialAgentData: AgentData = {
   }
 }
 
-interface CreateAgentModalProps {
+interface CreateMicrofinanceAgentModalProps {
   isOpen: boolean
   onClose: () => void
   onSubmit: (agentData: AgentData) => void
 }
 
-export default function CreateAgentModal({ isOpen, onClose, onSubmit }: CreateAgentModalProps) {
+export default function CreateMicrofinanceAgentModal({ isOpen, onClose, onSubmit }: CreateMicrofinanceAgentModalProps) {
   const [agent, setAgent] = useState<AgentData>(initialAgentData)
 
   const handleSubmit = () => {
@@ -185,7 +184,7 @@ export default function CreateAgentModal({ isOpen, onClose, onSubmit }: CreateAg
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-gray-900">Create New Agent</h2>
+          <h2 className="text-xl font-bold text-gray-900">Create Microfinance Agent</h2>
           <button
             onClick={handleClose}
             className="text-gray-400 hover:text-gray-600"
@@ -234,11 +233,12 @@ export default function CreateAgentModal({ isOpen, onClose, onSubmit }: CreateAg
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     <option value="">Select role</option>
-                    <option value="customer_support">Customer Support</option>
-                    <option value="sales">Sales</option>
-                    <option value="technical_support">Technical Support</option>
-                    <option value="billing">Billing</option>
-                    <option value="general">General</option>
+                    <option value="loan_officer">Loan Officer</option>
+                    <option value="credit_analyst">Credit Analyst</option>
+                    <option value="customer_service">Customer Service</option>
+                    <option value="collections">Collections</option>
+                    <option value="account_manager">Account Manager</option>
+                    <option value="financial_advisor">Financial Advisor</option>
                   </select>
                 </div>
                 
@@ -263,7 +263,7 @@ export default function CreateAgentModal({ isOpen, onClose, onSubmit }: CreateAg
                     Skills
                   </label>
                   <div className="space-y-2">
-                    {['Customer Service', 'Technical Support', 'Sales', 'Billing', 'Product Knowledge'].map((skill) => (
+                    {['Loan Processing', 'Credit Assessment', 'Financial Analysis', 'Customer Service', 'Regulatory Compliance', 'Risk Management', 'Documentation', 'Collections'].map((skill) => (
                       <label key={skill} className="flex items-center">
                         <input
                           type="checkbox"
