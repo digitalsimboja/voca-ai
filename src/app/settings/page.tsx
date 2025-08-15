@@ -4,6 +4,7 @@ import { useState } from 'react'
 import MainLayout from '@/components/layout/MainLayout'
 import { Card, CardHeader, CardContent } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
+import CreateAgentModal from '@/components/modals/CreateAgentModal'
 import {
   Settings,
   Save,
@@ -11,7 +12,8 @@ import {
   Shield,
   Bell,
   Database,
-  Zap
+  Zap,
+  UserPlus
 } from 'lucide-react'
 
 // Mock data
@@ -81,7 +83,7 @@ const mockSettings = {
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('general')
   const [settings, setSettings] = useState(mockSettings)
-
+  const [showCreateAgent, setShowCreateAgent] = useState(false)
 
   const tabs = [
     { id: 'general', name: 'General', icon: Settings },
@@ -96,6 +98,12 @@ export default function SettingsPage() {
     // Mock save - would call actual API
   }
 
+  const handleCreateAgent = (agentData: any) => {
+    console.log('Creating agent:', agentData)
+    // Mock create agent - would call actual API
+    setShowCreateAgent(false)
+  }
+
   return (
     <MainLayout>
       <div className="space-y-6">
@@ -105,14 +113,30 @@ export default function SettingsPage() {
             <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
             <p className="text-gray-600">Configure your Voca AI organization</p>
           </div>
-          <button
-            onClick={handleSave}
-            className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            <Save className="w-4 h-4" />
-            <span>Save Changes</span>
-          </button>
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={() => setShowCreateAgent(true)}
+              className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+            >
+              <UserPlus className="w-4 h-4" />
+              <span>Create Agent</span>
+            </button>
+            <button
+              onClick={handleSave}
+              className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              <Save className="w-4 h-4" />
+              <span>Save Changes</span>
+            </button>
+          </div>
         </div>
+
+        {/* Create Agent Modal */}
+        <CreateAgentModal
+          isOpen={showCreateAgent}
+          onClose={() => setShowCreateAgent(false)}
+          onSubmit={handleCreateAgent}
+        />
 
         {/* Settings Tabs */}
         <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg">
