@@ -13,10 +13,15 @@ import {
   Phone,
   MessageCircle,
   Mail,
-  LogOut
+  LogOut,
+  Menu
 } from 'lucide-react'
 
-export default function Header() {
+interface HeaderProps {
+  onMobileMenuClick?: () => void
+}
+
+export default function Header({ onMobileMenuClick }: HeaderProps) {
   const { user, logout } = useAuth()
   const userMenuRef = useRef<HTMLDivElement>(null)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
@@ -56,30 +61,41 @@ export default function Header() {
   }
 
   return (
-    <header className="bg-white border-b border-gray-200 px-6 py-4">
+    <header className="bg-white border-b border-gray-200 px-4 lg:px-6 py-4">
       <div className="flex items-center justify-between">
+        {/* Mobile Menu Button */}
+        <button
+          onClick={onMobileMenuClick}
+          className="lg:hidden p-2 rounded-lg hover:bg-gray-100"
+        >
+          <Menu className="w-5 h-5 text-gray-600" />
+        </button>
+
         {/* Search Bar */}
-        <div className="flex-1 max-w-md">
+        <div className="flex-1 max-w-md mx-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
               type="text"
               placeholder="Search conversations, customers..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
             />
           </div>
         </div>
 
         {/* Quick Actions */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 lg:space-x-4">
           {/* New Conversation Button */}
-          <button className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-            <Plus className="w-4 h-4" />
+          <button className="hidden sm:flex items-center space-x-2 bg-blue-600 text-white px-2 lg:px-4 py-1.5 lg:py-2 rounded-lg hover:bg-blue-700 transition-colors text-xs lg:text-sm">
+            <Plus className="w-3 h-3 lg:w-4 lg:h-4" />
             <span>New Conversation</span>
+          </button>
+          <button className="sm:hidden flex items-center bg-blue-600 text-white p-1.5 rounded-lg hover:bg-blue-700 transition-colors">
+            <Plus className="w-3 h-3" />
           </button>
 
           {/* Channel Status */}
-          <div className="flex items-center space-x-2">
+          <div className="hidden md:flex items-center space-x-2">
             <div className="flex items-center space-x-1 text-green-600">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
               <Phone className="w-4 h-4" />
@@ -145,7 +161,7 @@ export default function Header() {
           </div>
 
           {/* Filter */}
-          <button className="p-2 rounded-lg hover:bg-gray-100">
+          <button className="hidden sm:block p-2 rounded-lg hover:bg-gray-100">
             <Filter className="w-5 h-5 text-gray-600" />
           </button>
 

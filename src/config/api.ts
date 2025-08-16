@@ -13,6 +13,8 @@ export const API_CONFIG = {
     CUSTOMER: process.env.CUSTOMER_SERVICE_URL || 'http://localhost:8008',
     INTEGRATION: process.env.INTEGRATION_SERVICE_URL || 'http://localhost:8009',
     SETTINGS: process.env.SETTINGS_SERVICE_URL || 'http://localhost:8010',
+    CATALOG: process.env.CATALOG_SERVICE_URL || 'http://localhost:8011',
+    ORDER: process.env.ORDER_SERVICE_URL || 'http://localhost:8012',
   },
   
   // API Settings
@@ -109,6 +111,24 @@ export const API_ENDPOINTS = {
   CONTACT: {
     SUBMIT: '/v1/contact/submit',
     INQUIRIES: '/v1/contact/inquiries',
+  },
+
+  // Catalog Service
+  CATALOG: {
+    LIST: '/v1/catalog/list',
+    CREATE: '/v1/catalog/create',
+    GET: '/v1/catalog/{id}',
+    UPDATE: '/v1/catalog/{id}',
+    DELETE: '/v1/catalog/{id}',
+  },
+
+  // Order Service
+  ORDER: {
+    CREATE: '/v1/order/create',
+    LIST: '/v1/order/list',
+    GET: '/v1/order/{id}',
+    UPDATE: '/v1/order/{id}',
+    DELETE: '/v1/order/{id}',
   }
 }
 
