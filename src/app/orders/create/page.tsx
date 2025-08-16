@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/Badge";
 import CreateRetailAgentModal from "@/components/modals/CreateRetailAgentModal";
 import { ProductCatalog, PricingTier } from "@/types/catalog";
 import { apiService } from "@/services/apiService";
+import { toast } from "@/utils/toast";
 import {
   ArrowLeft,
   Plus,
@@ -119,13 +120,13 @@ export default function CreateOrderPage() {
           // Update catalog with the created data
           setCatalog(response.data);
           setLinkGenerated(true);
-          alert(`Order saved successfully! Now you can generate a shareable link.`);
+          toast.success(`Order saved successfully! Now you can generate a shareable link.`);
         } else {
-          alert('Failed to save order. Please try again.');
+          toast.error('Failed to save order. Please try again.');
         }
       } catch (err) {
         console.error('Error saving catalog:', err);
-        alert('An error occurred while saving the order. Please try again.');
+        toast.error('An error occurred while saving the order. Please try again.');
       }
     } else {
       // Second time: Generate shareable link
@@ -140,13 +141,13 @@ export default function CreateOrderPage() {
           // Update catalog with the generated link
           setCatalog(response.data);
           setShareableLinkGenerated(true);
-          alert(`Shareable link generated successfully!`);
+          toast.success(`Shareable link generated successfully!`);
         } else {
-          alert('Failed to generate link. Please try again.');
+          toast.error('Failed to generate link. Please try again.');
         }
       } catch (err) {
         console.error('Error generating link:', err);
-        alert('An error occurred while generating the link. Please try again.');
+        toast.error('An error occurred while generating the link. Please try again.');
       }
     }
   };
@@ -154,9 +155,10 @@ export default function CreateOrderPage() {
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(catalog.shareableLink);
-      alert("Link copied to clipboard!");
+      toast.success("Link copied to clipboard!");
     } catch (err) {
       console.error("Failed to copy link:", err);
+      toast.error("Failed to copy link to clipboard");
     }
   };
 

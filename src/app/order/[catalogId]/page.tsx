@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/Badge'
 
 import { ProductCatalog, CustomerOrder, OrderSubmission } from '@/types/catalog'
 import { apiService } from '@/services/apiService'
+import { toast } from '@/utils/toast'
 import {
   Package,
   ShoppingCart,
@@ -103,11 +104,11 @@ export default function CustomerOrderPage() {
       if (response.success) {
         setOrderSubmitted(true)
       } else {
-        alert('Failed to submit order. Please try again.')
+        toast.error('Failed to submit order. Please try again.')
       }
     } catch (err) {
       console.error('Error submitting order:', err)
-      alert('An error occurred while submitting your order. Please try again.')
+      toast.error('An error occurred while submitting your order. Please try again.')
     }
   }
 
