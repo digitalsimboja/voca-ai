@@ -14,13 +14,15 @@ import {
   Headphones,
   ChevronLeft,
   ChevronRight,
-  Package
+  Package,
+  ShoppingCart
 } from 'lucide-react'
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Conversations', href: '/conversations', icon: MessageSquare },
   { name: 'Customers', href: '/customers', icon: Users },
+  { name: 'Catalogs', href: '/catalogs', icon: ShoppingCart },
   { name: 'Orders', href: '/orders', icon: Package },
   { name: 'Analytics', href: '/analytics', icon: BarChart3 },
   { name: 'Integrations', href: '/integrations', icon: Zap },

@@ -29,7 +29,7 @@ const initialPricingTiers: PricingTier[] = [
   },
 ];
 
-export default function CreateOrderPage() {
+export default function CreateCatalogPage() {
   const router = useRouter();
   const [catalog, setCatalog] = useState<ProductCatalog>({
     id: "",
@@ -105,7 +105,7 @@ export default function CreateOrderPage() {
 
   const handleSubmit = async () => {
     if (!linkGenerated) {
-      // First time: Save the order
+      // First time: Save the catalog
       try {
         const response = await apiService.createCatalog({
           name: catalog.name,
@@ -120,18 +120,18 @@ export default function CreateOrderPage() {
           // Update catalog with the created data
           setCatalog(response.data);
           setLinkGenerated(true);
-          toast.success(`Order saved successfully! Now you can generate a shareable link.`);
+          toast.success(`Catalog saved successfully! Now you can generate a shareable link.`);
         } else {
-          toast.error('Failed to save order. Please try again.');
+          toast.error('Failed to save catalog. Please try again.');
         }
       } catch (err) {
         console.error('Error saving catalog:', err);
-        toast.error('An error occurred while saving the order. Please try again.');
+        toast.error('An error occurred while saving the catalog. Please try again.');
       }
     } else {
       // Second time: Generate shareable link
       try {
-        const shareableLink = `${window.location.origin}/order/${catalog.id}`;
+        const shareableLink = `${window.location.origin}/catalog/${catalog.id}`;
         
         const response = await apiService.updateCatalog(catalog.id, {
           shareableLink: shareableLink
@@ -169,11 +169,11 @@ export default function CreateOrderPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
           <div className="flex items-center space-x-3">
             <button
-              onClick={() => router.back()}
+              onClick={() => router.push("/catalogs")}
               className="flex items-center space-x-1 text-gray-600 hover:text-gray-900 transition-colors text-sm"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>Back</span>
+              <span>Back to Catalogs</span>
             </button>
             <div>
               <h1 className="text-xl font-bold text-gray-900">
@@ -193,7 +193,7 @@ export default function CreateOrderPage() {
             }`}
           >
             <Save className="w-4 h-4" />
-            <span>{linkGenerated ? "Generate Link" : "Save Order"}</span>
+            <span>{linkGenerated ? "Generate Link" : "Save Catalog"}</span>
           </button>
         </div>
 
@@ -624,10 +624,10 @@ export default function CreateOrderPage() {
                         <span>Preview Link</span>
                       </button>
                       <button
-                        onClick={() => setLinkGenerated(false)}
+                        onClick={() => router.push("/catalogs")}
                         className="px-3 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm"
                       >
-                        Create Another
+                        Back to Catalogs
                       </button>
                     </div>
                   </div>

@@ -1,4 +1,5 @@
 import { ProductCatalog } from '@/types/catalog';
+import { generateUuid, formatDate } from '@/lib/utils';
 
 class CatalogStore {
   private catalogs: Map<string, ProductCatalog> = new Map();
@@ -25,7 +26,7 @@ class CatalogStore {
           catalogArray.forEach((catalog: ProductCatalog) => {
             this.catalogs.set(catalog.id, catalog);
           });
-          console.log('Loaded catalogs from localStorage:', this.catalogs.size);
+          console.log('Loaded catalogs from localStorage:', this.catalogs.size, 'at', formatDate(new Date()));
         }
       }
     } catch (error) {
@@ -38,7 +39,7 @@ class CatalogStore {
       if (typeof window !== 'undefined') {
         const catalogArray = Array.from(this.catalogs.values());
         localStorage.setItem(this.storageKey, JSON.stringify(catalogArray));
-        console.log('Saved catalogs to localStorage:', catalogArray.length);
+        console.log('Saved catalogs to localStorage:', catalogArray.length, 'at', formatDate(new Date()));
       }
     } catch (error) {
       console.error('Error saving catalogs to localStorage:', error);
@@ -126,10 +127,7 @@ class CatalogStore {
 
   // Create a new catalog and return it with an ID
   createCatalog(catalogData: Omit<ProductCatalog, 'id' | 'createdAt' | 'updatedAt'>): ProductCatalog {
-    // Generate a more unique ID using timestamp and random number
-    const timestamp = Date.now();
-    const random = Math.floor(Math.random() * 1000);
-    const id = `catalog_${timestamp}_${random}`;
+    const id = generateUuid();
     const now = new Date().toISOString();
     
     const newCatalog: ProductCatalog = {
@@ -140,7 +138,7 @@ class CatalogStore {
     };
     
     this.catalogs.set(id, newCatalog);
-    console.log('Catalog created and stored with ID:', id);
+    console.log('Catalog created and stored with ID:', id, 'at', formatDate(new Date()));
     console.log('Total catalogs in store:', this.catalogs.size);
     console.log('All catalog IDs:', Array.from(this.catalogs.keys()));
     this.saveToStorage();
@@ -162,17 +160,17 @@ class CatalogStore {
     };
     
     this.catalogs.set(catalogId, updatedCatalog);
-    console.log('Catalog updated:', updatedCatalog);
+    console.log('Catalog updated:', catalogId, 'at', formatDate(new Date()));
     this.saveToStorage();
     return updatedCatalog;
   }
 
   // Get a catalog by ID
   getCatalogById(catalogId: string): ProductCatalog | null {
-    console.log('Looking for catalog with ID:', catalogId);
+    console.log('Looking for catalog with ID:', catalogId, 'at', formatDate(new Date()));
     console.log('Available catalog IDs:', Array.from(this.catalogs.keys()));
     const catalog = this.catalogs.get(catalogId);
-    console.log('Retrieved catalog:', catalog);
+    console.log('Retrieved catalog:', catalog ? catalog.name : 'Not found');
     return catalog || null;
   }
 
@@ -183,7 +181,12 @@ class CatalogStore {
 
   // Delete a catalog
   deleteCatalog(catalogId: string): boolean {
-    return this.catalogs.delete(catalogId);
+    const deleted = this.catalogs.delete(catalogId);
+    if (deleted) {
+      console.log('Deleted catalog:', catalogId, 'at', formatDate(new Date()));
+      this.saveToStorage();
+    }
+    return deleted;
   }
 
   // Clear all catalogs and reinitialize with mock data (useful for testing)
@@ -193,6 +196,7 @@ class CatalogStore {
     if (typeof window !== 'undefined') {
       localStorage.removeItem(this.storageKey);
     }
+    console.log('Cleared all catalogs and reinitialized at', formatDate(new Date()));
     this.initializeMockData();
   }
 

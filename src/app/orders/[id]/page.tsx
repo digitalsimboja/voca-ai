@@ -48,6 +48,22 @@ const mockOrders = [
     orderDate: '2024-01-15T09:15:00Z',
     deliveryAddress: '456 Oak Ave, San Francisco, CA',
     agentId: 'agent_retail_002'
+  },
+  {
+    id: 'ORD-003',
+    customerName: 'Emily Rodriguez',
+    customerEmail: 'emily.rodriguez@email.com',
+    customerPhone: '+15555555555',
+    items: [
+      { name: 'Weight Loss Tea', quantity: 1, price: 17000, image: '' },
+      { name: 'Energy Boosters', quantity: 2, price: 34000, image: '' },
+      { name: 'Skin Care Pack', quantity: 1, price: 25000, image: '' }
+    ],
+    totalAmount: 76000,
+    status: 'shipped' as const,
+    orderDate: '2024-01-14T16:20:00Z',
+    deliveryAddress: '789 Pine St, Miami, FL',
+    agentId: 'agent_retail_003'
   }
 ]
 
@@ -107,7 +123,10 @@ export default function OrderDetailPage() {
     return (
       <MainLayout>
         <div className="flex items-center justify-center h-64">
-          <div className="text-gray-500">Loading order details...</div>
+          <div className="flex items-center space-x-2">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+            <span className="text-gray-500">Loading order details...</span>
+          </div>
         </div>
       </MainLayout>
     )
@@ -118,12 +137,17 @@ export default function OrderDetailPage() {
       <MainLayout>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <div className="text-gray-500 mb-4">Order not found</div>
+            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Package className="w-8 h-8 text-gray-400" />
+            </div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">Order Not Found</h2>
+            <p className="text-gray-500 mb-6">The order you&apos;re looking for doesn&apos;t exist or has been removed.</p>
             <button
               onClick={() => router.push('/orders')}
-              className="text-blue-600 hover:text-blue-800"
+              className="inline-flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
             >
-              Back to Orders
+              <ArrowLeft className="w-4 h-4" />
+              <span>Back to Orders</span>
             </button>
           </div>
         </div>
@@ -173,29 +197,29 @@ export default function OrderDetailPage() {
               <CardContent>
                 <div className="space-y-4">
                   {/* Status Timeline */}
-                  <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-2 sm:space-x-4 overflow-x-auto pb-2">
                     {statusSteps.map((step, index) => {
                       const Icon = step.icon
                       const isCompleted = index <= currentStatusIndex
                       
                       return (
-                        <div key={step.key} className="flex items-center flex-1">
+                        <div key={step.key} className="flex items-center flex-shrink-0">
                           <div className="flex flex-col items-center">
-                            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                            <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center ${
                               isCompleted 
                                 ? 'bg-blue-600 text-white' 
                                 : 'bg-gray-200 text-gray-400'
                             }`}>
-                              <Icon className="w-5 h-5" />
+                              <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
-                            <span className={`text-xs font-medium mt-2 ${
+                            <span className={`text-xs font-medium mt-1 sm:mt-2 text-center ${
                               isCompleted ? 'text-gray-900' : 'text-gray-400'
                             }`}>
                               {step.label}
                             </span>
                           </div>
                           {index < statusSteps.length - 1 && (
-                            <div className={`flex-1 h-0.5 mx-2 ${
+                            <div className={`w-8 sm:w-12 h-0.5 mx-1 sm:mx-2 ${
                               isCompleted ? 'bg-blue-600' : 'bg-gray-200'
                             }`} />
                           )}
@@ -209,17 +233,17 @@ export default function OrderDetailPage() {
                     <h4 className="text-md font-medium text-gray-900 mb-3">Order Items</h4>
                     <div className="space-y-3">
                       {order.items.map((item: OrderItem, index: number) => (
-                        <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                        <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 border border-gray-200 rounded-lg space-y-2 sm:space-y-0">
                           <div className="flex items-center space-x-3">
-                            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                              <Package className="w-6 h-6 text-gray-600" />
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                              <Package className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
                             </div>
-                            <div>
-                              <div className="font-medium text-gray-900">{item.name}</div>
+                            <div className="min-w-0 flex-1">
+                              <div className="font-medium text-gray-900 truncate">{item.name}</div>
                               <div className="text-sm text-gray-500">Quantity: {item.quantity}</div>
                             </div>
                           </div>
-                          <div className="text-right">
+                          <div className="text-right sm:text-left">
                             <div className="font-medium text-gray-900">₦{item.price.toLocaleString()}</div>
                             <div className="text-sm text-gray-500">₦{(item.price * item.quantity).toLocaleString()}</div>
                           </div>

@@ -133,11 +133,11 @@ export default function CustomersPage() {
             <p className="text-gray-600">Manage customer information and interactions</p>
           </div>
           <button 
-            onClick={() => window.location.href = '/orders/create'}
+            onClick={() => window.location.href = '/catalogs/create'}
             className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
             <Plus className="w-4 h-4" />
-            <span>Create Order</span>
+            <span>Create Catalogue</span>
           </button>
         </div>
 
