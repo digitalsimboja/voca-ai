@@ -142,6 +142,86 @@ export const apiService = {
     }
   },
 
+  async getCatalogsByUserId(userId: string): Promise<CatalogListApiResponse> {
+    try {
+      const userCatalogs = catalogStore.getCatalogsByUserId(userId);
+      
+      return {
+        success: true,
+        data: userCatalogs,
+        message: 'User catalogs retrieved successfully'
+      };
+    } catch (error) {
+      return {
+        success: false,
+        data: [],
+        message: 'Failed to fetch user catalogs'
+      };
+    }
+  },
+
+  async getCatalogsByUsername(username: string): Promise<CatalogListApiResponse> {
+    try {
+      const publicCatalogs = catalogStore.getCatalogsByUsername(username);
+      
+      return {
+        success: true,
+        data: publicCatalogs,
+        message: 'Public catalogs retrieved successfully'
+      };
+    } catch (error) {
+      return {
+        success: false,
+        data: [],
+        message: 'Failed to fetch public catalogs'
+      };
+    }
+  },
+
+  async getPublicCatalogByUsernameAndId(username: string, catalogId: string): Promise<CatalogApiResponse> {
+    try {
+      const catalog = catalogStore.getPublicCatalogByUsernameAndId(username, catalogId);
+      
+      if (!catalog) {
+        return {
+          success: false,
+          data: null,
+          message: 'Catalog not found or not public'
+        };
+      }
+      
+      return {
+        success: true,
+        data: catalog,
+        message: 'Public catalog retrieved successfully'
+      };
+    } catch (error) {
+      return {
+        success: false,
+        data: null,
+        message: 'Failed to fetch public catalog'
+      };
+    }
+  },
+
+  async isUsernameAvailable(username: string): Promise<{ success: boolean; available: boolean; message: string }> {
+    try {
+      const available = catalogStore.isUsernameAvailable(username);
+      
+      return {
+        success: true,
+        available,
+        message: available ? 'Username is available' : 'Username is already taken'
+      };
+    } catch (error) {
+      return {
+        success: false,
+        available: false,
+        message: 'Failed to check username availability'
+      };
+    }
+  },
+
   async deleteCatalog(catalogId: string): Promise<CatalogApiResponse> {
     try {
       // Comment out real API call for now
@@ -222,13 +302,13 @@ export const apiService = {
   },
 
   // Agent API calls
-  async createAgent(agentData: SocialMediaAgentData, businessType: string = 'retail'): Promise<AgentApiResponse> {
+  async createAgent(agentData: SocialMediaAgentData, businessType: string = 'retail', userId: string): Promise<AgentApiResponse> {
     try {
       // Comment out real API call for now
       // const endpoint = API_ENDPOINTS.AGENT.CREATE;
       // let response = await makeApiCall('AGENT', endpoint, {
       //   method: 'POST',
-      //   body: JSON.stringify({ agentData, businessType })
+      //   body: JSON.stringify({ agentData, businessType, userId })
       // }) as AgentApiResponse;
       // console.log('createAgent', response);
       
@@ -241,7 +321,7 @@ export const apiService = {
       // }
 
       // Use agentStore to create and store the agent
-      const newAgent = agentStore.createAgent(agentData, businessType);
+      const newAgent = agentStore.createAgent(agentData, businessType, userId);
       
       return {
         success: true,
@@ -311,6 +391,29 @@ export const apiService = {
     }
   },
 
+  async getAgentsByUserId(userId: string): Promise<AgentApiResponse> {
+    try {
+      // Comment out real API call for now
+      // const endpoint = API_ENDPOINTS.AGENT.LIST_BY_USER.replace('{userId}', userId);
+      // await makeApiCall('AGENT', endpoint);
+      
+      // Use agentStore to get agents by user ID
+      const agents = agentStore.getAgentsByUserId(userId);
+      
+      return {
+        success: true,
+        data: agents,
+        message: 'User agents retrieved successfully'
+      };
+    } catch (error) {
+      return {
+        success: false,
+        data: null,
+        message: 'Failed to fetch user agents'
+      };
+    }
+  },
+
   async updateAgent(agentId: string, updates: Partial<Agent>): Promise<AgentApiResponse> {
     try {
       // Comment out real API call for now
@@ -374,6 +477,103 @@ export const apiService = {
         success: false,
         data: null,
         message: 'Failed to delete agent'
+      };
+    }
+  },
+
+  async clearAllAgents(): Promise<{ success: boolean; message: string }> {
+    try {
+      agentStore.clearLocalStorage();
+      return {
+        success: true,
+        message: 'All agents cleared successfully'
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: 'Failed to clear agents'
+      };
+    }
+  },
+
+  async cleanupOldAgents(): Promise<{ success: boolean; message: string }> {
+    try {
+      agentStore.cleanupOldAgents();
+      return {
+        success: true,
+        message: 'Old agents cleaned up successfully'
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: 'Failed to cleanup old agents'
+      };
+    }
+  },
+
+  async removeAllAgents(): Promise<{ success: boolean; message: string }> {
+    try {
+      agentStore.removeAllAgents();
+      return {
+        success: true,
+        message: 'All agents completely removed from localStorage'
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: 'Failed to remove all agents'
+      };
+    }
+  },
+
+  async clearLocalStorage(): Promise<{ success: boolean; message: string; clearedItems: string[] }> {
+    try {
+      const clearedItems: string[] = [];
+      
+      if (typeof window !== 'undefined') {
+        // Clear all Voca AI related localStorage items
+        const vocaKeys = [
+          'voca_agents',
+          'voca_catalogs', 
+          'voca_settings',
+          'voca_orders',
+          'voca_user_preferences',
+          'voca_business_type',
+          'voca_notifications',
+          'voca_analytics',
+          'voca_integrations'
+        ];
+
+        vocaKeys.forEach(key => {
+          if (localStorage.getItem(key)) {
+            localStorage.removeItem(key);
+            clearedItems.push(key);
+          }
+        });
+
+        // Also clear any other localStorage items that start with 'voca_'
+        const allKeys = Object.keys(localStorage);
+        allKeys.forEach(key => {
+          if (key.startsWith('voca_') && !clearedItems.includes(key)) {
+            localStorage.removeItem(key);
+            clearedItems.push(key);
+          }
+        });
+
+        console.log('Cleared localStorage items:', clearedItems);
+      }
+
+      return {
+        success: true,
+        message: `Cleared ${clearedItems.length} localStorage items successfully`,
+        clearedItems
+      };
+    } catch (error) {
+      console.error('Error clearing localStorage:', error);
+      return {
+        success: false,
+        message: 'Failed to clear localStorage',
+        clearedItems: []
       };
     }
   },

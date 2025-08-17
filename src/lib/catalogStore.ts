@@ -78,6 +78,9 @@ class CatalogStore {
         ],
         agentId: 'agent_retail_001',
         shareableLink: 'http://localhost:3000/order/catalog_1',
+        userId: 'demo_user',
+        username: 'demo_store',
+        isPublic: true,
         createdAt: '2024-01-13T10:30:00.000Z',
         updatedAt: '2024-01-13T10:30:00.000Z'
       },
@@ -111,6 +114,9 @@ class CatalogStore {
         ],
         agentId: 'agent_retail_001',
         shareableLink: 'http://localhost:3000/order/catalog_2',
+        userId: 'demo_user',
+        username: 'demo_store',
+        isPublic: true,
         createdAt: '2024-01-13T11:00:00.000Z',
         updatedAt: '2024-01-13T11:00:00.000Z'
       }
@@ -208,6 +214,37 @@ class CatalogStore {
   // Debug method to get all catalog IDs
   getAllCatalogIds(): string[] {
     return Array.from(this.catalogs.keys());
+  }
+
+  // Get catalogs by user ID
+  getCatalogsByUserId(userId: string): ProductCatalog[] {
+    const userCatalogs = Array.from(this.catalogs.values()).filter(catalog => catalog.userId === userId);
+    console.log('getCatalogsByUserId called for user:', userId, 'returning:', userCatalogs.length, 'catalogs');
+    return userCatalogs;
+  }
+
+  // Get catalogs by username (for public access)
+  getCatalogsByUsername(username: string): ProductCatalog[] {
+    const publicCatalogs = Array.from(this.catalogs.values()).filter(
+      catalog => catalog.username === username && catalog.isPublic
+    );
+    console.log('getCatalogsByUsername called for username:', username, 'returning:', publicCatalogs.length, 'public catalogs');
+    return publicCatalogs;
+  }
+
+  // Check if username is available
+  isUsernameAvailable(username: string): boolean {
+    const existingUser = Array.from(this.catalogs.values()).find(catalog => catalog.username === username);
+    return !existingUser;
+  }
+
+  // Get catalog by username and catalog ID (for public access)
+  getPublicCatalogByUsernameAndId(username: string, catalogId: string): ProductCatalog | null {
+    const catalog = this.catalogs.get(catalogId);
+    if (catalog && catalog.username === username && catalog.isPublic) {
+      return catalog;
+    }
+    return null;
   }
 }
 

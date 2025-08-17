@@ -1,14 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import MainLayout from "@/components/layout/MainLayout";
 import { Card, CardHeader, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import CreateRetailAgentModal from "@/components/modals/CreateRetailAgentModal";
 import { ProductCatalog, PricingTier } from "@/types/catalog";
+import { Agent } from "@/lib/agentStore";
 import { apiService } from "@/services/apiService";
 import { toast } from "@/utils/toast";
+import { useAuth } from "@/hooks/useAuth";
 import {
   ArrowLeft,
   Plus,
@@ -18,6 +20,7 @@ import {
   X,
   Copy,
   Link,
+  ChevronDown,
 } from "lucide-react";
 
 const initialPricingTiers: PricingTier[] = [
@@ -31,20 +34,94 @@ const initialPricingTiers: PricingTier[] = [
 
 export default function CreateCatalogPage() {
   const router = useRouter();
+  const { user } = useAuth();
   const [catalog, setCatalog] = useState<ProductCatalog>({
     id: "",
     name: "",
     description: "",
     mainImage: "",
     pricingTiers: initialPricingTiers,
-    agentId: "agent_retail_001",
+    agentId: "",
     shareableLink: "",
+    userId: user?.userId || "",
+    username: "",
+    isPublic: true,
   });
+  const [userAgents, setUserAgents] = useState<Agent[]>([]);
   const [showAgentModal, setShowAgentModal] = useState(false);
   const [linkGenerated, setLinkGenerated] = useState(false);
   const [shareableLinkGenerated, setShareableLinkGenerated] = useState(false);
+  const [isLoadingAgents, setIsLoadingAgents] = useState(false);
+  const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(null);
+  const [checkingUsername, setCheckingUsername] = useState(false);
 
-  const updateCatalog = (field: keyof ProductCatalog, value: string) => {
+  // Fetch user agents on component mount
+  useEffect(() => {
+    const fetchUserAgents = async () => {
+      if (!user?.userId) {
+        setIsLoadingAgents(false);
+        return;
+      }
+      
+      setIsLoadingAgents(true);
+      try {
+        const response = await apiService.getAgentsByUserId(user.userId);
+        
+        if (response.success && response.data) {
+          const agents = Array.isArray(response.data) ? response.data : [response.data];
+          setUserAgents(agents);
+          
+          // Set the first agent as default if available
+          if (agents.length > 0 && !catalog.agentId) {
+            updateCatalog("agentId", agents[0].id);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching user agents:', error);
+        toast.error('Failed to load your agents');
+      } finally {
+        setIsLoadingAgents(false);
+      }
+    };
+
+    fetchUserAgents();
+  }, [user?.userId]);
+
+  // Update catalog userId when user changes
+  useEffect(() => {
+    if (user?.userId) {
+      updateCatalog("userId", user.userId);
+    }
+  }, [user?.userId]);
+
+  const checkUsernameAvailability = async (username: string) => {
+    if (!username.trim()) {
+      setUsernameAvailable(null);
+      return;
+    }
+
+    setCheckingUsername(true);
+    try {
+      const result = await apiService.isUsernameAvailable(username);
+      setUsernameAvailable(result.available);
+    } catch (error) {
+      console.error('Error checking username availability:', error);
+      setUsernameAvailable(false);
+    } finally {
+      setCheckingUsername(false);
+    }
+  };
+
+  const handleUsernameChange = (username: string) => {
+    updateCatalog("username", username);
+    // Debounce username availability check
+    const timeoutId = setTimeout(() => {
+      checkUsernameAvailability(username);
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  };
+
+  const updateCatalog = (field: keyof ProductCatalog, value: string | boolean) => {
     setCatalog((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -104,6 +181,27 @@ export default function CreateCatalogPage() {
   };
 
   const handleSubmit = async () => {
+    // Validate required fields
+    if (!catalog.name.trim()) {
+      toast.error('Please enter a product name');
+      return;
+    }
+    
+    if (!catalog.agentId) {
+      toast.error('Please select an agent');
+      return;
+    }
+
+    if (!catalog.username.trim()) {
+      toast.error('Please enter a username for your store');
+      return;
+    }
+
+    if (!user?.userId) {
+      toast.error('User not authenticated. Please log in to create catalogs.');
+      return;
+    }
+
     if (!linkGenerated) {
       // First time: Save the catalog
       try {
@@ -113,7 +211,10 @@ export default function CreateCatalogPage() {
           mainImage: catalog.mainImage,
           pricingTiers: catalog.pricingTiers,
           agentId: catalog.agentId,
-          shareableLink: ''
+          shareableLink: '',
+          userId: user.userId,
+          username: catalog.username,
+          isPublic: catalog.isPublic,
         });
 
         if (response.success && response.data) {
@@ -131,7 +232,7 @@ export default function CreateCatalogPage() {
     } else {
       // Second time: Generate shareable link
       try {
-        const shareableLink = `${window.location.origin}/catalog/${catalog.id}`;
+        const shareableLink = `${window.location.origin}/${catalog.username}/catalog/${catalog.id}`;
         
         const response = await apiService.updateCatalog(catalog.id, {
           shareableLink: shareableLink
@@ -186,10 +287,11 @@ export default function CreateCatalogPage() {
           </div>
           <button
             onClick={handleSubmit}
+            disabled={!catalog.name.trim() || !catalog.agentId}
             className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors text-sm ${
               linkGenerated
-                ? "bg-green-600 text-white hover:bg-green-700"
-                : "bg-blue-600 text-white hover:bg-blue-700"
+                ? "bg-green-600 text-white hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                : "bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
             }`}
           >
             <Save className="w-4 h-4" />
@@ -208,21 +310,55 @@ export default function CreateCatalogPage() {
                 </h3>
               </CardHeader>
               <CardContent className="pt-0">
-                <div className="flex space-x-2">
-                  <input
-                    type="text"
-                    value={catalog.agentId}
-                    onChange={(e) => updateCatalog("agentId", e.target.value)}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                    placeholder="agent_retail_001"
-                  />
-                  <button
-                    onClick={() => setShowAgentModal(true)}
-                    className="sm:px-3 sm:py-2 px-1 py-1 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
-                  >
-                    Create Agent
-                  </button>
-                </div>
+                {isLoadingAgents ? (
+                  <div className="flex items-center justify-center py-4">
+                    <div className="text-sm text-gray-500">Loading your agents...</div>
+                  </div>
+                ) : userAgents.length > 0 ? (
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Select Agent
+                      </label>
+                      <div className="relative">
+                        <select
+                          value={catalog.agentId}
+                          onChange={(e) => updateCatalog("agentId", e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm appearance-none bg-white"
+                        >
+                          {userAgents.map((agent) => (
+                            <option key={agent.id} value={agent.id}>
+                              {agent.name} - {agent.role}
+                            </option>
+                          ))}
+                        </select>
+                        <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                      </div>
+                    </div>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => setShowAgentModal(true)}
+                        className="flex items-center space-x-1 bg-purple-600 text-white px-3 py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm"
+                      >
+                        <Plus className="w-3 h-3" />
+                        <span>Create New Agent</span>
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <div className="text-sm text-gray-600">
+                      You don&apos;t have any agents yet. Create your first agent to get started.
+                    </div>
+                    <button
+                      onClick={() => setShowAgentModal(true)}
+                      className="flex items-center space-x-1 bg-purple-600 text-white px-3 py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm"
+                    >
+                      <Plus className="w-3 h-3" />
+                      <span>Create Your First Agent</span>
+                    </button>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
@@ -300,6 +436,85 @@ export default function CreateCatalogPage() {
                       </div>
                     )}
                   </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Store Username */}
+            <Card>
+              <CardHeader className="pb-3">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Store Username
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Choose a unique username for your public store URL
+                </p>
+              </CardHeader>
+              <CardContent className="pt-0 space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Username
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={catalog.username}
+                      onChange={(e) => handleUsernameChange(e.target.value)}
+                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm ${
+                        usernameAvailable === null
+                          ? 'border-gray-300'
+                          : usernameAvailable
+                          ? 'border-green-500'
+                          : 'border-red-500'
+                      }`}
+                      placeholder="e.g., my_store_name"
+                    />
+                    {checkingUsername && (
+                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                      </div>
+                    )}
+                    {!checkingUsername && usernameAvailable === true && (
+                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                        <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs">✓</span>
+                        </div>
+                      </div>
+                    )}
+                    {!checkingUsername && usernameAvailable === false && (
+                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                        <div className="w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs">✗</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  {usernameAvailable === true && (
+                    <p className="text-sm text-green-600 mt-1">
+                      ✓ Username is available! Your store will be at: {window.location.origin}/{catalog.username}
+                    </p>
+                  )}
+                  {usernameAvailable === false && (
+                    <p className="text-sm text-red-600 mt-1">
+                      ✗ Username is already taken. Please choose a different one.
+                    </p>
+                  )}
+                  <p className="text-xs text-gray-500 mt-1">
+                    This will be your public store URL. Choose wisely as it cannot be changed later.
+                  </p>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="isPublic"
+                    checked={catalog.isPublic}
+                    onChange={(e) => updateCatalog("isPublic", e.target.checked)}
+                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <label htmlFor="isPublic" className="text-sm text-gray-700">
+                    Make this catalog publicly accessible
+                  </label>
                 </div>
               </CardContent>
             </Card>
@@ -641,16 +856,32 @@ export default function CreateCatalogPage() {
         <CreateRetailAgentModal
           isOpen={showAgentModal}
           onClose={() => setShowAgentModal(false)}
-          onSubmit={(agentData) => {
-            // Generate a unique agent ID based on the agent data
-            const agentId = `agent_retail_${agentData.profile.name
-              .toLowerCase()
-              .replace(/\s+/g, "_")}_${Date.now()}`;
-            updateCatalog("agentId", agentId);
-            setShowAgentModal(false);
+          onSubmit={async (agentData) => {
+            if (!user?.userId) {
+              toast.error('User not authenticated. Please log in to create agents.');
+              return;
+            }
 
-            // You can also store the agent data for later use
-            console.log("Agent created:", agentData);
+            try {
+              const response = await apiService.createAgent(agentData, 'retail', user.userId);
+              if (response.success && response.data) {
+                const newAgent = response.data as Agent;
+                
+                // Add the new agent to the user agents list
+                setUserAgents(prev => [...prev, newAgent]);
+                
+                // Set the new agent as the selected agent
+                updateCatalog("agentId", newAgent.id);
+                
+                toast.success('Agent created successfully!');
+                setShowAgentModal(false);
+              } else {
+                toast.error('Failed to create agent');
+              }
+            } catch (error) {
+              console.error('Error creating agent:', error);
+              toast.error('An error occurred while creating the agent');
+            }
           }}
         />
       </div>

@@ -18,6 +18,7 @@ import {
   AgentManagement,
 } from "@/components/settings";
 import { useBusinessType } from "@/hooks/useBusinessType";
+import { useAuth } from "@/hooks/useAuth";
 import { apiService } from "@/services/apiService";
 import { Agent } from "@/lib/agentStore";
 import { Settings as SettingsType } from "@/lib/settingsStore";
@@ -29,6 +30,7 @@ type AgentData = unknown;
 
 export default function SettingsPage() {
   const router = useRouter();
+  const { user } = useAuth();
   const { businessType: detectedBusinessType } = useBusinessType();
   const [activeTab, setActiveTab] = useState("general");
 
@@ -111,17 +113,20 @@ export default function SettingsPage() {
           }));
         }
 
-        const agentsResult = await apiService.getAllAgents();
-        if (agentsResult.success && agentsResult.data) {
-          const agents = Array.isArray(agentsResult.data)
-            ? agentsResult.data
-            : [agentsResult.data];
-          setSettings((prev) => ({
-            ...prev,
-            agents: agents.filter(
-              (agent): agent is Agent => agent !== null
-            ) as Agent[],
-          }));
+        // Only get user-specific agents
+        if (user?.userId) {
+          const agentsResult = await apiService.getAgentsByUserId(user.userId);
+          if (agentsResult.success && agentsResult.data) {
+            const agents = Array.isArray(agentsResult.data)
+              ? agentsResult.data
+              : [agentsResult.data];
+            setSettings((prev) => ({
+              ...prev,
+              agents: agents.filter(
+                (agent): agent is Agent => agent !== null
+              ) as Agent[],
+            }));
+          }
         }
       } catch (error) {
         console.error("Error loading data:", error);
@@ -129,17 +134,23 @@ export default function SettingsPage() {
     };
 
     loadData();
-  }, []);
+  }, [user?.userId]);
 
   // --- handlers (unchanged) ---
 
   const handleCreateAgent = async (agentData: AgentData) => {
+    if (!user?.userId) {
+      toast.error('User not authenticated. Please log in to create agents.');
+      return;
+    }
+
     try {
       console.log("Creating agent with data:", agentData);
 
       const result = await apiService.createAgent(
         agentData as unknown as SocialMediaAgentData,
-        detectedBusinessType || "retail"
+        detectedBusinessType || "retail",
+        user.userId
       );
 
       console.log("Create agent result:", result);
@@ -151,8 +162,8 @@ export default function SettingsPage() {
         // Add a small delay to ensure the store is updated
         await new Promise((resolve) => setTimeout(resolve, 100));
 
-        const agentsResult = await apiService.getAllAgents();
-        console.log("Get all agents result:", agentsResult);
+        const agentsResult = await apiService.getAgentsByUserId(user!.userId);
+        console.log("Get user agents result:", agentsResult);
 
         if (agentsResult.success && agentsResult.data) {
           const agents = Array.isArray(agentsResult.data)

@@ -1,3 +1,5 @@
+import { SocialMediaAgentData } from '@/types/agent';
+
 // Shared types for catalog and order management
 
 export interface PricingTier {
@@ -17,6 +19,10 @@ export interface ProductCatalog {
   pricingTiers: PricingTier[];
   agentId: string;
   shareableLink: string;
+  userId: string; // Add user ID to associate catalogs with users
+  username: string; // Add username for public routing
+  isPublic: boolean; // Whether the catalog is publicly accessible
+  agentData?: SocialMediaAgentData; // Agent data for social media links
   createdAt?: string;
   updatedAt?: string;
 }

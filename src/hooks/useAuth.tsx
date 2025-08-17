@@ -2,6 +2,7 @@
 
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
+import { apiService } from '@/services/apiService'
 
 interface User {
   userId: string
@@ -132,6 +133,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error('Logout failed:', error)
     } finally {
+      // Clear all Voca AI data using API service
+      try {
+        const result = await apiService.clearLocalStorage()
+        if (result.success) {
+          console.log('Cleared localStorage on logout:', result.message, 'Items cleared:', result.clearedItems)
+        } else {
+          console.error('Failed to clear localStorage on logout:', result.message)
+        }
+        
+        // Also cleanup any old agents without userId
+        const cleanupResult = await apiService.cleanupOldAgents()
+        if (cleanupResult.success) {
+          console.log('Cleaned up old agents on logout:', cleanupResult.message)
+        } else {
+          console.error('Failed to cleanup old agents on logout:', cleanupResult.message)
+        }
+      } catch (error) {
+        console.error('Failed to clear localStorage on logout:', error)
+      }
+      
       setUser(null)
       router.push('/login')
     }

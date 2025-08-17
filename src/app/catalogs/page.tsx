@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/Badge";
 import { ProductCatalog } from "@/types/catalog";
 import { apiService } from "@/services/apiService";
 import { toast } from "@/utils/toast";
+import { useAuth } from "@/hooks/useAuth";
 import {
   Plus,
   Edit,
@@ -19,6 +20,7 @@ import {
 
 export default function CatalogsPage() {
   const router = useRouter();
+  const { user } = useAuth();
   const [catalogs, setCatalogs] = useState<ProductCatalog[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -29,7 +31,8 @@ export default function CatalogsPage() {
   const loadCatalogs = async () => {
     try {
       setLoading(true);
-      const result = await apiService.getAllCatalogs();
+      // Get user-specific catalogs instead of all catalogs
+      const result = await apiService.getCatalogsByUserId(user?.userId || '');
       if (result.success && result.data) {
         setCatalogs(Array.isArray(result.data) ? result.data : [result.data]);
       }
@@ -50,7 +53,12 @@ export default function CatalogsPage() {
   };
 
   const handleViewCatalog = (catalogId: string) => {
-    router.push(`/catalog/${catalogId}`);
+    const catalog = catalogs.find(c => c.id === catalogId);
+    if (catalog && catalog.username) {
+      router.push(`/${catalog.username}/catalog/${catalogId}`);
+    } else {
+      router.push(`/catalog/${catalogId}`);
+    }
   };
 
   const handleCopyLink = async (shareableLink: string) => {
