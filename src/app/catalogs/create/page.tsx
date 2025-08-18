@@ -45,10 +45,10 @@ export default function CreateCatalogPage() {
   const [userAgents, setUserAgents] = useState<Agent[]>([]);
   const [showAgentModal, setShowAgentModal] = useState(false);
   const [showStoreModal, setShowStoreModal] = useState(false);
-  const [linkGenerated, setLinkGenerated] = useState(false);
   const [shareableLinkGenerated, setShareableLinkGenerated] = useState(false);
   const [isLoadingAgents, setIsLoadingAgents] = useState(false);
   const [isLoadingStore, setIsLoadingStore] = useState(false);
+  const [isCreatingCatalog, setIsCreatingCatalog] = useState(false);
   const [userStore, setUserStore] = useState<{ store_name: string; id: string } | null>(null);
 
 
@@ -178,14 +178,44 @@ export default function CreateCatalogPage() {
   ) => {
     const file = event.target.files?.[0];
     if (file) {
+      // Validate file size (max 2MB for base64 encoding)
+      const maxSize = 2 * 1024 * 1024; // 2MB
+      if (file.size > maxSize) {
+        toast.error(`Image file is too large. Please choose an image smaller than 2MB.`);
+        return;
+      }
+
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        toast.error(`Please select a valid image file (JPEG, PNG, GIF, or WebP).`);
+        return;
+      }
+
       const reader = new FileReader();
       reader.onload = (e) => {
+        const result = e.target?.result as string;
+        
+        // Additional validation for base64 length (roughly 4/3 of file size)
+        const estimatedBase64Length = Math.ceil((file.size * 4) / 3);
+        if (estimatedBase64Length > 1000000) { // 1MB base64 limit
+          toast.error(`Image is too large when converted. Please choose a smaller image.`);
+          return;
+        }
+
         if (type === "main") {
-          updateCatalog("mainImage", e.target?.result as string);
+          updateCatalog("mainImage", result);
+          toast.success("Main image uploaded successfully!");
         } else if (type === "tier" && tierIndex !== undefined) {
-          updatePricingTier(tierIndex, "image", e.target?.result as string);
+          updatePricingTier(tierIndex, "image", result);
+          toast.success("Tier image uploaded successfully!");
         }
       };
+      
+      reader.onerror = () => {
+        toast.error("Failed to read image file. Please try again.");
+      };
+      
       reader.readAsDataURL(file);
     }
   };
@@ -202,65 +232,86 @@ export default function CreateCatalogPage() {
       return;
     }
 
+    // Validate image sizes before submission
+    if (catalog.mainImage && catalog.mainImage.length > 1000000) {
+      toast.error('Main image is too large. Please choose a smaller image (under 2MB).');
+      return;
+    }
 
+    // Check pricing tier images
+    for (let i = 0; i < catalog.pricingTiers.length; i++) {
+      const tier = catalog.pricingTiers[i];
+      if (tier.image && tier.image.length > 1000000) {
+        toast.error(`Tier ${i + 1} image is too large. Please choose a smaller image (under 2MB).`);
+        return;
+      }
+    }
 
     if (!user?.userId) {
       toast.error('User not authenticated. Please log in to create catalogs.');
       return;
     }
 
-    if (!linkGenerated) {
-      // First time: Save the catalog
-      try {
-        const response = await apiService.createCatalog({
-          name: catalog.name,
-          description: catalog.description,
-          mainImage: catalog.mainImage,
-          pricingTiers: catalog.pricingTiers,
-          agentId: catalog.agentId,
-          shareableLink: '',
-          userId: user.userId,
-          username: catalog.username,
-          isPublic: catalog.isPublic,
-        });
+    setIsCreatingCatalog(true);
+    try {
+      // First, create the catalog
+      const response = await apiService.createCatalog({
+        name: catalog.name,
+        description: catalog.description,
+        mainImage: catalog.mainImage,
+        pricingTiers: catalog.pricingTiers,
+        agentId: catalog.agentId,
+        shareableLink: '', // Start with empty shareable link
+        userId: user.userId,
+        username: catalog.username,
+        isPublic: catalog.isPublic,
+      });
 
-        if (response.status === 'success' && response.data) {
-          // Update catalog with the created data
-          setCatalog(response.data as ProductCatalog);
-          setLinkGenerated(true);
-          toast.success(`Catalog saved successfully! Now you can generate a shareable link.`);
-        } else {
-          toast.error('Failed to save catalog. Please try again.');
-        }
-      } catch (err) {
-        console.error('Error saving catalog:', err);
-        toast.error('An error occurred while saving the catalog. Please try again.');
-      }
-    } else {
-      // Second time: Generate shareable link
-      try {
-        const shareableLink = `${window.location.origin}/${catalog.username}/catalog/${catalog.id}`;
+      if (response.status === 'success' && response.data) {
+        // Update catalog with the created data
+        const createdCatalog = response.data as ProductCatalog;
+        setCatalog(createdCatalog);
         
-        const response = await apiService.updateCatalog(catalog.id, {
+        // Generate shareable link using the created catalog's ID
+        const shareableLink = `${window.location.origin}/${catalog.username}/catalog/${createdCatalog.id}`;
+        
+        // Update the catalog with the shareable link
+        const updateResponse = await apiService.updateCatalog(createdCatalog.id, {
           shareableLink: shareableLink
         });
 
-        if (response.status === 'success' && response.data) {
-          // Update catalog with the generated link
-          setCatalog(response.data as ProductCatalog);
+        if (updateResponse.status === 'success' && updateResponse.data) {
+          // Update catalog with the final data including shareable link
+          setCatalog(updateResponse.data as ProductCatalog);
           setShareableLinkGenerated(true);
-          toast.success(`Shareable link generated successfully!`);
+          toast.success(`Catalog created successfully with shareable link!`);
         } else {
-          toast.error('Failed to generate link. Please try again.');
+          // Catalog was created but link generation failed - set the link locally
+          const catalogWithLink = {
+            ...createdCatalog,
+            shareableLink: shareableLink
+          };
+          setCatalog(catalogWithLink as ProductCatalog);
+          setShareableLinkGenerated(true);
+          toast.warning(`Catalog created successfully, but link generation failed. You can update it later.`);
         }
-      } catch (err) {
-        console.error('Error generating link:', err);
-        toast.error('An error occurred while generating the link. Please try again.');
+      } else {
+        toast.error('Failed to create catalog. Please try again.');
       }
+    } catch (err) {
+      console.error('Error creating catalog:', err);
+      toast.error('An error occurred while creating the catalog. Please try again.');
+    } finally {
+      setIsCreatingCatalog(false);
     }
   };
 
   const copyToClipboard = async () => {
+    if (!catalog.shareableLink) {
+      toast.error("No link available to copy");
+      return;
+    }
+    
     try {
       await navigator.clipboard.writeText(catalog.shareableLink);
       toast.success("Link copied to clipboard!");
@@ -294,72 +345,17 @@ export default function CreateCatalogPage() {
           </div>
           <button
             onClick={handleSubmit}
-            disabled={!catalog.name.trim() || !catalog.agentId || !userStore}
-            className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors text-sm ${
-              linkGenerated
-                ? "bg-green-600 text-white hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                : "bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
-            }`}
+            disabled={!catalog.name.trim() || !catalog.agentId || !userStore || isCreatingCatalog}
+            className="flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors text-sm bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
             <Save className="w-4 h-4" />
-            <span>{linkGenerated ? "Generate Link" : "Save Catalog"}</span>
+            <span>{isCreatingCatalog ? "Creating..." : "Create Catalog"}</span>
           </button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
           {/* Product Details */}
           <div className="lg:col-span-3 space-y-4">
-            {/* AI Agent Configuration */}
-            <Card>
-              <CardHeader className="pb-3">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  AI Agent Configuration
-                </h3>
-              </CardHeader>
-              <CardContent className="pt-0">
-                {isLoadingAgents ? (
-                  <div className="flex items-center justify-center py-4">
-                    <div className="text-sm text-gray-500">Loading your agents...</div>
-                  </div>
-                ) : userAgents.length > 0 ? (
-                  <div className="space-y-3">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Select Agent
-                      </label>
-                      <div className="relative">
-                        <select
-                          value={catalog.agentId}
-                          onChange={(e) => updateCatalog("agentId", e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm appearance-none bg-white"
-                        >
-                          {userAgents.map((agent) => (
-                            <option key={agent.id} value={agent.id}>
-                              {agent.name} - {agent.role}
-                            </option>
-                          ))}
-                        </select>
-                        <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    <div className="text-sm text-gray-600 pt-2">
-                      You don&apos;t have any agents yet. Create your first agent to get started.
-                    </div>
-                    <button
-                      onClick={() => setShowAgentModal(true)}
-                      className="flex items-center space-x-1 bg-purple-600 text-white px-3 py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm"
-                    >
-                      <Plus className="w-3 h-3" />
-                      <span>Create Your First Agent</span>
-                    </button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
             {/* Product Information */}
             <Card>
               <CardHeader className="pb-3">
@@ -438,69 +434,151 @@ export default function CreateCatalogPage() {
               </CardContent>
             </Card>
 
-            {/* Store Information */}
+            {/* Store Information & AI Agent Configuration */}
             <Card>
               <CardHeader className="pb-3">
                 <h3 className="text-lg font-semibold text-gray-900">
-                  Store Information
+                  Store Information & AI Agent Configuration
                 </h3>
                 <p className="text-sm text-gray-600">
-                  Your catalog will be available at your store URL
+                  Configure your store and AI agent for order processing
                 </p>
               </CardHeader>
-              <CardContent className="pt-0 space-y-4">
-                {isLoadingStore ? (
-                  <div className="flex items-center justify-center py-4">
-                    <div className="text-sm text-gray-500">Loading your store...</div>
-                  </div>
-                ) : userStore ? (
-                  <div className="space-y-3">
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                      <div className="flex items-center space-x-2">
-                        <Store className="w-4 h-4 text-green-600" />
-                        <span className="text-sm font-medium text-green-800">
-                          Store Found: {userStore.store_name}
-                        </span>
+              <CardContent className="pt-0 space-y-6">
+                {/* Store Section */}
+                <div className="space-y-4">
+                  <h4 className="text-md font-medium text-gray-900">Store Configuration</h4>
+                  {isLoadingStore ? (
+                    <div className="flex items-center justify-center py-4">
+                      <div className="text-sm text-gray-500">Loading your store...</div>
+                    </div>
+                  ) : userStore ? (
+                    <div className="space-y-3">
+                      <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                        <div className="flex items-center space-x-2">
+                          <Store className="w-4 h-4 text-green-600" />
+                          <span className="text-sm font-medium text-green-800">
+                            Store Found: {userStore.store_name}
+                          </span>
+                        </div>
+                        <p className="text-xs text-green-700 mt-1">
+                          Your store URL: {typeof window !== 'undefined' ? `${window.location.origin}/${userStore.store_name}` : `/${userStore.store_name}`}
+                        </p>
                       </div>
-                      <p className="text-xs text-green-700 mt-1">
-                        Your store URL: {typeof window !== 'undefined' ? `${window.location.origin}/${userStore.store_name}` : `/${userStore.store_name}`}
-                      </p>
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Store Name
-                      </label>
-                      <input
-                        type="text"
-                        value={userStore.store_name}
-                        disabled
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600 text-sm"
-                        placeholder="Your store name"
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                      <div className="flex items-center space-x-2">
-                        <Store className="w-4 h-4 text-blue-600" />
-                        <span className="text-sm font-medium text-blue-800">
-                          No Store Found
-                        </span>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Store Name
+                        </label>
+                        <input
+                          type="text"
+                          value={userStore.store_name}
+                          disabled
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600 text-sm"
+                          placeholder="Your store name"
+                        />
                       </div>
-                      <p className="text-xs text-blue-700 mt-1">
-                        You need to create a store before you can create catalogs.
-                      </p>
                     </div>
-                    
-                    <button
-                      onClick={() => setShowStoreModal(true)}
-                      className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm"
-                    >
-                      <Plus className="w-3 h-3" />
-                      <span>Create Your Store</span>
-                    </button>
+                  ) : (
+                    <div className="space-y-3">
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                        <div className="flex items-center space-x-2">
+                          <Store className="w-4 h-4 text-blue-600" />
+                          <span className="text-sm font-medium text-blue-800">
+                            No Store Found
+                          </span>
+                        </div>
+                        <p className="text-xs text-blue-700 mt-1">
+                          You need to create a store before you can create catalogs.
+                        </p>
+                      </div>
+                      
+                      <button
+                        onClick={() => setShowStoreModal(true)}
+                        className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                      >
+                        <Plus className="w-3 h-3" />
+                        <span>Create Your Store</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* AI Agent Section */}
+                <div className="space-y-4">
+                  <h4 className="text-md font-medium text-gray-900">AI Agent Configuration</h4>
+                  {isLoadingAgents ? (
+                    <div className="flex items-center justify-center py-4">
+                      <div className="text-sm text-gray-500">Loading your agents...</div>
+                    </div>
+                  ) : userAgents.length > 0 ? (
+                    <div className="space-y-3">
+                      <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                        <div className="flex items-center space-x-2">
+                          <span className="text-sm font-medium text-green-800">
+                            Agent Found: {userAgents.find(agent => agent.id === catalog.agentId)?.name || userAgents[0]?.name}
+                          </span>
+                        </div>
+                        <p className="text-xs text-green-700 mt-1">
+                          Your AI agent will handle customer orders and inquiries.
+                        </p>
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Select Agent
+                        </label>
+                        <div className="relative">
+                          <select
+                            value={catalog.agentId}
+                            onChange={(e) => updateCatalog("agentId", e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm appearance-none bg-white"
+                          >
+                            {userAgents.map((agent) => (
+                              <option key={agent.id} value={agent.id}>
+                                {agent.name} - {agent.role}
+                              </option>
+                            ))}
+                          </select>
+                          <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                        <div className="flex items-center space-x-2">
+                          <span className="text-sm font-medium text-blue-800">
+                            No Agent Found
+                          </span>
+                        </div>
+                        <p className="text-xs text-blue-700 mt-1">
+                          You need to create an AI agent to handle customer orders.
+                        </p>
+                      </div>
+                      
+                      <button
+                        onClick={() => setShowAgentModal(true)}
+                        className="flex items-center space-x-1 bg-purple-600 text-white px-3 py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm"
+                      >
+                        <Plus className="w-3 h-3" />
+                        <span>Create Your First Agent</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Combined Status */}
+                {userStore && userAgents.length > 0 && (
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-sm font-medium text-green-800">
+                        ✓ Store and Agent Ready
+                      </span>
+                    </div>
+                    <p className="text-xs text-green-700 mt-1">
+                      Your store "{userStore.store_name}" is associated with agent "{userAgents.find(agent => agent.id === catalog.agentId)?.name || userAgents[0]?.name}"
+                    </p>
                   </div>
                 )}
 
@@ -794,15 +872,13 @@ export default function CreateCatalogPage() {
                     </p>
 
                     <div className="flex items-center space-x-2 p-3 bg-gray-50 rounded-lg">
-                      <input
-                        type="text"
-                        value={catalog.shareableLink}
-                        readOnly
-                        className="flex-1 px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm"
-                      />
+                      <div className="flex-1 px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-700 font-mono break-all">
+                        {catalog.shareableLink || (isCreatingCatalog ? "Creating catalog and generating link..." : "Generating link...")}
+                      </div>
                       <button
                         onClick={copyToClipboard}
-                        className="flex items-center space-x-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                        disabled={!catalog.shareableLink}
+                        className="flex items-center space-x-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm disabled:bg-gray-400 disabled:cursor-not-allowed"
                       >
                         <Copy className="w-3 h-3" />
                         <span>Copy</span>
@@ -833,7 +909,8 @@ export default function CreateCatalogPage() {
                         onClick={() =>
                           window.open(catalog.shareableLink, "_blank")
                         }
-                        className="flex items-center justify-center space-x-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
+                        disabled={!catalog.shareableLink}
+                        className="flex items-center justify-center space-x-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm disabled:bg-gray-400 disabled:cursor-not-allowed"
                       >
                         <Link className="w-3 h-3" />
                         <span>Preview Link</span>
@@ -890,6 +967,8 @@ export default function CreateCatalogPage() {
           isOpen={showStoreModal}
           onClose={() => setShowStoreModal(false)}
           onSubmit={handleStoreCreated}
+          userAgents={userAgents}
+          selectedAgentId={catalog.agentId}
         />
       </div>
     </MainLayout>

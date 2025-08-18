@@ -199,9 +199,20 @@ export const apiService = {
     catalogData: Partial<ProductCatalog>
   ): Promise<ApiResponse> {
     try {
+      // Convert frontend field names to backend field names
+      const backendData: Record<string, unknown> = {};
+      
+      if (catalogData.name !== undefined) backendData.name = catalogData.name;
+      if (catalogData.description !== undefined) backendData.description = catalogData.description;
+      if (catalogData.mainImage !== undefined) backendData.main_image = catalogData.mainImage;
+      if (catalogData.pricingTiers !== undefined) backendData.pricing_tiers = catalogData.pricingTiers;
+      if (catalogData.agentId !== undefined) backendData.agent_id = catalogData.agentId;
+      if (catalogData.shareableLink !== undefined) backendData.shareable_link = catalogData.shareableLink;
+      if (catalogData.isPublic !== undefined) backendData.is_public = catalogData.isPublic;
+      
       const response = await makeApiCall(`/catalog/catalogs/${catalogId}`, {
         method: 'PUT',
-        body: JSON.stringify(catalogData),
+        body: JSON.stringify(backendData),
       });
 
       if (response.status === 'success' && response.data) {
@@ -366,8 +377,9 @@ export const apiService = {
   // Store name availability check
   async checkStoreNameAvailability(storeName: string): Promise<ApiResponse> {
     try {
-      const response = await makeApiCall(`/catalog/stores/check-name?name=${encodeURIComponent(storeName)}`, {
-        method: 'GET',
+      const response = await makeApiCall('/catalog/stores/check-name', {
+        method: 'POST',
+        body: JSON.stringify({ name: storeName }),
       });
       return response;
     } catch (error) {
@@ -383,7 +395,7 @@ export const apiService = {
   // Public catalog access
   async getPublicCatalogByUsernameAndId(username: string, catalogId: string): Promise<ApiResponse> {
     try {
-      const response = await makeApiCall(`/catalog/public/${username}/catalogs/${catalogId}`, {
+      const response = await makeApiCall(`/catalog/public/catalogs/${catalogId}`, {
         method: 'GET',
       });
       

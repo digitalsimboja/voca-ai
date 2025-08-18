@@ -145,6 +145,31 @@ export async function makeAuthenticatedApiCall(
   return response.json();
 }
 
+// Make public API call (no authentication required)
+export async function makePublicApiCall(
+  service: ApiService,
+  endpoint: string,
+  options: RequestInit = {},
+  params?: Record<string, string>
+): Promise<ApiResponse> {
+  const url = buildApiUrl(service, endpoint, params);
+  const headers = {
+    'Content-Type': 'application/json',
+    ...options.headers,
+  };
+  
+  const response = await fetch(url, {
+    ...options,
+    headers,
+  });
+  
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  
+  return response.json();
+}
+
 // Standard API response type
 export interface ApiResponse<T = unknown> {
   status: 'success' | 'error';

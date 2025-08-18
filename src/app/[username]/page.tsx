@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { ProductCatalog } from '@/types/catalog'
 import { apiService } from '@/services/apiService'
 import { Card, CardHeader, CardContent } from '@/components/ui/Card'
@@ -20,6 +20,7 @@ import {
 
 export default function UserCatalogPage() {
   const params = useParams()
+  const router = useRouter()
   const username = params.username as string
   const [catalogs, setCatalogs] = useState<ProductCatalog[]>([])
   const [loading, setLoading] = useState(true)
@@ -199,12 +200,12 @@ export default function UserCatalogPage() {
                       {formatPrice(getLowestPrice(catalog))}
                     </p>
                   </div>
-                  <a
-                    href={`/${username}/catalog/${catalog.id}`}
+                  <button
+                    onClick={() => router.push(`/${username}/catalog/${catalog.id}`)}
                     className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
                   >
                     View Details
-                  </a>
+                  </button>
                 </div>
               </CardContent>
             </Card>
