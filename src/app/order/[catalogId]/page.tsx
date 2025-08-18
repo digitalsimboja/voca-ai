@@ -39,13 +39,13 @@ export default function CustomerOrderPage() {
         const catalogId = params.catalogId as string
         const response = await apiService.getCatalogById(catalogId)
         
-        if (response.success && response.data) {
-          setCatalog(response.data)
+        if (response.status === 'success' && response.data) {
+          setCatalog(response.data as ProductCatalog)
           // Initialize total amount with first tier
-          if (response.data.pricingTiers.length > 0) {
+          if ((response.data as ProductCatalog).pricingTiers.length > 0) {
             setOrder(prev => ({
               ...prev,
-              totalAmount: response.data!.pricingTiers[0].price
+              totalAmount: (response.data as ProductCatalog).pricingTiers[0].price
             }))
           }
         } else {
@@ -99,9 +99,9 @@ export default function CustomerOrderPage() {
         selectedTier: selectedTier
       }
 
-      const response = await apiService.submitOrder(orderData)
+      const response = await apiService.submitOrder(orderData as unknown as Record<string, unknown>)
       
-      if (response.success) {
+      if (response.status === 'success') {
         setOrderSubmitted(true)
       } else {
         toast.error('Failed to submit order. Please try again.')

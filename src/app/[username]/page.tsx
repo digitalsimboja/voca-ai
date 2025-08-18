@@ -44,12 +44,12 @@ export default function UserCatalogPage() {
       setLoading(true)
       const result = await apiService.getCatalogsByUsername(username)
       
-      if (result.success && result.data) {
-        setCatalogs(result.data)
+      if (result.status === 'success' && result.data) {
+        setCatalogs(result.data as ProductCatalog[])
         
         // Create user profile from the first catalog (assuming same user)
-        if (result.data.length > 0) {
-          const firstCatalog = result.data[0]
+        if ((result.data as ProductCatalog[]).length > 0) {
+          const firstCatalog = (result.data as ProductCatalog[])[0]
           setUserProfile({
             username: firstCatalog.username,
             displayName: firstCatalog.username.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),

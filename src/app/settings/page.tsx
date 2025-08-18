@@ -105,18 +105,18 @@ export default function SettingsPage() {
     const loadData = async () => {
       try {
         const settingsResult = await apiService.getSettings();
-        if (settingsResult.success && settingsResult.data) {
+        if (settingsResult.status === 'success' && settingsResult.data) {
           setSettings((prev) => ({
             ...prev,
-            ...settingsResult.data,
+            ...(settingsResult.data as Record<string, unknown>),
             agents: prev.agents,
           }));
         }
 
         // Only get user-specific agents
         if (user?.userId) {
-          const agentsResult = await apiService.getAgentsByUserId(user.userId);
-          if (agentsResult.success && agentsResult.data) {
+          const agentsResult = await apiService.getAgentsByUserId();
+          if (agentsResult.status === 'success' && agentsResult.data) {
             const agents = Array.isArray(agentsResult.data)
               ? agentsResult.data
               : [agentsResult.data];
@@ -148,24 +148,22 @@ export default function SettingsPage() {
       console.log("Creating agent with data:", agentData);
 
       const result = await apiService.createAgent(
-        agentData as unknown as SocialMediaAgentData,
-        detectedBusinessType || "retail",
-        user.userId
+        agentData as unknown as Omit<Agent, "id" | "createdAt" | "updatedAt">
       );
 
       console.log("Create agent result:", result);
 
-      if (result.success && result.data) {
+      if (result.status === 'success' && result.data) {
         // Show success message
         toast.success("Agent created successfully!");
 
         // Add a small delay to ensure the store is updated
         await new Promise((resolve) => setTimeout(resolve, 100));
 
-        const agentsResult = await apiService.getAgentsByUserId(user!.userId);
+        const agentsResult = await apiService.getAgentsByUserId();
         console.log("Get user agents result:", agentsResult);
 
-        if (agentsResult.success && agentsResult.data) {
+        if (agentsResult.status === 'success' && agentsResult.data) {
           const agents = Array.isArray(agentsResult.data)
             ? agentsResult.data
             : [agentsResult.data];
@@ -213,7 +211,7 @@ export default function SettingsPage() {
     setIsDeleting(true);
     try {
       const result = await apiService.deleteAgent(selectedAgentForDelete.id);
-      if (result.success) {
+      if (result.status === 'success') {
         setSettings((prev) => ({
           ...prev,
           agents:

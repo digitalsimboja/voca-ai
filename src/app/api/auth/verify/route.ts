@@ -37,12 +37,22 @@ export async function POST(request: NextRequest) {
     }
 
     const authData = await authResponse.json()
+    const backendUser = authData.data?.user || authData.data || {}
 
     return NextResponse.json({
       success: true,
       message: 'Token is valid',
       data: {
-        user: authData.data?.user
+        user: {
+          userId: backendUser.user_id ?? backendUser.userId ?? backendUser.id ?? '',
+          email: backendUser.email ?? '',
+          username: backendUser.username ?? '',
+          firstName: backendUser.first_name ?? backendUser.firstName ?? '',
+          lastName: backendUser.last_name ?? backendUser.lastName ?? '',
+          businessType: backendUser.business_type ?? backendUser.businessType ?? 'retail',
+          role: backendUser.role ?? 'user',
+          isVerified: backendUser.is_verified ?? backendUser.isVerified ?? false,
+        }
       }
     })
 

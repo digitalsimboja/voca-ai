@@ -1,4 +1,5 @@
 import { SocialMediaAgentData } from '@/types/agent';
+import { ApiResponse } from '@/types';
 
 // Shared types for catalog and order management
 
@@ -39,6 +40,28 @@ export interface CatalogListApiResponse {
   data: ProductCatalog[];
   message?: string;
 }
+
+// Backend Catalog interface (matches the actual database structure)
+export interface BackendCatalog {
+  id: string;
+  name: string;
+  description: string;
+  main_image: string;
+  pricing_tiers: PricingTier[];
+  agent_id: string;
+  shareable_link: string;
+  store_id: string;
+  owner_id: number;
+  is_public: boolean;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+  store_name?: string;
+}
+
+// Backend API Response types (matches the actual API response structure)
+export type CatalogApiResponseBackend = ApiResponse<BackendCatalog>;
+export type CatalogListApiResponseBackend = ApiResponse<BackendCatalog[]>;
 
 // Customer Order types
 export interface CustomerOrder {

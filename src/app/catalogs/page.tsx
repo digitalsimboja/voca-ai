@@ -32,8 +32,8 @@ export default function CatalogsPage() {
     try {
       setLoading(true);
       // Get user-specific catalogs instead of all catalogs
-      const result = await apiService.getCatalogsByUserId(user?.userId || '');
-      if (result.success && result.data) {
+      const result = await apiService.getCatalogsByUserId();
+      if (result.status === 'success' && result.data) {
         setCatalogs(Array.isArray(result.data) ? result.data : [result.data]);
       }
     } catch (error) {
@@ -74,7 +74,7 @@ export default function CatalogsPage() {
     if (confirm("Are you sure you want to delete this catalog?")) {
       try {
         const result = await apiService.deleteCatalog(catalogId);
-        if (result.success) {
+        if (result.status === 'success') {
           toast.success("Catalog deleted successfully");
           loadCatalogs();
         } else {

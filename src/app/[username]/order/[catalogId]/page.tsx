@@ -75,8 +75,8 @@ export default function OrderPage() {
       setLoading(true)
       const result = await apiService.getPublicCatalogByUsernameAndId(username, catalogId)
       
-      if (result.success && result.data) {
-        setCatalog(result.data)
+      if (result.status === 'success' && result.data) {
+        setCatalog(result.data as ProductCatalog)
       } else {
         toast.error('Catalog not found')
         router.push(`/${username}`)
@@ -132,7 +132,7 @@ export default function OrderPage() {
 
       const result = await apiService.submitOrder(orderSubmission)
       
-      if (result.success) {
+      if (result.status === 'success') {
         toast.success('Order submitted successfully!')
         // Clear session storage
         sessionStorage.removeItem('pendingOrder')

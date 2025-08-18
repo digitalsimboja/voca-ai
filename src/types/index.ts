@@ -1,11 +1,16 @@
 // User and Authentication Types
 export interface User {
   id: string
+  userId: string
   name: string
+  firstName: string
+  lastName: string
   email: string
   role: 'admin' | 'agent' | 'viewer'
   avatar?: string
   organization: string
+  companyName: string
+  businessType: 'banking' | 'retail'
   createdAt: string
   lastLogin: string
 }
@@ -85,6 +90,8 @@ export interface ConversationMetrics {
   resolutionRate: number
 }
 
+
+
 // Integration Types
 export interface Integration {
   id: string
@@ -133,11 +140,10 @@ export interface RoutingRule {
 }
 
 // API Response Types
-export interface ApiResponse<T> {
-  success: boolean
-  data?: T
-  error?: string
-  message?: string
+export interface ApiResponse<T = unknown> {
+  status: 'success' | 'error'
+  message: string
+  data: T
 }
 
 export interface PaginatedResponse<T> {

@@ -14,7 +14,8 @@ export const API_CONFIG = {
     INTEGRATION: process.env.INTEGRATION_SERVICE_URL || 'http://localhost:8009',
     SETTINGS: process.env.SETTINGS_SERVICE_URL || 'http://localhost:8010',
     CATALOG: process.env.CATALOG_SERVICE_URL || 'http://localhost:8011',
-    ORDER: process.env.ORDER_SERVICE_URL || 'http://localhost:8012',
+    AGENT: process.env.AGENT_SERVICE_URL || 'http://localhost:8012',
+    ORDER: process.env.ORDER_SERVICE_URL || 'http://localhost:8013',
   },
   
   // API Settings
@@ -115,11 +116,26 @@ export const API_ENDPOINTS = {
 
   // Catalog Service
   CATALOG: {
-    LIST: '/v1/catalog/list',
-    CREATE: '/v1/catalog/create',
-    GET: '/v1/catalog/{id}',
-    UPDATE: '/v1/catalog/{id}',
-    DELETE: '/v1/catalog/{id}',
+    BASE: '/v1/catalog',
+    LIST: '/v1/catalog/stores',
+    CREATE: '/v1/catalog/stores',
+    GET: '/v1/catalog/stores/{id}',
+    UPDATE: '/v1/catalog/stores/{id}',
+    DELETE: '/v1/catalog/stores/{id}',
+    CHECK_NAME: '/v1/catalog/stores/check-name',
+    SEARCH: '/v1/catalog/stores/search',
+  },
+
+  // Agent Service
+  AGENT: {
+    CREATE: '/v1/agent/create',
+    LIST: '/v1/agent/agents',
+    GET: '/v1/agent/agents/{id}',
+    UPDATE: '/v1/agent/agents/{id}',
+    DELETE: '/v1/agent/agents/{id}',
+    STORE_AGENTS: '/v1/agent/stores/{store_id}/agents',
+    MY_STORE: '/v1/agent/my-store',
+    ASSOCIATE_STORE: '/v1/agent/agents/{id}/associate-store',
   },
 
   // Order Service

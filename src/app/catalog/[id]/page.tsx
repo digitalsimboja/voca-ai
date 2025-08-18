@@ -51,11 +51,11 @@ export default function PublicCatalogPage() {
     try {
       setLoading(true);
       const result = await apiService.getCatalogById(catalogId);
-      if (result.success && result.data) {
-        setCatalog(result.data);
+      if (result.status === 'success' && result.data) {
+        setCatalog(result.data as ProductCatalog);
         // Set the first tier as default selection
-        if (result.data && result.data.pricingTiers && result.data.pricingTiers.length > 0) {
-          const catalogData = result.data;
+        if ((result.data as ProductCatalog).pricingTiers && (result.data as ProductCatalog).pricingTiers.length > 0) {
+          const catalogData = result.data as ProductCatalog;
           setOrderForm(prev => ({
             ...prev,
             selectedTier: catalogData.pricingTiers[0]

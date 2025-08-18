@@ -42,10 +42,10 @@ export default function PublicCatalogPage() {
       setLoading(true)
       const result = await apiService.getPublicCatalogByUsernameAndId(username, catalogId)
       
-      if (result.success && result.data) {
-        setCatalog(result.data)
+      if (result.status === 'success' && result.data) {
+        setCatalog(result.data as ProductCatalog)
         // Set first tier as default
-        if (result.data.pricingTiers.length > 0) {
+        if ((result.data as ProductCatalog).pricingTiers.length > 0) {
           setSelectedTier(0)
         }
       } else {

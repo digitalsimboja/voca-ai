@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from 'react'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
 import { getInitials } from '@/lib/utils'
+import CreateRetailAgentModal from '@/components/modals/CreateRetailAgentModal'
+import { toast } from '@/utils/toast'
 import {
   Bell,
   Search,
@@ -21,10 +23,60 @@ interface HeaderProps {
   onMobileMenuClick?: () => void
 }
 
+interface SocialMediaAgentData {
+  profile: {
+    name: string;
+    role: string;
+    avatar: string;
+    bio: string;
+  };
+  socialMedia: {
+    platforms: {
+      instagram: { enabled: boolean; handle: string };
+      facebook: { enabled: boolean; page: string; messenger: boolean };
+      tiktok: { enabled: boolean; username: string };
+    };
+    contentTypes: string[];
+  };
+  orderManagement: {
+    trackingEnabled: boolean;
+    autoUpdates: boolean;
+    deliveryPartners: string[];
+    orderStatuses: string[];
+    inventorySync: boolean;
+  };
+  customerService: {
+    channels: {
+      whatsapp: boolean;
+      instagram_dm: boolean;
+      facebook_messenger: boolean;
+      voice: boolean;
+    };
+    languages: string[];
+    responseTime: number;
+    autoResponses: boolean;
+  };
+  integrations: {
+    payment: { enabled: boolean; gateways: string[] };
+    delivery: { enabled: boolean; services: string[] };
+    analytics: { enabled: boolean; platforms: string[] };
+    inventory: { enabled: boolean; systems: string[] };
+  };
+  aiCapabilities: {
+    orderTracking: boolean;
+    customerInquiries: boolean;
+    productRecommendations: boolean;
+    deliveryUpdates: boolean;
+    socialMediaEngagement: boolean;
+    inventoryAlerts: boolean;
+  };
+}
+
 export default function Header({ onMobileMenuClick }: HeaderProps) {
   const { user, logout } = useAuth()
   const userMenuRef = useRef<HTMLDivElement>(null)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
+  const [showCreateAgentModal, setShowCreateAgentModal] = useState(false)
   const [notifications] = useState([
     { id: 1, type: 'conversation', message: 'New conversation from Sarah Johnson', time: '2 min ago' },
     { id: 2, type: 'system', message: 'Amazon Connect integration updated', time: '1 hour ago' },
@@ -60,6 +112,26 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
     }
   }
 
+  const handleCreateAgent = async (agentData: SocialMediaAgentData) => {
+    try {
+      // Import the API service dynamically to avoid SSR issues
+      const { apiService } = await import('@/services/apiService')
+      const response = await apiService.createAgent(agentData)
+      
+      if (response.status === 'success') {
+        setShowCreateAgentModal(false)
+        toast.success('AI Agent created successfully!', { duration: 4000 })
+        console.log('Agent created successfully:', response.data)
+      } else {
+        toast.error(response.message || 'Failed to create agent', { duration: 5000 })
+        console.error('Failed to create agent:', response.message)
+      }
+    } catch (error) {
+      console.error('Error creating agent:', error)
+      toast.error('An unexpected error occurred while creating the agent', { duration: 5000 })
+    }
+  }
+
   return (
     <header className="bg-white border-b border-gray-200 px-4 lg:px-6 py-4">
       <div className="flex items-center justify-between">
@@ -85,12 +157,18 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
 
         {/* Quick Actions */}
         <div className="flex items-center space-x-2 lg:space-x-4">
-          {/* New Conversation Button */}
-          <button className="hidden sm:flex items-center space-x-2 bg-blue-600 text-white px-2 lg:px-4 py-1.5 lg:py-2 rounded-lg hover:bg-blue-700 transition-colors text-xs lg:text-sm">
+          {/* Create AI Agent Button */}
+          <button 
+            onClick={() => setShowCreateAgentModal(true)}
+            className="hidden sm:flex items-center space-x-2 bg-blue-600 text-white px-2 lg:px-4 py-1.5 lg:py-2 rounded-lg hover:bg-blue-700 transition-colors text-xs lg:text-sm"
+          >
             <Plus className="w-3 h-3 lg:w-4 lg:h-4" />
-            <span>New Conversation</span>
+            <span>Create AI Agent</span>
           </button>
-          <button className="sm:hidden flex items-center bg-blue-600 text-white p-1.5 rounded-lg hover:bg-blue-700 transition-colors">
+          <button 
+            onClick={() => setShowCreateAgentModal(true)}
+            className="sm:hidden flex items-center bg-blue-600 text-white p-1.5 rounded-lg hover:bg-blue-700 transition-colors"
+          >
             <Plus className="w-3 h-3" />
           </button>
 
@@ -215,6 +293,13 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
           </div>
         </div>
       </div>
+
+      {/* Create Agent Modal */}
+      <CreateRetailAgentModal
+        isOpen={showCreateAgentModal}
+        onClose={() => setShowCreateAgentModal(false)}
+        onSubmit={handleCreateAgent}
+      />
     </header>
   )
 }

@@ -15,6 +15,7 @@ function SignupPageContent() {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
+    username: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -28,6 +29,7 @@ function SignupPageContent() {
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
   const [signupSuccess, setSignupSuccess] = useState(false)
+  const [usernameStatus, setUsernameStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle')
 
   const businessTypes = [
     {
@@ -56,6 +58,8 @@ function SignupPageContent() {
     }
   ]
 
+
+
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {}
 
@@ -71,6 +75,21 @@ function SignupPageContent() {
       newErrors.lastName = 'Last name is required'
     } else if (formData.lastName.trim().length < 2) {
       newErrors.lastName = 'Last name must be at least 2 characters'
+    }
+
+    // Username validation
+    if (!formData.username.trim()) {
+      newErrors.username = 'Username is required'
+    } else if (formData.username.trim().length < 3) {
+      newErrors.username = 'Username must be at least 3 characters'
+    } else if (formData.username.trim().length > 20) {
+      newErrors.username = 'Username must be 20 characters or less'
+    } else if (!/^[a-zA-Z0-9_-]+$/.test(formData.username)) {
+      newErrors.username = 'Username can only contain letters, numbers, underscores, and hyphens'
+    } else if (usernameStatus === 'taken') {
+      newErrors.username = 'Username is already taken'
+    } else if (usernameStatus === 'checking') {
+      newErrors.username = 'Please wait while we check username availability'
     }
 
     // Email validation
@@ -101,6 +120,8 @@ function SignupPageContent() {
       newErrors.companyName = 'Company name is required'
     }
 
+
+
     // Business Type validation
     if (!formData.businessType) {
       newErrors.businessType = 'Please select your business type'
@@ -117,6 +138,7 @@ function SignupPageContent() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target
+    
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value
@@ -126,12 +148,51 @@ function SignupPageContent() {
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }))
     }
+
+    // Check username availability when username field changes
+    if (name === 'username') {
+      const debounceTimeout = setTimeout(() => {
+        checkUsernameAvailability(value)
+      }, 500) // Debounce for 500ms
+
+      return () => clearTimeout(debounceTimeout)
+    }
   }
 
   const handleBusinessTypeSelect = (businessType: BusinessType) => {
     setFormData(prev => ({ ...prev, businessType }))
     if (errors.businessType) {
       setErrors(prev => ({ ...prev, businessType: '' }))
+    }
+  }
+
+  const checkUsernameAvailability = async (username: string) => {
+    if (!username || username.length < 3) {
+      setUsernameStatus('idle')
+      return
+    }
+
+    setUsernameStatus('checking')
+    
+    try {
+      const response = await fetch('/api/auth/check-username', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok && data.success) {
+        setUsernameStatus(data.data.available ? 'available' : 'taken')
+      } else {
+        setUsernameStatus('idle')
+      }
+    } catch (error) {
+      console.error('Username check failed:', error)
+      setUsernameStatus('idle')
     }
   }
 
@@ -286,6 +347,56 @@ function SignupPageContent() {
                 </div>
               </div>
 
+              {/* Username Field */}
+              <div>
+                <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                  Username
+                </label>
+                <div className="mt-1 relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <User className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    id="username"
+                    name="username"
+                    type="text"
+                    autoComplete="username"
+                    required
+                    value={formData.username}
+                    onChange={handleInputChange}
+                    className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
+                      errors.username ? 'border-red-300' : 
+                      usernameStatus === 'available' ? 'border-green-300' :
+                      usernameStatus === 'taken' ? 'border-red-300' : 'border-gray-300'
+                    }`}
+                    placeholder="Choose a unique username"
+                  />
+                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    {usernameStatus === 'checking' && (
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                    )}
+                    {usernameStatus === 'available' && (
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                    )}
+                    {usernameStatus === 'taken' && (
+                      <AlertCircle className="h-4 w-4 text-red-600" />
+                    )}
+                  </div>
+                </div>
+                {errors.username && (
+                  <p className="mt-2 text-sm text-red-600">{errors.username}</p>
+                )}
+                {usernameStatus === 'available' && (
+                  <p className="mt-2 text-sm text-green-600">Username is available</p>
+                )}
+                {usernameStatus === 'taken' && (
+                  <p className="mt-2 text-sm text-red-600">Username is already taken</p>
+                )}
+                <p className="mt-1 text-xs text-gray-500">
+                  This will be your unique identifier on the platform
+                </p>
+              </div>
+
               {/* Email Field */}
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -341,6 +452,8 @@ function SignupPageContent() {
                   <p className="mt-2 text-sm text-red-600">{errors.companyName}</p>
                 )}
               </div>
+
+
 
               {/* Business Type Selection */}
               <div>
@@ -584,6 +697,7 @@ export default function SignupPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Voca AI</p>
           <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>

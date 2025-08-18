@@ -7,14 +7,23 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     
     // Validate required fields
-    const { firstName, lastName, email, password, companyName, businessType } = body
+    const { firstName, lastName, username, email, password, companyName, businessType } = body
     
-    if (!firstName || !lastName || !email || !password || !companyName || !businessType) {
+    if (!firstName || !lastName || !username || !email || !password || !companyName || !businessType) {
       return NextResponse.json(
         { 
           error: 'Missing required fields',
-          details: 'firstName, lastName, email, password, companyName, and businessType are required'
+          details: 'firstName, lastName, username, email, password, companyName, and businessType are required'
         },
+        { status: 400 }
+      )
+    }
+
+    // Validate username format
+    const usernameRegex = /^[a-zA-Z0-9_-]{3,20}$/
+    if (!usernameRegex.test(username)) {
+      return NextResponse.json(
+        { error: 'Username must be 3-20 characters long and contain only letters, numbers, underscores, and hyphens' },
         { status: 400 }
       )
     }
@@ -49,6 +58,7 @@ export async function POST(request: NextRequest) {
     const authServicePayload = {
       first_name: firstName.trim(),
       last_name: lastName.trim(),
+      username: username.toLowerCase().trim(),
       email: email.toLowerCase().trim(),
       password: password,
       company_name: companyName.trim(),

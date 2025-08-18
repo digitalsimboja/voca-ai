@@ -6,6 +6,7 @@ import MainLayout from "@/components/layout/MainLayout";
 import { Card, CardHeader, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import CreateRetailAgentModal from "@/components/modals/CreateRetailAgentModal";
+import CreateStoreModal from "@/components/modals/CreateStoreModal";
 import { ProductCatalog, PricingTier } from "@/types/catalog";
 import { Agent } from "@/lib/agentStore";
 import { apiService } from "@/services/apiService";
@@ -21,16 +22,10 @@ import {
   Copy,
   Link,
   ChevronDown,
+  Store,
 } from "lucide-react";
 
-const initialPricingTiers: PricingTier[] = [
-  {
-    packs: 1,
-    price: 17000,
-    image: "",
-    description: "Single pack - perfect for trying out",
-  },
-];
+
 
 export default function CreateCatalogPage() {
   const router = useRouter();
@@ -40,20 +35,53 @@ export default function CreateCatalogPage() {
     name: "",
     description: "",
     mainImage: "",
-    pricingTiers: initialPricingTiers,
+    pricingTiers: [],
     agentId: "",
     shareableLink: "",
     userId: user?.userId || "",
-    username: "",
+    username: user?.username || "",
     isPublic: true,
   });
   const [userAgents, setUserAgents] = useState<Agent[]>([]);
   const [showAgentModal, setShowAgentModal] = useState(false);
+  const [showStoreModal, setShowStoreModal] = useState(false);
   const [linkGenerated, setLinkGenerated] = useState(false);
   const [shareableLinkGenerated, setShareableLinkGenerated] = useState(false);
   const [isLoadingAgents, setIsLoadingAgents] = useState(false);
-  const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(null);
-  const [checkingUsername, setCheckingUsername] = useState(false);
+  const [isLoadingStore, setIsLoadingStore] = useState(false);
+  const [userStore, setUserStore] = useState<{ store_name: string; id: string } | null>(null);
+
+
+
+  // Fetch user's store on component mount
+  useEffect(() => {
+    const fetchUserStore = async () => {
+      if (!user?.userId) {
+        setIsLoadingStore(false);
+        return;
+      }
+      
+      setIsLoadingStore(true);
+      try {
+        const response = await apiService.getMyStore();
+        
+        if (response.status === 'success') {
+          setUserStore(response.data as { store_name: string; id: string });
+          // If user has a store, update the catalog username to store name
+          if (response.data) {
+            updateCatalog("username", (response.data as { store_name: string }).store_name);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching user store:', error);
+        // Don't show error toast as it's expected for users without stores
+      } finally {
+        setIsLoadingStore(false);
+      }
+    };
+
+    fetchUserStore();
+  }, [user?.userId]);
 
   // Fetch user agents on component mount
   useEffect(() => {
@@ -65,9 +93,9 @@ export default function CreateCatalogPage() {
       
       setIsLoadingAgents(true);
       try {
-        const response = await apiService.getAgentsByUserId(user.userId);
+        const response = await apiService.getAgentsByUserId();
         
-        if (response.success && response.data) {
+        if (response.status === 'success' && response.data) {
           const agents = Array.isArray(response.data) ? response.data : [response.data];
           setUserAgents(agents);
           
@@ -94,35 +122,17 @@ export default function CreateCatalogPage() {
     }
   }, [user?.userId]);
 
-  const checkUsernameAvailability = async (username: string) => {
-    if (!username.trim()) {
-      setUsernameAvailable(null);
-      return;
-    }
 
-    setCheckingUsername(true);
-    try {
-      const result = await apiService.isUsernameAvailable(username);
-      setUsernameAvailable(result.available);
-    } catch (error) {
-      console.error('Error checking username availability:', error);
-      setUsernameAvailable(false);
-    } finally {
-      setCheckingUsername(false);
-    }
-  };
-
-  const handleUsernameChange = (username: string) => {
-    updateCatalog("username", username);
-    // Debounce username availability check
-    const timeoutId = setTimeout(() => {
-      checkUsernameAvailability(username);
-    }, 500);
-    return () => clearTimeout(timeoutId);
-  };
 
   const updateCatalog = (field: keyof ProductCatalog, value: string | boolean) => {
     setCatalog((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleStoreCreated = (storeData: { store_name: string; id: string }) => {
+    setUserStore(storeData);
+    updateCatalog("username", storeData.store_name);
+    setShowStoreModal(false); // Close the modal
+    toast.success("Store created successfully! You can now create catalogs for your store.");
   };
 
   const updatePricingTier = (
@@ -192,10 +202,7 @@ export default function CreateCatalogPage() {
       return;
     }
 
-    if (!catalog.username.trim()) {
-      toast.error('Please enter a username for your store');
-      return;
-    }
+
 
     if (!user?.userId) {
       toast.error('User not authenticated. Please log in to create catalogs.');
@@ -217,9 +224,9 @@ export default function CreateCatalogPage() {
           isPublic: catalog.isPublic,
         });
 
-        if (response.success && response.data) {
+        if (response.status === 'success' && response.data) {
           // Update catalog with the created data
-          setCatalog(response.data);
+          setCatalog(response.data as ProductCatalog);
           setLinkGenerated(true);
           toast.success(`Catalog saved successfully! Now you can generate a shareable link.`);
         } else {
@@ -238,9 +245,9 @@ export default function CreateCatalogPage() {
           shareableLink: shareableLink
         });
 
-        if (response.success && response.data) {
+        if (response.status === 'success' && response.data) {
           // Update catalog with the generated link
-          setCatalog(response.data);
+          setCatalog(response.data as ProductCatalog);
           setShareableLinkGenerated(true);
           toast.success(`Shareable link generated successfully!`);
         } else {
@@ -287,7 +294,7 @@ export default function CreateCatalogPage() {
           </div>
           <button
             onClick={handleSubmit}
-            disabled={!catalog.name.trim() || !catalog.agentId}
+            disabled={!catalog.name.trim() || !catalog.agentId || !userStore}
             className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors text-sm ${
               linkGenerated
                 ? "bg-green-600 text-white hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
@@ -335,19 +342,10 @@ export default function CreateCatalogPage() {
                         <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                       </div>
                     </div>
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => setShowAgentModal(true)}
-                        className="flex items-center space-x-1 bg-purple-600 text-white px-3 py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm"
-                      >
-                        <Plus className="w-3 h-3" />
-                        <span>Create New Agent</span>
-                      </button>
-                    </div>
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    <div className="text-sm text-gray-600">
+                    <div className="text-sm text-gray-600 pt-2">
                       You don&apos;t have any agents yet. Create your first agent to get started.
                     </div>
                     <button
@@ -440,69 +438,71 @@ export default function CreateCatalogPage() {
               </CardContent>
             </Card>
 
-            {/* Store Username */}
+            {/* Store Information */}
             <Card>
               <CardHeader className="pb-3">
                 <h3 className="text-lg font-semibold text-gray-900">
-                  Store Username
+                  Store Information
                 </h3>
                 <p className="text-sm text-gray-600">
-                  Choose a unique username for your public store URL
+                  Your catalog will be available at your store URL
                 </p>
               </CardHeader>
               <CardContent className="pt-0 space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Username
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      value={catalog.username}
-                      onChange={(e) => handleUsernameChange(e.target.value)}
-                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm ${
-                        usernameAvailable === null
-                          ? 'border-gray-300'
-                          : usernameAvailable
-                          ? 'border-green-500'
-                          : 'border-red-500'
-                      }`}
-                      placeholder="e.g., my_store_name"
-                    />
-                    {checkingUsername && (
-                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-                      </div>
-                    )}
-                    {!checkingUsername && usernameAvailable === true && (
-                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                        <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
-                          <span className="text-white text-xs">✓</span>
-                        </div>
-                      </div>
-                    )}
-                    {!checkingUsername && usernameAvailable === false && (
-                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                        <div className="w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
-                          <span className="text-white text-xs">✗</span>
-                        </div>
-                      </div>
-                    )}
+                {isLoadingStore ? (
+                  <div className="flex items-center justify-center py-4">
+                    <div className="text-sm text-gray-500">Loading your store...</div>
                   </div>
-                  {usernameAvailable === true && (
-                    <p className="text-sm text-green-600 mt-1">
-                      ✓ Username is available! Your store will be at: {window.location.origin}/{catalog.username}
-                    </p>
-                  )}
-                  {usernameAvailable === false && (
-                    <p className="text-sm text-red-600 mt-1">
-                      ✗ Username is already taken. Please choose a different one.
-                    </p>
-                  )}
-                  <p className="text-xs text-gray-500 mt-1">
-                    This will be your public store URL. Choose wisely as it cannot be changed later.
-                  </p>
-                </div>
+                ) : userStore ? (
+                  <div className="space-y-3">
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                      <div className="flex items-center space-x-2">
+                        <Store className="w-4 h-4 text-green-600" />
+                        <span className="text-sm font-medium text-green-800">
+                          Store Found: {userStore.store_name}
+                        </span>
+                      </div>
+                      <p className="text-xs text-green-700 mt-1">
+                        Your store URL: {typeof window !== 'undefined' ? `${window.location.origin}/${userStore.store_name}` : `/${userStore.store_name}`}
+                      </p>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Store Name
+                      </label>
+                      <input
+                        type="text"
+                        value={userStore.store_name}
+                        disabled
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600 text-sm"
+                        placeholder="Your store name"
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                      <div className="flex items-center space-x-2">
+                        <Store className="w-4 h-4 text-blue-600" />
+                        <span className="text-sm font-medium text-blue-800">
+                          No Store Found
+                        </span>
+                      </div>
+                      <p className="text-xs text-blue-700 mt-1">
+                        You need to create a store before you can create catalogs.
+                      </p>
+                    </div>
+                    
+                    <button
+                      onClick={() => setShowStoreModal(true)}
+                      className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                    >
+                      <Plus className="w-3 h-3" />
+                      <span>Create Your Store</span>
+                    </button>
+                  </div>
+                )}
 
                 <div className="flex items-center space-x-2">
                   <input
@@ -863,8 +863,8 @@ export default function CreateCatalogPage() {
             }
 
             try {
-              const response = await apiService.createAgent(agentData, 'retail', user.userId);
-              if (response.success && response.data) {
+              const response = await apiService.createAgent(agentData as unknown as Omit<Agent, "id" | "createdAt" | "updatedAt">);
+              if (response.status === 'success' && response.data) {
                 const newAgent = response.data as Agent;
                 
                 // Add the new agent to the user agents list
@@ -883,6 +883,13 @@ export default function CreateCatalogPage() {
               toast.error('An error occurred while creating the agent');
             }
           }}
+        />
+
+        {/* Store Creation Modal */}
+        <CreateStoreModal
+          isOpen={showStoreModal}
+          onClose={() => setShowStoreModal(false)}
+          onSubmit={handleStoreCreated}
         />
       </div>
     </MainLayout>

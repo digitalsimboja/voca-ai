@@ -1,115 +1,65 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { API_CONFIG, buildApiUrl, API_ENDPOINTS, getAuthHeaders, handleApiError } from '@/config/api'
+import { NextRequest, NextResponse } from 'next/server';
+import { makeAuthenticatedApiCall, API_ENDPOINTS, ApiResponse } from '@/lib/api-utils';
 
 export async function POST(request: NextRequest) {
   try {
-    // Parse the request body
-    const body = await request.json()
-    
-    // Validate required fields
-    const { email, password } = body
-    
+    const body = await request.json();
+    const { email, password } = body;
+
     if (!email || !password) {
       return NextResponse.json(
-        { 
-          error: 'Missing required fields',
-          details: 'Email and password are required'
-        },
+        { status: 'error', message: 'Email and password are required' },
         { status: 400 }
-      )
+      );
     }
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        { error: 'Invalid email format' },
-        { status: 400 }
-      )
-    }
-
-    // Prepare the request payload for the auth service
-    const authServicePayload = {
-      email: email.toLowerCase().trim(),
-      password: password
-    }
-
-    // Call the auth service
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.TIMEOUT)
-
-    const authResponse = await fetch(buildApiUrl('AUTH', API_ENDPOINTS.AUTH.LOGIN), {
+    const authResponse = await makeAuthenticatedApiCall('AUTH', API_ENDPOINTS.AUTH.LOGIN, {
       method: 'POST',
-      headers: getAuthHeaders(),
-      body: JSON.stringify(authServicePayload),
-      signal: controller.signal
-    })
+      body: JSON.stringify({ email, password }),
+    }) as ApiResponse<unknown>;
 
-    clearTimeout(timeoutId)
+    if (authResponse.status === 'success' && authResponse.data && typeof authResponse.data === 'object') {
+      const dataObj = authResponse.data as Record<string, unknown>;
+      const token = typeof dataObj.token === 'string' ? dataObj.token : undefined;
+      const backendUser = (dataObj.user as Record<string, unknown>) || dataObj;
 
-    if (!authResponse.ok) {
-      const errorData = await authResponse.json().catch(() => ({}))
-      
-      // Handle specific error cases
-      if (authResponse.status === 401) {
-        return NextResponse.json(
-          { error: 'Invalid email or password' },
-          { status: 401 }
-        )
+      const response = NextResponse.json({
+        status: 'success',
+        message: authResponse.message || 'Login successful',
+        data: {
+          userId: (backendUser.user_id as string) ?? (backendUser.userId as string) ?? (backendUser.id as string) ?? '',
+          email: (backendUser.email as string) ?? '',
+          username: (backendUser.username as string) ?? '',
+          firstName: (backendUser.first_name as string) ?? (backendUser.firstName as string) ?? '',
+          lastName: (backendUser.last_name as string) ?? (backendUser.lastName as string) ?? '',
+          businessType: (backendUser.business_type as 'banking'|'retail') ?? (backendUser.businessType as 'banking'|'retail') ?? 'retail',
+          role: (backendUser.role as string) ?? 'user',
+          isVerified: (backendUser.is_verified as boolean) ?? (backendUser.isVerified as boolean) ?? false,
+        }
+      }, { status: 200 });
+
+      if (token) {
+        response.cookies.set('voca_auth_token', token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'strict',
+          maxAge: 86400,
+          path: '/',
+        });
       }
-      
-      if (authResponse.status === 400) {
-        return NextResponse.json(
-          { 
-            error: errorData.message || 'Invalid data provided', 
-            details: errorData.errors || errorData.details 
-          },
-          { status: 400 }
-        )
-      }
 
+      return response;
+    } else {
       return NextResponse.json(
-        { error: 'Authentication service error', details: errorData.message || errorData.error },
-        { status: authResponse.status }
-      )
+        { status: 'error', message: authResponse.message || 'Login failed' },
+        { status: 401 }
+      );
     }
-
-    const authData = await authResponse.json()
-
-    // Store authentication token in secure cookie
-    const response = NextResponse.json({
-      success: true,
-      message: 'Login successful',
-      data: {
-        userId: authData.data?.user_id,
-        email: authData.data?.email,
-        username: authData.data?.username,
-        firstName: authData.data?.first_name,
-        lastName: authData.data?.last_name,
-        businessType: authData.data?.business_type,
-        role: authData.data?.role,
-        isVerified: authData.data?.is_verified
-      }
-    })
-
-    // Set secure HTTP-only cookie with JWT token
-    if (authData.data?.token) {
-      response.cookies.set('voca_auth_token', authData.data.token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 24 * 60 * 60, // 24 hours
-        path: '/'
-      })
-    }
-
-    return response
-
   } catch (error) {
-    const errorResult = handleApiError(error, 'Internal server error')
+    console.error('Login error:', error);
     return NextResponse.json(
-      errorResult,
+      { status: 'error', message: 'Internal server error' },
       { status: 500 }
-    )
+    );
   }
 }
