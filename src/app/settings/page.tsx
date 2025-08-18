@@ -20,8 +20,7 @@ import {
 import { useBusinessType } from "@/hooks/useBusinessType";
 import { useAuth } from "@/hooks/useAuth";
 import { apiService } from "@/services/apiService";
-import { Agent } from "@/lib/agentStore";
-import { Settings as SettingsType } from "@/lib/settingsStore";
+import { Agent, Settings as SettingsType } from "@/lib/types";
 import { toast } from "@/utils/toast";
 import { SocialMediaAgentData } from "@/types/agent";
 

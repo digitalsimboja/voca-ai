@@ -1,6 +1,6 @@
 import React from 'react';
 import { AlertTriangle, Trash2 } from 'lucide-react';
-import { Agent } from '@/lib/agentStore';
+import { Agent } from '@/lib/types';
 
 interface DeleteAgentModalProps {
   isOpen: boolean;

@@ -1,7 +1,6 @@
 import React from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/Card";
-import { Settings as SettingsType } from "@/lib/settingsStore";
-import { Agent } from "@/lib/agentStore";
+import { Settings as SettingsType, Agent } from "@/lib/types";
 
 interface NotificationSettingsProps {
   settings: SettingsType & { agents: Agent[] };

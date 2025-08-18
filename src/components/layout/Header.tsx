@@ -160,10 +160,10 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
           {/* Create AI Agent Button */}
           <button 
             onClick={() => setShowCreateAgentModal(true)}
-            className="hidden sm:flex items-center space-x-2 bg-blue-600 text-white px-2 lg:px-4 py-1.5 lg:py-2 rounded-lg hover:bg-blue-700 transition-colors text-xs lg:text-sm"
+            className="hidden sm:flex items-center space-x-2 bg-green-600 text-white px-2 lg:px-4 py-1.5 lg:py-2 rounded-lg hover:bg-blue-700 transition-colors text-xs lg:text-sm"
           >
             <Plus className="w-3 h-3 lg:w-4 lg:h-4" />
-            <span>Create AI Agent</span>
+            <span>Create Agent</span>
           </button>
           <button 
             onClick={() => setShowCreateAgentModal(true)}

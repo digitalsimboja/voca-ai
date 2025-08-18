@@ -2,8 +2,7 @@ import React from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Settings } from "lucide-react";
-import { Settings as SettingsType } from "@/lib/settingsStore";
-import { Agent } from "@/lib/agentStore";
+import { Settings as SettingsType, Agent } from "@/lib/types";
 
 interface RoutingSettingsProps {
   settings: SettingsType & { agents: Agent[] };

@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/Badge";
 import CreateRetailAgentModal from "@/components/modals/CreateRetailAgentModal";
 import CreateStoreModal from "@/components/modals/CreateStoreModal";
 import { ProductCatalog, PricingTier } from "@/types/catalog";
-import { Agent } from "@/lib/agentStore";
+import { Agent } from "@/lib/types";
 import { apiService } from "@/services/apiService";
 import { toast } from "@/utils/toast";
 import { useAuth } from "@/hooks/useAuth";

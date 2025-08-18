@@ -1,7 +1,8 @@
 import { ProductCatalog } from '@/types/catalog';
 import { BackendCatalog, CatalogApiResponseBackend, CatalogListApiResponseBackend } from '@/types/catalog';
-import { Agent } from '@/lib/agentStore';
+import { Agent } from '@/lib/types';
 import { ApiResponse } from '@/lib/api-utils';
+import { SocialMediaAgentData } from '@/types/agent';
 
 // Transform backend catalog to frontend format
 function transformBackendCatalog(backendCatalog: BackendCatalog): ProductCatalog {
@@ -22,26 +23,27 @@ function transformBackendCatalog(backendCatalog: BackendCatalog): ProductCatalog
 }
 
 // Transform backend agent data to frontend Agent format
-function transformBackendAgent(backendAgent: any): Agent {
-  const config = backendAgent.configuration || {};
-  const customerService = config.customerService || {};
+function transformBackendAgent(backendAgent: Record<string, unknown>): Agent {
+  const config = backendAgent.configuration as Record<string, unknown> || {};
+  const customerService = config.customerService as Record<string, unknown> || {};
+  const profile = config.profile as Record<string, unknown> || {};
+  const channels = customerService.channels as Record<string, boolean> || {};
+  const languages = customerService.languages as string[] || [];
   
   return {
-    id: backendAgent.id,
-    name: backendAgent.name,
-    role: config.profile?.role || 'sales_assistant',
+    id: backendAgent.id as string,
+    name: backendAgent.name as string,
+    role: (profile.role as string) || 'sales_assistant',
     businessType: 'retail', // Default for now
-    status: backendAgent.is_active ? 'active' : 'inactive',
-    channels: Object.keys(customerService.channels || {}).filter(
-      key => customerService.channels[key]
-    ),
-    languages: customerService.languages || [],
-    createdAt: backendAgent.created_at,
-    lastActive: backendAgent.updated_at,
+    status: (backendAgent.is_active as boolean) ? 'active' : 'inactive',
+    channels: Object.keys(channels).filter(key => channels[key]),
+    languages: languages,
+    createdAt: backendAgent.created_at as string,
+    lastActive: backendAgent.updated_at as string,
     knowledgeBase: false, // Default for now
     knowledgeBaseData: null,
-    agentData: config, // Store the full configuration
-    userId: backendAgent.owner_id?.toString() || '',
+    agentData: config as unknown as SocialMediaAgentData, // Store the full configuration
+    userId: (backendAgent.owner_id as string) || '',
   };
 }
 

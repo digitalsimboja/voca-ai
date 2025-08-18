@@ -1,8 +1,7 @@
 import React from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/Card";
 import { User, Trash2 } from "lucide-react";
-import { Agent } from "@/lib/agentStore";
-import { Settings as SettingsType } from "@/lib/settingsStore";
+import { Agent, Settings as SettingsType } from "@/lib/types";
 
 interface AgentManagementProps {
   agents: Agent[];

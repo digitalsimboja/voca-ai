@@ -8,7 +8,7 @@ import {
   Settings,
   Activity,
 } from 'lucide-react';
-import { Agent } from '@/lib/agentStore';
+import { Agent } from '@/lib/types';
 import { formatDate } from '@/lib/utils';
 
 interface AgentDetailsModalProps {
