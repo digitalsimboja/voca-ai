@@ -21,6 +21,30 @@ function transformBackendCatalog(backendCatalog: BackendCatalog): ProductCatalog
   };
 }
 
+// Transform backend agent data to frontend Agent format
+function transformBackendAgent(backendAgent: any): Agent {
+  const config = backendAgent.configuration || {};
+  const customerService = config.customerService || {};
+  
+  return {
+    id: backendAgent.id,
+    name: backendAgent.name,
+    role: config.profile?.role || 'sales_assistant',
+    businessType: 'retail', // Default for now
+    status: backendAgent.is_active ? 'active' : 'inactive',
+    channels: Object.keys(customerService.channels || {}).filter(
+      key => customerService.channels[key]
+    ),
+    languages: customerService.languages || [],
+    createdAt: backendAgent.created_at,
+    lastActive: backendAgent.updated_at,
+    knowledgeBase: false, // Default for now
+    knowledgeBaseData: null,
+    agentData: config, // Store the full configuration
+    userId: backendAgent.owner_id?.toString() || '',
+  };
+}
+
 // Make API call to Next.js API routes
 async function makeApiCall(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<unknown>> {
   const url = `/api${endpoint}`;
@@ -222,7 +246,7 @@ export const apiService = {
         return {
           status: 'success',
           message: response.message,
-          data: response.data
+          data: response.data.map(transformBackendAgent)
         };
       }
 

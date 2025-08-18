@@ -116,7 +116,7 @@ export default function AgentManagement({
                       Channels:
                     </p>
                     <p className="text-gray-700 text-xs leading-tight break-words">
-                      {agent.channels.join(", ")}
+                      {agent.channels?.join(", ") || "No channels configured"}
                     </p>
                   </div>
                   <div>
@@ -124,7 +124,7 @@ export default function AgentManagement({
                       Languages:
                     </p>
                     <p className="text-gray-700 text-xs leading-tight break-words">
-                      {agent.languages.join(", ")}
+                      {agent.languages?.join(", ") || "No languages configured"}
                     </p>
                   </div>
                   <div>
@@ -132,7 +132,7 @@ export default function AgentManagement({
                       Created:
                     </p>
                     <p className="text-gray-700 text-xs leading-tight">
-                      {new Date(agent.createdAt).toLocaleDateString()}
+                      {agent.createdAt ? new Date(agent.createdAt).toLocaleDateString() : "Unknown"}
                     </p>
                   </div>
                   <div>
