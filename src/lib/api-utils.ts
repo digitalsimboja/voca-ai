@@ -1,5 +1,5 @@
 // API Configuration
-const API_CONFIG = {
+export const API_CONFIG = {
   AUTH: {
     baseUrl: process.env.NEXT_PUBLIC_AUTH_API_URL || 'http://localhost:8001',
     prefix: '/v1/auth'
@@ -11,6 +11,10 @@ const API_CONFIG = {
   USER: {
     baseUrl: process.env.NEXT_PUBLIC_USER_API_URL || 'http://localhost:8002',
     prefix: '/v1/user'
+  },
+  ORDER: {
+    baseUrl: process.env.NEXT_PUBLIC_ORDER_API_URL || 'http://localhost:8013',
+    prefix: '/v1/orders'
   }
 } as const;
 
@@ -45,6 +49,14 @@ export const API_ENDPOINTS = {
     UPDATE_PROFILE: '/profile/update',
     CHANGE_PASSWORD: '/profile/change-password',
     DELETE_ACCOUNT: '/profile/delete'
+  },
+  ORDER: {
+    ORDERS: '',
+    ORDER_BY_ID: '/{id}',
+    ORDER_BY_NUMBER: '/number/{order_number}',
+    ORDER_STATUS: '/{id}/status',
+    ORDER_STATISTICS: '/statistics',
+    ORDERS_BY_STORE: '/store/{store_id}'
   }
 } as const;
 

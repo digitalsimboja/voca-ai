@@ -1,5 +1,5 @@
 import { ProductCatalog } from '@/types/catalog';
-import { BackendCatalog, CatalogApiResponseBackend, CatalogListApiResponseBackend } from '@/types/catalog';
+import { BackendCatalog } from '@/types/catalog';
 import { Agent } from '@/lib/types';
 import { ApiResponse } from '@/lib/api-utils';
 import { SocialMediaAgentData } from '@/types/agent';
@@ -527,6 +527,201 @@ export const apiService = {
       return {
         status: 'error',
         message: 'Failed to clear localStorage',
+        data: null
+      };
+    }
+  },
+
+  // Order API calls
+  async getOrders(params?: {
+    limit?: number;
+    offset?: number;
+    status?: string;
+    search?: string;
+    start_date?: string;
+    end_date?: string;
+  }): Promise<ApiResponse> {
+    try {
+      const queryParams = new URLSearchParams();
+      if (params?.limit) queryParams.append('limit', params.limit.toString());
+      if (params?.offset) queryParams.append('offset', params.offset.toString());
+      if (params?.status) queryParams.append('status', params.status);
+      if (params?.search) queryParams.append('search', params.search);
+      if (params?.start_date) queryParams.append('start_date', params.start_date);
+      if (params?.end_date) queryParams.append('end_date', params.end_date);
+
+      const endpoint = `/orders${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      const response = await makeApiCall(endpoint, { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get orders error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch orders',
+        data: null
+      };
+    }
+  },
+
+  async getOrderById(orderId: string): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall(`/orders/${orderId}`, { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get order by ID error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch order',
+        data: null
+      };
+    }
+  },
+
+  async getOrderByNumber(orderNumber: string): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall(`/orders/number/${orderNumber}`, { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get order by number error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch order',
+        data: null
+      };
+    }
+  },
+
+  async createOrder(orderData: {
+    customer_name: string;
+    customer_email: string;
+    customer_phone?: string;
+    delivery_address: string;
+    items: Array<{
+      name: string;
+      quantity: number;
+      price: number;
+      image?: string;
+    }>;
+    total_amount: number;
+    store_id: string;
+    catalog_id?: string;
+    agent_id?: string;
+    notes?: string;
+  }): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall('/orders', {
+        method: 'POST',
+        body: JSON.stringify(orderData),
+      });
+      return response;
+    } catch (error) {
+      console.error('Create order error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to create order',
+        data: null
+      };
+    }
+  },
+
+  async updateOrder(orderId: string, orderData: Partial<{
+    customer_name: string;
+    customer_email: string;
+    customer_phone: string;
+    delivery_address: string;
+    items: Array<{
+      name: string;
+      quantity: number;
+      price: number;
+      image?: string;
+    }>;
+    total_amount: number;
+    notes: string;
+    tracking_number: string;
+  }>): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall(`/orders/${orderId}`, {
+        method: 'PUT',
+        body: JSON.stringify(orderData),
+      });
+      return response;
+    } catch (error) {
+      console.error('Update order error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to update order',
+        data: null
+      };
+    }
+  },
+
+  async updateOrderStatus(orderId: string, statusData: {
+    status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+    tracking_number?: string;
+    notes?: string;
+    cancelled_reason?: string;
+  }): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall(`/orders/${orderId}/status`, {
+        method: 'PUT',
+        body: JSON.stringify(statusData),
+      });
+      return response;
+    } catch (error) {
+      console.error('Update order status error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to update order status',
+        data: null
+      };
+    }
+  },
+
+  async deleteOrder(orderId: string): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall(`/orders/${orderId}`, { method: 'DELETE' });
+      return response;
+    } catch (error) {
+      console.error('Delete order error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to delete order',
+        data: null
+      };
+    }
+  },
+
+  async getOrderStatistics(): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall('/orders/statistics', { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get order statistics error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch order statistics',
+        data: null
+      };
+    }
+  },
+
+  async getOrdersByStore(storeId: string, params?: {
+    limit?: number;
+    offset?: number;
+  }): Promise<ApiResponse> {
+    try {
+      const queryParams = new URLSearchParams();
+      if (params?.limit) queryParams.append('limit', params.limit.toString());
+      if (params?.offset) queryParams.append('offset', params.offset.toString());
+
+      const endpoint = `/orders/store/${storeId}${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      const response = await makeApiCall(endpoint, { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get orders by store error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch store orders',
         data: null
       };
     }

@@ -287,7 +287,7 @@ export default function CreateStoreModal({
                 {selectedAgent && (
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-2">
                     <p className="text-xs text-blue-700">
-                      Agent "{availableAgents.find(a => a.id === selectedAgent)?.name}" will be associated with your store
+                      Agent &quot;{availableAgents.find(a => a.id === selectedAgent)?.name}&quot; will be associated with your store
                     </p>
                   </div>
                 )}

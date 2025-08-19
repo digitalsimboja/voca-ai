@@ -577,7 +577,7 @@ export default function CreateCatalogPage() {
                       </span>
                     </div>
                     <p className="text-xs text-green-700 mt-1">
-                      Your store "{userStore.store_name}" is associated with agent "{userAgents.find(agent => agent.id === catalog.agentId)?.name || userAgents[0]?.name}"
+                      Your store &quot;{userStore.store_name}&quot; is associated with agent &quot;{userAgents.find(agent => agent.id === catalog.agentId)?.name || userAgents[0]?.name}&quot;
                     </p>
                   </div>
                 )}
