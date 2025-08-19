@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { makeAuthenticatedApiCall, API_ENDPOINTS, ApiResponse } from '@/lib/api-utils';
+import { API_ENDPOINTS, buildApiUrl } from '@/lib/api-utils';
 
 // GET /api/orders/[id] - Get specific order by ID
 export async function GET(
@@ -20,15 +20,24 @@ export async function GET(
       );
     }
 
+    // Build the URL manually for server-side call
+    const url = buildApiUrl('ORDER', API_ENDPOINTS.ORDER.ORDER_BY_ID, { id });
+    
     // Call backend order service
-    const response = await makeAuthenticatedApiCall('ORDER', API_ENDPOINTS.ORDER.ORDER_BY_ID, {
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
+        'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       }
-    }, { id }) as ApiResponse;
+    });
 
-    return NextResponse.json(response);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return NextResponse.json(data);
   } catch (error) {
     console.error('Get order error:', error);
     return NextResponse.json(
@@ -58,16 +67,25 @@ export async function PUT(
       );
     }
 
+    // Build the URL manually for server-side call
+    const url = buildApiUrl('ORDER', API_ENDPOINTS.ORDER.ORDER_BY_ID, { id });
+    
     // Call backend order service
-    const response = await makeAuthenticatedApiCall('ORDER', API_ENDPOINTS.ORDER.ORDER_BY_ID, {
+    const response = await fetch(url, {
       method: 'PUT',
       headers: {
+        'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(body)
-    }, { id }) as ApiResponse;
+    });
 
-    return NextResponse.json(response);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return NextResponse.json(data);
   } catch (error) {
     console.error('Update order error:', error);
     return NextResponse.json(
@@ -96,15 +114,24 @@ export async function DELETE(
       );
     }
 
+    // Build the URL manually for server-side call
+    const url = buildApiUrl('ORDER', API_ENDPOINTS.ORDER.ORDER_BY_ID, { id });
+    
     // Call backend order service
-    const response = await makeAuthenticatedApiCall('ORDER', API_ENDPOINTS.ORDER.ORDER_BY_ID, {
+    const response = await fetch(url, {
       method: 'DELETE',
       headers: {
+        'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       }
-    }, { id }) as ApiResponse;
+    });
 
-    return NextResponse.json(response);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return NextResponse.json(data);
   } catch (error) {
     console.error('Delete order error:', error);
     return NextResponse.json(

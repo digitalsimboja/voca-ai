@@ -42,6 +42,7 @@ export default function OrderPage() {
   } | null>(null)
   const [formData, setFormData] = useState({
     customerName: '',
+    customerEmail: '',
     customerPhone: '',
     deliveryAddress: ''
   })
@@ -104,6 +105,7 @@ export default function OrderPage() {
       toast.error('Please enter your name')
       return
     }
+    // Email is optional, so no validation needed
     if (!formData.customerPhone.trim()) {
       toast.error('Please enter your phone number')
       return
@@ -114,23 +116,27 @@ export default function OrderPage() {
     }
 
     try {
-      const orderSubmission = {
-        customerOrder: {
-          customerName: formData.customerName,
-          customerPhone: formData.customerPhone,
-          deliveryAddress: formData.deliveryAddress,
-          selectedTier: orderData.selectedTier,
+      // Transform data to match backend expectations
+      const backendOrderData = {
+        customer_name: formData.customerName,
+        customer_email: formData.customerEmail || undefined,
+        customer_phone: formData.customerPhone,
+        delivery_address: formData.deliveryAddress,
+        items: [{
+          name: `${orderData.tierDetails.packs} Pack${orderData.tierDetails.packs > 1 ? 's' : ''} - ${catalog.name}`,
           quantity: orderData.quantity,
-          totalAmount: orderData.totalAmount
-        },
-        catalogId: catalog.id,
-        agentId: catalog.agentId,
-        orderDate: new Date().toISOString(),
-        status: 'pending' as const,
-        selectedTier: orderData.tierDetails
+          price: orderData.tierDetails.price,
+          image: orderData.tierDetails.image
+        }],
+        total_amount: orderData.totalAmount,
+        store_id: catalog.storeId,
+        catalog_id: catalog.id,
+        agent_id: catalog.agentId,
+
+        notes: `Selected tier: ${orderData.tierDetails.packs} pack${orderData.tierDetails.packs > 1 ? 's' : ''}`
       }
 
-      const result = await apiService.submitOrder(orderSubmission)
+      const result = await apiService.createOrder(backendOrderData)
       
       if (result.status === 'success') {
         toast.success('Order submitted successfully!')
@@ -274,6 +280,19 @@ export default function OrderPage() {
                     onChange={(e) => handleInputChange('customerName', e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Enter your full name"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    value={formData.customerEmail}
+                    onChange={(e) => handleInputChange('customerEmail', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter your email address"
                   />
                 </div>
 

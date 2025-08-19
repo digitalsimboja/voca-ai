@@ -53,6 +53,15 @@ export interface OrdersParams {
   search?: string;
   start_date?: string;
   end_date?: string;
+  sort_by?: string;
+  sort_direction?: 'asc' | 'desc';
+}
+
+export interface PaginationInfo {
+  currentPage: number;
+  totalPages: number;
+  totalItems: number;
+  itemsPerPage: number;
 }
 
 export const useOrders = () => {
@@ -60,6 +69,14 @@ export const useOrders = () => {
   const [statistics, setStatistics] = useState<OrderStatistics | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // Pagination state
+  const [pagination, setPagination] = useState<PaginationInfo>({
+    currentPage: 1,
+    totalPages: 1,
+    totalItems: 0,
+    itemsPerPage: 10,
+  });
 
   const fetchOrders = useCallback(async (params?: OrdersParams) => {
     setLoading(true);
@@ -69,15 +86,56 @@ export const useOrders = () => {
       const response = await apiService.getOrders(params);
       
       if (response.status === 'success' && response.data) {
-        const ordersData = response.data as { orders: Order[] };
+        const ordersData = response.data as { 
+          orders: Order[];
+          pagination?: {
+            current_page: number;
+            total_pages: number;
+            total_items: number;
+            items_per_page: number;
+          };
+        };
+        
         setOrders(ordersData.orders || []);
+        
+        // Update pagination info if available
+        if (ordersData.pagination) {
+          setPagination({
+            currentPage: ordersData.pagination.current_page,
+            totalPages: ordersData.pagination.total_pages,
+            totalItems: ordersData.pagination.total_items,
+            itemsPerPage: ordersData.pagination.items_per_page,
+          });
+        } else {
+          // Fallback pagination calculation - use statistics for total items if available
+          const itemsPerPage = params?.limit || 10;
+          const totalItems = statistics?.total_orders || ordersData.orders?.length || 0;
+          setPagination({
+            currentPage: 1,
+            totalPages: Math.ceil(totalItems / itemsPerPage),
+            totalItems,
+            itemsPerPage,
+          });
+        }
       } else {
         setError(response.message || 'Failed to fetch orders');
         setOrders([]);
+        setPagination({
+          currentPage: 1,
+          totalPages: 1,
+          totalItems: 0,
+          itemsPerPage: 10,
+        });
       }
     } catch (err) {
       setError('Failed to fetch orders');
       setOrders([]);
+      setPagination({
+        currentPage: 1,
+        totalPages: 1,
+        totalItems: 0,
+        itemsPerPage: 10,
+      });
     } finally {
       setLoading(false);
     }
@@ -217,11 +275,33 @@ export const useOrders = () => {
     }
   }, []);
 
+  // Pagination handlers
+  const goToPage = useCallback((page: number) => {
+    const offset = (page - 1) * pagination.itemsPerPage;
+    fetchOrders({
+      limit: pagination.itemsPerPage,
+      offset,
+    });
+  }, [fetchOrders, pagination.itemsPerPage]);
+
+  const changeItemsPerPage = useCallback((newItemsPerPage: number) => {
+    setPagination(prev => ({
+      ...prev,
+      itemsPerPage: newItemsPerPage,
+      currentPage: 1,
+    }));
+    fetchOrders({
+      limit: newItemsPerPage,
+      offset: 0,
+    });
+  }, [fetchOrders]);
+
   return {
     orders,
     statistics,
     loading,
     error,
+    pagination,
     fetchOrders,
     fetchStatistics,
     fetchOrderById,
@@ -230,5 +310,7 @@ export const useOrders = () => {
     updateOrderStatus,
     deleteOrder,
     fetchOrdersByStore,
+    goToPage,
+    changeItemsPerPage,
   };
 };

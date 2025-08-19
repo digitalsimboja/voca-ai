@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Sidebar from './Sidebar'
 import Header from './Header'
 import { X } from 'lucide-react'
+import ProtectedRoute from '@/components/auth/ProtectedRoute'
 
 interface MainLayoutProps {
   children: React.ReactNode
@@ -13,15 +14,18 @@ export default function MainLayout({ children }: MainLayoutProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden">
+    <ProtectedRoute>
+      <div className="flex h-screen bg-gray-50 overflow-hidden">
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 lg:hidden">
+        <>
+          {/* Backdrop */}
           <div 
-            className="fixed inset-0 bg-gray-600 bg-opacity-75 transition-opacity duration-300" 
+            className="fixed inset-0  bg-opacity-50 transition-opacity duration-300 z-30 lg:hidden" 
             onClick={() => setMobileMenuOpen(false)} 
           />
-          <div className="fixed inset-y-0 left-0 flex w-64 flex-col bg-white shadow-xl transform transition-transform duration-300 ease-in-out">
+          {/* Mobile Sidebar */}
+          <div className="fixed inset-y-0 left-0 flex w-64 flex-col bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-40 lg:hidden">
             <div className="flex items-center justify-between p-4 border-b border-gray-200">
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -38,7 +42,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
             </div>
             <Sidebar mobile={true} onClose={() => setMobileMenuOpen(false)} />
           </div>
-        </div>
+        </>
       )}
 
       {/* Desktop Sidebar */}
@@ -47,7 +51,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
       </div>
       
       {/* Main Content - Ensure it takes remaining space and is always visible */}
-      <div className="flex-1 flex flex-col overflow-hidden min-w-0 w-full">
+      <div className="flex-1 flex flex-col overflow-hidden min-w-0 w-full relative z-10">
         {/* Header */}
         <Header onMobileMenuClick={() => setMobileMenuOpen(true)} />
         
@@ -59,5 +63,6 @@ export default function MainLayout({ children }: MainLayoutProps) {
         </main>
       </div>
     </div>
+    </ProtectedRoute>
   )
 }

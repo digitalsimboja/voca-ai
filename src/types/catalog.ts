@@ -22,6 +22,7 @@ export interface ProductCatalog {
   shareableLink: string;
   userId: string; // Add user ID to associate catalogs with users
   username: string; // Add username for public routing
+  storeId: string; // Add store ID to associate catalogs with stores
   isPublic: boolean; // Whether the catalog is publicly accessible
   agentData?: SocialMediaAgentData; // Agent data for social media links
   createdAt?: string;
@@ -66,6 +67,7 @@ export type CatalogListApiResponseBackend = ApiResponse<BackendCatalog[]>;
 // Customer Order types
 export interface CustomerOrder {
   customerName: string;
+  customerEmail: string;
   customerPhone: string;
   deliveryAddress: string;
   selectedTier: number;

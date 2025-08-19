@@ -96,45 +96,51 @@ export default function PublicCatalogPage() {
       return;
     }
 
-    if (!orderForm.customerName || !orderForm.customerEmail || !orderForm.customerPhone) {
+    if (!orderForm.customerName || !orderForm.customerPhone) {
       toast.error("Please fill in all required fields");
       return;
     }
 
     setSubmitting(true);
     try {
-      // Here you would typically send the order to your backend
-      // For now, we'll simulate the order creation
+      // Transform data to match backend expectations
       const orderData = {
-        catalogId: catalog.id,
-        customerName: orderForm.customerName,
-        customerEmail: orderForm.customerEmail,
-        customerPhone: orderForm.customerPhone,
-        selectedTier: orderForm.selectedTier,
-        quantity: orderForm.quantity,
-        deliveryAddress: orderForm.deliveryAddress,
-        specialInstructions: orderForm.specialInstructions,
-        totalAmount: orderForm.selectedTier.price * orderForm.quantity,
-        agentId: catalog.agentId,
+        customer_name: orderForm.customerName,
+        customer_email: orderForm.customerEmail || undefined,
+        customer_phone: orderForm.customerPhone,
+        delivery_address: orderForm.deliveryAddress,
+        items: [{
+          name: `${orderForm.selectedTier.packs} Pack${orderForm.selectedTier.packs > 1 ? 's' : ''} - ${catalog.name}`,
+          quantity: orderForm.quantity,
+          price: orderForm.selectedTier.price,
+          image: orderForm.selectedTier.image
+        }],
+        total_amount: orderForm.selectedTier.price * orderForm.quantity,
+        store_id: catalog.storeId,
+        catalog_id: catalog.id,
+        agent_id: catalog.agentId,
+
+        notes: orderForm.specialInstructions || `Selected tier: ${orderForm.selectedTier.packs} pack${orderForm.selectedTier.packs > 1 ? 's' : ''}`
       };
 
-      console.log("Order submitted:", orderData);
+      const response = await apiService.createOrder(orderData);
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      toast.success("Order submitted successfully! You'll receive a confirmation shortly.");
-      
-      // Reset form
-      setOrderForm({
-        customerName: "",
-        customerEmail: "",
-        customerPhone: "",
-        selectedTier: orderForm.selectedTier,
-        quantity: 1,
-        deliveryAddress: "",
-        specialInstructions: "",
-      });
+      if (response.status === 'success') {
+        toast.success("Order submitted successfully! You'll receive a confirmation shortly.");
+        
+        // Reset form
+        setOrderForm({
+          customerName: "",
+          customerEmail: "",
+          customerPhone: "",
+          selectedTier: orderForm.selectedTier,
+          quantity: 1,
+          deliveryAddress: "",
+          specialInstructions: "",
+        });
+      } else {
+        toast.error(response.message || "Failed to submit order. Please try again.");
+      }
     } catch (error) {
       console.error("Error submitting order:", error);
       toast.error("Failed to submit order. Please try again.");

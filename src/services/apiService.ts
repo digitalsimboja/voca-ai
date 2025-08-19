@@ -16,6 +16,7 @@ function transformBackendCatalog(backendCatalog: BackendCatalog): ProductCatalog
     shareableLink: backendCatalog.shareable_link || '',
     userId: backendCatalog.owner_id?.toString() || '',
     username: backendCatalog.store_name || '',
+    storeId: backendCatalog.store_id || '',
     isPublic: backendCatalog.is_public || true,
     createdAt: backendCatalog.created_at,
     updatedAt: backendCatalog.updated_at,
@@ -540,6 +541,8 @@ export const apiService = {
     search?: string;
     start_date?: string;
     end_date?: string;
+    sort_by?: string;
+    sort_direction?: 'asc' | 'desc';
   }): Promise<ApiResponse> {
     try {
       const queryParams = new URLSearchParams();
@@ -549,6 +552,8 @@ export const apiService = {
       if (params?.search) queryParams.append('search', params.search);
       if (params?.start_date) queryParams.append('start_date', params.start_date);
       if (params?.end_date) queryParams.append('end_date', params.end_date);
+      if (params?.sort_by) queryParams.append('sort_by', params.sort_by);
+      if (params?.sort_direction) queryParams.append('sort_direction', params.sort_direction);
 
       const endpoint = `/orders${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
       const response = await makeApiCall(endpoint, { method: 'GET' });
@@ -593,7 +598,7 @@ export const apiService = {
 
   async createOrder(orderData: {
     customer_name: string;
-    customer_email: string;
+    customer_email?: string;
     customer_phone?: string;
     delivery_address: string;
     items: Array<{
@@ -606,6 +611,7 @@ export const apiService = {
     store_id: string;
     catalog_id?: string;
     agent_id?: string;
+
     notes?: string;
   }): Promise<ApiResponse> {
     try {

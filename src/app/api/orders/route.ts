@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
     } = body;
 
     // Validate required fields
-    if (!customer_name || !customer_email || !delivery_address || !items || !total_amount || !store_id) {
+    if (!customer_name || !delivery_address || !items || !total_amount || !store_id) {
       return NextResponse.json(
         { status: 'error', message: 'Missing required fields' },
         { status: 400 }
@@ -93,25 +93,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get token from cookies
+    // Get token from cookies (optional for order creation)
     const token = request.cookies.get('voca_auth_token')?.value;
-    
-    if (!token) {
-      return NextResponse.json(
-        { status: 'error', message: 'Authentication required' },
-        { status: 401 }
-      );
-    }
 
     const url = `${API_CONFIG.ORDER.baseUrl}${API_CONFIG.ORDER.prefix}${API_ENDPOINTS.ORDER.ORDERS}`;
 
     // Call backend order service directly
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json'
+    };
+    
+    // Add authorization header if token exists
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    
     const response = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
+      headers,
       body: JSON.stringify({
         customer_name,
         customer_email,

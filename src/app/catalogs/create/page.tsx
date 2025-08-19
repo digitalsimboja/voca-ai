@@ -40,6 +40,7 @@ export default function CreateCatalogPage() {
     shareableLink: "",
     userId: user?.userId || "",
     username: user?.username || "",
+    storeId: "",
     isPublic: true,
   });
   const [userAgents, setUserAgents] = useState<Agent[]>([]);
@@ -264,6 +265,7 @@ export default function CreateCatalogPage() {
         shareableLink: '', // Start with empty shareable link
         userId: user.userId,
         username: catalog.username,
+        storeId: catalog.storeId,
         isPublic: catalog.isPublic,
       });
 

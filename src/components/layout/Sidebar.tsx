@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { useAuth } from '@/hooks/useAuth'
 import {
   LayoutDashboard,
   MessageSquare,
@@ -37,6 +38,7 @@ interface SidebarProps {
 export default function Sidebar({ mobile = false, onClose }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false)
   const pathname = usePathname()
+  const { user, logout } = useAuth()
 
   return (
     <div className={cn(
@@ -102,16 +104,32 @@ export default function Sidebar({ mobile = false, onClose }: SidebarProps) {
       </nav>
 
       {/* Footer - User Profile */}
-      {!mobile && !collapsed && (
+      {user && (
         <div className="p-3 lg:p-4 border-t border-gray-200">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-              <span className="text-sm font-medium text-gray-700">N</span>
+              <span className="text-sm font-medium text-gray-700">
+                {user.firstName?.charAt(0) || user.username?.charAt(0) || 'U'}
+              </span>
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-medium text-gray-900 truncate">User Name</p>
-              <p className="text-xs text-gray-500 truncate">user@example.com</p>
+              <p className="text-sm font-medium text-gray-900 truncate">
+                {user.firstName && user.lastName 
+                  ? `${user.firstName} ${user.lastName}` 
+                  : user.username || 'User Name'
+                }
+              </p>
+              <p className="text-xs text-gray-500 truncate">{user.email}</p>
             </div>
+            <button
+              onClick={logout}
+              className="p-1.5 rounded-md hover:bg-gray-100 transition-colors"
+              title="Logout"
+            >
+              <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+            </button>
           </div>
         </div>
       )}

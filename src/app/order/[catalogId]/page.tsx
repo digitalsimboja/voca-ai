@@ -22,6 +22,7 @@ export default function CustomerOrderPage() {
   const [error, setError] = useState<string | null>(null)
   const [order, setOrder] = useState<CustomerOrder>({
     customerName: '',
+    customerEmail: '',
     customerPhone: '',
     deliveryAddress: '',
     selectedTier: 0,
@@ -87,19 +88,28 @@ export default function CustomerOrderPage() {
     
     try {
       const selectedTier = catalog.pricingTiers[order.selectedTier]
-      const orderData: OrderSubmission = {
-        customerOrder: {
-          ...order,
-          totalAmount: selectedTier.price * order.quantity
-        },
-        catalogId: catalog.id,
-        agentId: catalog.agentId,
-        orderDate: new Date().toISOString(),
-        status: 'pending',
-        selectedTier: selectedTier
+      
+      // Transform data to match backend expectations
+      const orderData = {
+        customer_name: order.customerName,
+        customer_email: order.customerEmail || undefined,
+        customer_phone: order.customerPhone,
+        delivery_address: order.deliveryAddress,
+        items: [{
+          name: `${selectedTier.packs} Pack${selectedTier.packs > 1 ? 's' : ''} - ${catalog.name}`,
+          quantity: order.quantity,
+          price: selectedTier.price,
+          image: selectedTier.image
+        }],
+        total_amount: selectedTier.price * order.quantity,
+        store_id: catalog.storeId,
+        catalog_id: catalog.id,
+        agent_id: catalog.agentId,
+
+        notes: `Selected tier: ${selectedTier.packs} pack${selectedTier.packs > 1 ? 's' : ''}`
       }
 
-      const response = await apiService.submitOrder(orderData as unknown as Record<string, unknown>)
+      const response = await apiService.createOrder(orderData)
       
       if (response.status === 'success') {
         setOrderSubmitted(true)
@@ -327,6 +337,19 @@ export default function CustomerOrderPage() {
                       onChange={(e) => updateOrder('customerName', e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Enter your full name"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      value={order.customerEmail}
+                      onChange={(e) => updateOrder('customerEmail', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="Enter your email address"
                     />
                   </div>
 
