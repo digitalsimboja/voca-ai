@@ -512,8 +512,6 @@ export const apiService = {
     }
   },
 
-
-
   // Clear localStorage
   async clearLocalStorage(): Promise<ApiResponse> {
     try {
@@ -728,6 +726,211 @@ export const apiService = {
       return {
         status: 'error',
         message: 'Failed to fetch store orders',
+        data: null
+      };
+    }
+  },
+
+  // Customer API calls
+  async getCustomers(params?: {
+    limit?: number;
+    offset?: number;
+    search?: string;
+  }): Promise<ApiResponse> {
+    try {
+      const queryParams = new URLSearchParams();
+      if (params?.limit) queryParams.append('limit', params.limit.toString());
+      if (params?.offset) queryParams.append('offset', params.offset.toString());
+      if (params?.search) queryParams.append('search', params.search);
+
+      const endpoint = `/customers${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      const response = await makeApiCall(endpoint, { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get customers error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch customers',
+        data: null
+      };
+    }
+  },
+
+  async getCustomerStatistics(): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall('/customers/statistics', { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get customer statistics error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch customer statistics',
+        data: null
+      };
+    }
+  },
+
+  async getCustomerDetails(customerId: string): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall(`/customers/${customerId}`, { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get customer details error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch customer details',
+        data: null
+      };
+    }
+  },
+
+  async getCustomerOrders(customerId: string, params?: {
+    limit?: number;
+    offset?: number;
+  }): Promise<ApiResponse> {
+    try {
+      const queryParams = new URLSearchParams();
+      if (params?.limit) queryParams.append('limit', params.limit.toString());
+      if (params?.offset) queryParams.append('offset', params.offset.toString());
+
+      const endpoint = `/customers/${customerId}/orders${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      const response = await makeApiCall(endpoint, { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get customer orders error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch customer orders',
+        data: null
+      };
+    }
+  },
+
+  // Conversation API calls
+  async getConversations(params?: {
+    limit?: number;
+    offset?: number;
+  }): Promise<ApiResponse> {
+    try {
+      const queryParams = new URLSearchParams();
+      if (params?.limit) queryParams.append('limit', params.limit.toString());
+      if (params?.offset) queryParams.append('offset', params.offset.toString());
+
+      const endpoint = `/conversations${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      const response = await makeApiCall(endpoint, { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get conversations error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch conversations',
+        data: null
+      };
+    }
+  },
+
+  async createConversation(conversationData: {
+    title?: string;
+    type?: string;
+    metadata?: Record<string, unknown>;
+  }): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall('/conversations', {
+        method: 'POST',
+        body: JSON.stringify(conversationData),
+      });
+      return response;
+    } catch (error) {
+      console.error('Create conversation error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to create conversation',
+        data: null
+      };
+    }
+  },
+
+  async getConversationDetails(conversationId: string): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall(`/conversations/${conversationId}`, { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get conversation details error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch conversation details',
+        data: null
+      };
+    }
+  },
+
+  async getConversationMessages(conversationId: string, params?: {
+    limit?: number;
+    offset?: number;
+  }): Promise<ApiResponse> {
+    try {
+      const queryParams = new URLSearchParams();
+      if (params?.limit) queryParams.append('limit', params.limit.toString());
+      if (params?.offset) queryParams.append('offset', params.offset.toString());
+
+      const endpoint = `/conversations/${conversationId}/messages${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      const response = await makeApiCall(endpoint, { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get conversation messages error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch conversation messages',
+        data: null
+      };
+    }
+  },
+
+  async addMessageToConversation(conversationId: string, messageData: {
+    content: string;
+    role?: string;
+    type?: string;
+    metadata?: Record<string, unknown>;
+  }): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall(`/conversations/${conversationId}/messages`, {
+        method: 'POST',
+        body: JSON.stringify(messageData),
+      });
+      return response;
+    } catch (error) {
+      console.error('Add message to conversation error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to add message to conversation',
+        data: null
+      };
+    }
+  },
+
+  async getConversationStatistics(): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall('/conversations/statistics', { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get conversation statistics error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch conversation statistics',
+        data: null
+      };
+    }
+  },
+
+  async getConversationAgents(): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall('/conversations/agents', { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get conversation agents error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch conversation agents',
         data: null
       };
     }
