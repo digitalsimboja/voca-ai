@@ -82,7 +82,7 @@ export default function OrderDetailPage() {
         <div className="flex items-center justify-center h-64">
           <div className="flex items-center space-x-2">
             <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
-            <span className="text-gray-500">Loading order details...</span>
+            <span className="text-gray-600 text-sm sm:text-base">Loading order details...</span>
           </div>
         </div>
       </MainLayout>
@@ -93,12 +93,12 @@ export default function OrderDetailPage() {
     return (
       <MainLayout>
         <div className="flex items-center justify-center h-64 px-4">
-          <div className="text-center">
+          <div className="text-center max-w-sm">
             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Package className="w-8 h-8 text-gray-400" />
             </div>
             <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">Order Not Found</h2>
-            <p className="text-sm sm:text-base text-gray-500 mb-6">
+            <p className="text-sm sm:text-base text-gray-600 mb-6">
               {error || "The order you're looking for doesn't exist or has been removed."}
             </p>
             <button
@@ -119,13 +119,13 @@ export default function OrderDetailPage() {
 
   return (
     <MainLayout>
-      <div className="space-y-6 px-2 sm:px-4">
+      <div className="space-y-6 px-3 sm:px-4 md:px-6">
         {/* Page Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <div className="flex items-start sm:items-center space-x-2 sm:space-x-4">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <div className="flex items-start md:items-center space-x-2 md:space-x-4">
             <button
               onClick={() => router.back()}
-              className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors text-sm"
+              className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors text-sm sm:text-base"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back</span>
@@ -146,9 +146,9 @@ export default function OrderDetailPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Order Status */}
-          <div className="lg:col-span-2">
+          <div className="md:col-span-2">
             <Card>
               <CardHeader>
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900">Order Status</h3>
@@ -171,7 +171,7 @@ export default function OrderDetailPage() {
                             }`}>
                               <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
-                            <span className={`text-[10px] sm:text-xs font-medium mt-1 sm:mt-2 text-center ${
+                            <span className={`text-[10px] sm:text-xs md:text-sm font-medium mt-1 sm:mt-2 text-center ${
                               isCompleted ? 'text-gray-900' : 'text-gray-400'
                             }`}>
                               {step.label}
@@ -201,13 +201,13 @@ export default function OrderDetailPage() {
                               <Package className="w-4 h-4 sm:w-6 sm:h-6 text-gray-600" />
                             </div>
                             <div className="min-w-0 flex-1">
-                              <div className="font-medium text-gray-900 truncate text-sm sm:text-base">{item.name}</div>
-                              <div className="text-xs sm:text-sm text-gray-500">Quantity: {item.quantity}</div>
+                              <div className="font-medium text-gray-900 truncate text-sm sm:text-base md:text-lg">{item.name}</div>
+                              <div className="text-xs sm:text-sm text-gray-600">Quantity: {item.quantity}</div>
                             </div>
                           </div>
                           <div className="text-right sm:text-left">
-                            <div className="font-medium text-gray-900 text-sm sm:text-base">₦{item.price.toLocaleString()}</div>
-                            <div className="text-xs sm:text-sm text-gray-500">₦{(item.price * item.quantity).toLocaleString()}</div>
+                            <div className="font-medium text-gray-900 text-sm sm:text-base md:text-lg">₦{item.price.toLocaleString()}</div>
+                            <div className="text-xs sm:text-sm text-gray-600">₦{(item.price * item.quantity).toLocaleString()}</div>
                           </div>
                         </div>
                       ))}
@@ -225,24 +225,24 @@ export default function OrderDetailPage() {
               <CardHeader>
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900">Customer Information</h3>
               </CardHeader>
-              <CardContent className="space-y-3 text-sm sm:text-base">
+              <CardContent className="space-y-3 text-sm sm:text-base text-gray-700">
                 <div className="flex items-center space-x-2">
                   <User className="w-4 h-4 text-gray-400" />
                   <span className="text-gray-900">{order.customer_name}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Mail className="w-4 h-4 text-gray-400" />
-                  <span className="text-gray-600">{order.customer_email}</span>
+                  <span>{order.customer_email}</span>
                 </div>
                 {order.customer_phone && (
                   <div className="flex items-center space-x-2">
                     <Phone className="w-4 h-4 text-gray-400" />
-                    <span className="text-gray-600">{order.customer_phone}</span>
+                    <span>{order.customer_phone}</span>
                   </div>
                 )}
                 <div className="flex items-start space-x-2">
                   <MapPin className="w-4 h-4 text-gray-400 mt-0.5" />
-                  <span className="text-gray-600 break-words">{order.delivery_address}</span>
+                  <span className="break-words">{order.delivery_address}</span>
                 </div>
               </CardContent>
             </Card>
@@ -252,48 +252,31 @@ export default function OrderDetailPage() {
               <CardHeader>
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900">Order Information</h3>
               </CardHeader>
-              <CardContent className="space-y-3 text-sm sm:text-base">
+              <CardContent className="space-y-3 text-sm sm:text-base text-gray-700">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Order ID:</span>
+                  <span>Order ID:</span>
                   <span className="font-medium text-gray-900">{order.id}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Order Number:</span>
+                  <span>Order Number:</span>
                   <span className="font-medium text-gray-900">{order.order_number}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Order Date:</span>
+                  <span>Order Date:</span>
                   <span className="font-medium text-gray-900">
                     {orderDate.toLocaleDateString()}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Total Amount:</span>
+                  <span>Total Amount:</span>
                   <span className="font-bold text-gray-900">
                     ₦{order.total_amount.toLocaleString()}
                   </span>
                 </div>
-                {order.agent_id && (
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">AI Agent ID:</span>
-                    <span className="font-medium text-gray-900">{order.agent_id}</span>
-                  </div>
-                )}
-                {order.catalog_id && (
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Catalog ID:</span>
-                    <span className="font-medium text-gray-900">{order.catalog_id}</span>
-                  </div>
-                )}
-                {order.store_id && (
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Store ID:</span>
-                    <span className="font-medium text-gray-900">{order.store_id}</span>
-                  </div>
-                )}
+                
                 {order.tracking_number && (
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Tracking Number:</span>
+                    <span>Tracking Number:</span>
                     <span className="font-medium text-gray-900">{order.tracking_number}</span>
                   </div>
                 )}
@@ -306,21 +289,21 @@ export default function OrderDetailPage() {
                 <CardHeader>
                   <h3 className="text-base sm:text-lg font-semibold text-gray-900">AI Agent Integration</h3>
                 </CardHeader>
-                <CardContent className="space-y-3 text-sm sm:text-base">
+                <CardContent className="space-y-3 text-sm sm:text-base text-gray-700">
                   <div className="flex items-center space-x-2">
                     <MessageSquare className="w-4 h-4 text-blue-600" />
                     <span className="font-medium text-gray-900">Order Processing Agent</span>
                   </div>
-                  <div className="text-gray-600">
+                  <div>
                     This order is being processed by AI agent <strong>{order.agent_id}</strong> which handles:
                   </div>
-                  <ul className="text-gray-600 space-y-1 ml-4">
-                    <li>• Order tracking and updates</li>
-                    <li>• Customer communication</li>
-                    <li>• Delivery status notifications</li>
-                    <li>• Payment processing</li>
+                  <ul className="space-y-1 ml-4 list-disc">
+                    <li>Order tracking and updates</li>
+                    <li>Customer communication</li>
+                    <li>Delivery status notifications</li>
+                    <li>Payment processing</li>
                   </ul>
-                  <button className="w-full mt-3 px-2 py-1.5 sm:px-3 sm:py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors text-xs sm:text-sm">
+                  <button className="w-full mt-3 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors text-sm">
                     View Agent Details
                   </button>
                 </CardContent>
@@ -334,7 +317,7 @@ export default function OrderDetailPage() {
                   <h3 className="text-base sm:text-lg font-semibold text-gray-900">Order Notes</h3>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm sm:text-base text-gray-600">{order.notes}</p>
+                  <p className="text-sm sm:text-base text-gray-700">{order.notes}</p>
                 </CardContent>
               </Card>
             )}

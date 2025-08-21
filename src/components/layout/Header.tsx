@@ -75,6 +75,7 @@ interface SocialMediaAgentData {
 export default function Header({ onMobileMenuClick }: HeaderProps) {
   const { user, logout } = useAuth()
   const userMenuRef = useRef<HTMLDivElement>(null)
+  const notificationsRef = useRef<HTMLDivElement>(null)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
   const [showCreateAgentModal, setShowCreateAgentModal] = useState(false)
   const [notifications] = useState([
@@ -91,6 +92,9 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
     function handleClickOutside(event: MouseEvent) {
       if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
         setShowUserMenu(false)
+      }
+      if (notificationsRef.current && !notificationsRef.current.contains(event.target as Node)) {
+        setShowNotifications(false)
       }
     }
 
@@ -189,7 +193,7 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
           </div>
 
           {/* Notifications */}
-          <div className="relative">
+          <div className="relative" ref={notificationsRef}>
             <button
               onClick={() => setShowNotifications(!showNotifications)}
               className="relative p-2 rounded-lg hover:bg-gray-100"

@@ -22,7 +22,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { apiService } from "@/services/apiService";
 import { Agent, Settings as SettingsType } from "@/lib/types";
 import { toast } from "@/utils/toast";
-import { SocialMediaAgentData } from "@/types/agent";
+
 
 // Generic type for different agent data types
 type AgentData = unknown;

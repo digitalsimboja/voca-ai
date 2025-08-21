@@ -1,8 +1,39 @@
-import { ProductCatalog } from '@/types/catalog';
-import { BackendCatalog } from '@/types/catalog';
+import { ProductCatalog, BackendCatalog } from '@/types/catalog';
 import { Agent } from '@/lib/types';
 import { ApiResponse } from '@/lib/api-utils';
 import { SocialMediaAgentData } from '@/types/agent';
+
+// Integration types
+interface Integration {
+  id: string;
+  name: string;
+  type: string;
+  config: Record<string, unknown>;
+  is_active: boolean;
+  status: string;
+  description: string;
+  icon: string;
+  created_at: string;
+  updated_at: string;
+  lastSync: string | null;
+  metadata: Record<string, unknown>;
+}
+
+interface CreateIntegrationData {
+  name: string;
+  type: string;
+  config: Record<string, unknown>;
+  is_active?: boolean;
+  metadata?: Record<string, unknown>;
+}
+
+interface UpdateIntegrationData {
+  name: string;
+  type: string;
+  config: Record<string, unknown>;
+  is_active?: boolean;
+  metadata?: Record<string, unknown>;
+}
 
 // Transform backend catalog to frontend format
 function transformBackendCatalog(backendCatalog: BackendCatalog): ProductCatalog {
@@ -931,6 +962,242 @@ export const apiService = {
       return {
         status: 'error',
         message: 'Failed to fetch conversation agents',
+        data: null
+      };
+    }
+  },
+
+  // Analytics methods
+  async getAnalytics(timeRange?: string): Promise<ApiResponse> {
+    try {
+      const queryParams = new URLSearchParams();
+      if (timeRange) queryParams.append('time_range', timeRange);
+
+      const endpoint = `/analytics${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      const response = await makeApiCall(endpoint, { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get analytics error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch analytics data',
+        data: null
+      };
+    }
+  },
+
+  async getAnalyticsOverview(timeRange?: string): Promise<ApiResponse> {
+    try {
+      const queryParams = new URLSearchParams();
+      if (timeRange) queryParams.append('time_range', timeRange);
+
+      const endpoint = `/analytics/overview${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      const response = await makeApiCall(endpoint, { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get analytics overview error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch analytics overview',
+        data: null
+      };
+    }
+  },
+
+  async getChannelMetrics(timeRange?: string): Promise<ApiResponse> {
+    try {
+      const queryParams = new URLSearchParams();
+      if (timeRange) queryParams.append('time_range', timeRange);
+
+      const endpoint = `/analytics/channels${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      const response = await makeApiCall(endpoint, { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get channel metrics error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch channel metrics',
+        data: null
+      };
+    }
+  },
+
+  async getDailyMetrics(timeRange?: string): Promise<ApiResponse> {
+    try {
+      const queryParams = new URLSearchParams();
+      if (timeRange) queryParams.append('time_range', timeRange);
+
+      const endpoint = `/analytics/daily${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      const response = await makeApiCall(endpoint, { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get daily metrics error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch daily metrics',
+        data: null
+      };
+    }
+  },
+
+  async getLanguageDistribution(timeRange?: string): Promise<ApiResponse> {
+    try {
+      const queryParams = new URLSearchParams();
+      if (timeRange) queryParams.append('time_range', timeRange);
+
+      const endpoint = `/analytics/languages${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      const response = await makeApiCall(endpoint, { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get language distribution error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch language distribution',
+        data: null
+      };
+    }
+  },
+
+  async getSentimentAnalysis(timeRange?: string): Promise<ApiResponse> {
+    try {
+      const queryParams = new URLSearchParams();
+      if (timeRange) queryParams.append('time_range', timeRange);
+
+      const endpoint = `/analytics/sentiment${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      const response = await makeApiCall(endpoint, { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get sentiment analysis error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch sentiment analysis',
+        data: null
+      };
+    }
+  },
+
+  // Integration methods
+  async getIntegrations(): Promise<ApiResponse<{ integrations: Integration[] }>> {
+    try {
+      const response = await makeApiCall('/integrations', { method: 'GET' });
+      return response as ApiResponse<{ integrations: Integration[] }>;
+    } catch (error) {
+      console.error('Error fetching integrations:', error);
+      throw error;
+    }
+  },
+
+  async getIntegration(id: string): Promise<ApiResponse<Integration>> {
+    try {
+      const response = await makeApiCall(`/integrations/${id}`, { method: 'GET' });
+      return response as ApiResponse<Integration>;
+    } catch (error) {
+      console.error('Error fetching integration:', error);
+      throw error;
+    }
+  },
+
+  async createIntegration(integrationData: CreateIntegrationData): Promise<ApiResponse<Integration>> {
+    try {
+      const response = await makeApiCall('/integrations', {
+        method: 'POST',
+        body: JSON.stringify(integrationData),
+      });
+      return response as ApiResponse<Integration>;
+    } catch (error) {
+      console.error('Error creating integration:', error);
+      throw error;
+    }
+  },
+
+  async updateIntegration(id: string, integrationData: UpdateIntegrationData): Promise<ApiResponse<Integration>> {
+    try {
+      const response = await makeApiCall(`/integrations/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(integrationData),
+      });
+      return response as ApiResponse<Integration>;
+    } catch (error) {
+      console.error('Error updating integration:', error);
+      throw error;
+    }
+  },
+
+  async deleteIntegration(id: string): Promise<ApiResponse<void>> {
+    try {
+      const response = await makeApiCall(`/integrations/${id}`, { method: 'DELETE' });
+      return response as ApiResponse<void>;
+    } catch (error) {
+      console.error('Error deleting integration:', error);
+      throw error;
+    }
+  },
+
+  async testIntegration(integrationId: string): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall(`/integrations/${integrationId}/test`, { method: 'POST' });
+      return response;
+    } catch (error) {
+      console.error('Test integration error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to test integration',
+        data: null
+      };
+    }
+  },
+
+  async refreshIntegration(integrationId: string): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall(`/integrations/${integrationId}/refresh`, { method: 'POST' });
+      return response;
+    } catch (error) {
+      console.error('Refresh integration error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to refresh integration',
+        data: null
+      };
+    }
+  },
+
+  async getIntegrationStatistics(): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall('/integrations/statistics', { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get integration statistics error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch integration statistics',
+        data: null
+      };
+    }
+  },
+
+  async syncAllIntegrations(): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall('/integrations/sync-all', { method: 'POST' });
+      return response;
+    } catch (error) {
+      console.error('Sync all integrations error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to sync integrations',
+        data: null
+      };
+    }
+  },
+
+  async runHealthCheck(): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall('/integrations/health-check', { method: 'POST' });
+      return response;
+    } catch (error) {
+      console.error('Health check error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to run health check',
         data: null
       };
     }

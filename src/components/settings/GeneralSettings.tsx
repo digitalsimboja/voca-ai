@@ -7,6 +7,8 @@ interface GeneralSettingsProps {
   onSettingsChange: (settings: SettingsType & { agents: Agent[] }) => void;
 }
 
+const availableLanguages = ["English", "Igbo", "Yoruba", "Hausa", "Spanish", "French"];
+
 export default function GeneralSettings({ settings, onSettingsChange }: GeneralSettingsProps) {
   const updateOrganization = (updates: Partial<SettingsType["organization"]>) => {
     onSettingsChange({
@@ -75,7 +77,7 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
             <div className="w-full">
               <label className="block text-sm font-medium text-gray-700 mb-1.5">Supported Languages</label>
               <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                {["English", "Igbo", "Yoruba", "Hausa", "Spanish", "French"].map((lang) => (
+                {availableLanguages.map((lang) => (
                   <label key={lang} className="flex items-center text-sm">
                     <input
                       type="checkbox"
@@ -88,7 +90,7 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
                       }}
                       className="mr-2 h-4 w-4"
                     />
-                    {lang}
+                    <span className="text-sm font-medium text-gray-700">{lang}</span>
                   </label>
                 ))}
               </div>

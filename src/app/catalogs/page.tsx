@@ -157,7 +157,7 @@ export default function CatalogsPage() {
             {catalogs.map((catalog) => (
               <Card key={catalog.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                 <CardHeader className="p-0">
-                  <div className="relative">
+                  <div className="relative" onClick={() => handleViewCatalog(catalog.id)}>
                     {catalog.mainImage ? (
                       <img
                         src={catalog.mainImage}
