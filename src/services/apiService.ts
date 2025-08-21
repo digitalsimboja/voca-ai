@@ -543,20 +543,47 @@ export const apiService = {
     }
   },
 
-  // Clear localStorage
+  // Clear localStorage and sessionStorage
   async clearLocalStorage(): Promise<ApiResponse> {
     try {
-      // This is a client-side operation, so we just return success
+      // Clear all localStorage and sessionStorage items
+      if (typeof window !== 'undefined') {
+        localStorage.clear();
+        sessionStorage.clear();
+        
+        // Also clear specific items that might be stored
+        const keysToRemove = [
+          'voca_user_data',
+          'voca_auth_token',
+          'voca_settings',
+          'voca_preferences',
+          'voca_theme',
+          'voca_language',
+          'voca_notifications',
+          'voca_analytics_data',
+          'voca_customer_data',
+          'voca_conversation_data',
+          'voca_order_data',
+          'voca_integration_data',
+          'pendingOrder'
+        ];
+        
+        keysToRemove.forEach(key => {
+          localStorage.removeItem(key);
+          sessionStorage.removeItem(key);
+        });
+      }
+      
       return {
         status: 'success',
-        message: 'LocalStorage cleared successfully',
+        message: 'LocalStorage and sessionStorage cleared successfully',
         data: null
       };
     } catch (error) {
-      console.error('Clear localStorage error:', error);
+      console.error('Clear storage error:', error);
       return {
         status: 'error',
-        message: 'Failed to clear localStorage',
+        message: 'Failed to clear storage',
         data: null
       };
     }

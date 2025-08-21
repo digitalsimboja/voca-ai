@@ -156,22 +156,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error("Logout failed:", error);
     } finally {
-      // Clear all Voca AI data using API service
+      // Clear all localStorage and sessionStorage data
       try {
-        const result = await apiService.clearLocalStorage();
-        if (result.status === 'success') {
-          console.log(
-            "Cleared localStorage on logout:",
-            result.message
-          );
-        } else {
-          console.error(
-            "Failed to clear localStorage on logout:",
-            result.message
-          );
-        }
+        // Clear all localStorage items
+        localStorage.clear();
+        
+        // Clear all sessionStorage items
+        sessionStorage.clear();
+        
+        // Also clear specific items that might be stored
+        const keysToRemove = [
+          'voca_user_data',
+          'voca_auth_token',
+          'voca_settings',
+          'voca_preferences',
+          'voca_theme',
+          'voca_language',
+          'voca_notifications',
+          'voca_analytics_data',
+          'voca_customer_data',
+          'voca_conversation_data',
+          'voca_order_data',
+          'voca_integration_data',
+          'pendingOrder'
+        ];
+        
+        keysToRemove.forEach(key => {
+          localStorage.removeItem(key);
+          sessionStorage.removeItem(key);
+        });
+        
+        console.log("Cleared all localStorage and sessionStorage data on logout");
       } catch (error) {
-        console.error("Failed to clear localStorage on logout:", error);
+        console.error("Failed to clear storage on logout:", error);
       }
 
       setUser(null);

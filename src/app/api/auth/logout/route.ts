@@ -44,6 +44,15 @@ export async function POST(request: NextRequest) {
       path: '/'
     })
 
+    // Clear any additional cookies if needed
+    response.cookies.set('voca_user_data', '', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 0,
+      path: '/'
+    })
+
     return response
 
   } catch (error) {
