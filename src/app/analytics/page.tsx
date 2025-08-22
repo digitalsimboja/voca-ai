@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import MainLayout from '@/components/layout/MainLayout'
 import { Card, CardHeader, CardContent } from '@/components/ui/Card'
 import { apiService } from '@/services/apiService'
@@ -10,6 +10,7 @@ import {
   BarChart3,
   TrendingUp,
   TrendingDown,
+  Minus,
   Users,
   Clock,
   MessageSquare,
@@ -22,6 +23,15 @@ import {
   CheckCircle,
   Globe
 } from 'lucide-react'
+import {
+  FacebookIcon,
+  TwitterIcon,
+  InstagramIcon,
+  TikTokIcon,
+  WhatsAppIcon,
+  EmailIcon,
+  SMSIcon,
+} from "@/components/icons/SocialMediaIcons";
 import { formatDuration } from '@/lib/utils'
 
 // Types for analytics data
@@ -108,6 +118,37 @@ interface CatalogAnalytics {
   }>;
 }
 
+interface TrendingMetric {
+  current_value: number;
+  previous_value: number;
+  percentage_change: number;
+  direction: 'up' | 'down' | 'neutral';
+  severity: 'high' | 'medium' | 'low';
+  color: string;
+  icon: string;
+  note?: string;
+}
+
+interface TrendingMetrics {
+  conversation_trends: {
+    total_conversations?: TrendingMetric;
+    active_conversations?: TrendingMetric;
+    unique_customers?: TrendingMetric;
+  };
+  revenue_trends: {
+    total_orders?: TrendingMetric;
+    total_revenue?: TrendingMetric;
+    avg_order_value?: TrendingMetric;
+  };
+  performance_trends: {
+    average_response_time?: TrendingMetric;
+    resolution_rate?: TrendingMetric;
+  };
+  satisfaction_trends: {
+    customer_satisfaction?: TrendingMetric;
+  };
+}
+
 interface AnalyticsData {
   overview: AnalyticsOverview;
   channel_metrics: ChannelMetric[];
@@ -117,17 +158,52 @@ interface AnalyticsData {
   order_analytics: OrderAnalytics;
   agent_analytics: AgentAnalytics;
   catalog_analytics: CatalogAnalytics;
+  trending_metrics?: TrendingMetrics;
 }
 
 const channelIcons = {
   Voice: Phone,
-  WhatsApp: MessageCircle,
-  SMS: MessageSquare,
-  Email: Mail,
-  Facebook: MessageCircle,
-  Instagram: MessageCircle,
+  WhatsApp: WhatsAppIcon,
+  SMS: SMSIcon,
+  Email: EmailIcon,
+  Facebook: FacebookIcon,
+  Instagram: InstagramIcon,
+  Twitter: TwitterIcon,
+  TikTok: TikTokIcon,
   Chat: MessageCircle
 }
+
+// Helper function to get trend icon
+const getTrendIcon = (direction?: string) => {
+  if (direction === 'down') return TrendingDown;
+  if (direction === 'up') return TrendingUp;
+  if (direction === 'neutral') return Minus;
+  return TrendingUp; // Default to up for neutral
+};
+
+// Helper function to get trending metric with defaults
+const getTrendingMetric = (
+  trendingMetrics: TrendingMetrics | undefined,
+  category: keyof TrendingMetrics,
+  metric: string
+): TrendingMetric | null => {
+  if (!trendingMetrics || !trendingMetrics[category]) {
+    return null;
+  }
+  
+  const categoryData = trendingMetrics[category] as Record<string, TrendingMetric>;
+  return categoryData[metric] || null;
+};
+
+// Helper function to format trend display text
+const formatTrendText = (trend: TrendingMetric | null): string => {
+  if (!trend || trend.percentage_change === 0) {
+    return "-";
+  }
+  
+  const sign = trend.percentage_change > 0 ? '+' : '';
+  return `${sign}${trend.percentage_change}% from last period`;
+};
 
 export default function AnalyticsPage() {
   const [timeRange, setTimeRange] = useState('7d')
@@ -236,9 +312,15 @@ export default function AnalyticsPage() {
                 <div>
                   <p className="text-xs sm:text-sm font-medium text-gray-600">Total Conversations</p>
                   <p className="text-lg sm:text-2xl font-bold text-gray-900">{analyticsData.overview.total_conversations || 0}</p>
-                  <p className="text-xs sm:text-sm text-green-600 flex items-center mt-1">
-                    <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                    +12% from last period
+                  <p className={`text-xs sm:text-sm flex items-center mt-1 ${
+                    getTrendingMetric(analyticsData.trending_metrics, 'conversation_trends', 'total_conversations')?.color || 'text-green-600'
+                  }`}>
+                    {React.createElement(getTrendIcon(getTrendingMetric(analyticsData.trending_metrics, 'conversation_trends', 'total_conversations')?.direction), {
+                      className: "w-3 h-3 sm:w-4 sm:h-4 mr-1"
+                    })}
+                    {formatTrendText(
+                      getTrendingMetric(analyticsData.trending_metrics, 'conversation_trends', 'total_conversations')
+                    )}
                   </p>
                 </div>
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -254,9 +336,15 @@ export default function AnalyticsPage() {
                 <div>
                   <p className="text-xs sm:text-sm font-medium text-gray-600">Avg Response Time</p>
                   <p className="text-lg sm:text-2xl font-bold text-gray-900">{analyticsData.overview.average_response_time || 0}s</p>
-                  <p className="text-xs sm:text-sm text-green-600 flex items-center mt-1">
-                    <TrendingDown className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                    -0.5s from last period
+                  <p className={`text-xs sm:text-sm flex items-center mt-1 ${
+                    getTrendingMetric(analyticsData.trending_metrics, 'performance_trends', 'average_response_time')?.color || 'text-green-600'
+                  }`}>
+                    {React.createElement(getTrendIcon(getTrendingMetric(analyticsData.trending_metrics, 'performance_trends', 'average_response_time')?.direction), {
+                      className: "w-3 h-3 sm:w-4 sm:h-4 mr-1"
+                    })}
+                    {formatTrendText(
+                      getTrendingMetric(analyticsData.trending_metrics, 'performance_trends', 'average_response_time')
+                    )}
                   </p>
                 </div>
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -272,9 +360,15 @@ export default function AnalyticsPage() {
                 <div>
                   <p className="text-xs sm:text-sm font-medium text-gray-600">Satisfaction Score</p>
                   <p className="text-lg sm:text-2xl font-bold text-gray-900">{analyticsData.overview.customer_satisfaction || 0.0}/5</p>
-                  <p className="text-xs sm:text-sm text-green-600 flex items-center mt-1">
-                    <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                    +0.2 from last period
+                  <p className={`text-xs sm:text-sm flex items-center mt-1 ${
+                    getTrendingMetric(analyticsData.trending_metrics, 'satisfaction_trends', 'customer_satisfaction')?.color || 'text-green-600'
+                  }`}>
+                    {React.createElement(getTrendIcon(getTrendingMetric(analyticsData.trending_metrics, 'satisfaction_trends', 'customer_satisfaction')?.direction), {
+                      className: "w-3 h-3 sm:w-4 sm:h-4 mr-1"
+                    })}
+                    {formatTrendText(
+                      getTrendingMetric(analyticsData.trending_metrics, 'satisfaction_trends', 'customer_satisfaction')
+                    )}
                   </p>
                 </div>
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -290,9 +384,15 @@ export default function AnalyticsPage() {
                 <div>
                   <p className="text-xs sm:text-sm font-medium text-gray-600">Resolution Rate</p>
                   <p className="text-lg sm:text-2xl font-bold text-gray-900">{analyticsData.overview.resolution_rate || 0}%</p>
-                  <p className="text-xs sm:text-sm text-green-600 flex items-center mt-1">
-                    <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                    +2% from last period
+                  <p className={`text-xs sm:text-sm flex items-center mt-1 ${
+                    getTrendingMetric(analyticsData.trending_metrics, 'performance_trends', 'resolution_rate')?.color || 'text-green-600'
+                  }`}>
+                    {React.createElement(getTrendIcon(getTrendingMetric(analyticsData.trending_metrics, 'performance_trends', 'resolution_rate')?.direction), {
+                      className: "w-3 h-3 sm:w-4 sm:h-4 mr-1"
+                    })}
+                    {formatTrendText(
+                      getTrendingMetric(analyticsData.trending_metrics, 'performance_trends', 'resolution_rate')
+                    )}
                   </p>
                 </div>
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
@@ -315,9 +415,15 @@ export default function AnalyticsPage() {
                   <div>
                     <p className="text-xs sm:text-sm font-medium text-gray-600">Total Orders</p>
                     <p className="text-lg sm:text-2xl font-bold text-gray-900">{analyticsData.order_analytics?.total_orders || 0}</p>
-                    <p className="text-xs sm:text-sm text-green-600 flex items-center mt-1">
-                      <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                      +{analyticsData.order_analytics?.revenue_growth || 0}% growth
+                    <p className={`text-xs sm:text-sm flex items-center mt-1 ${
+                      getTrendingMetric(analyticsData.trending_metrics, 'revenue_trends', 'total_orders')?.color || 'text-green-600'
+                    }`}>
+                      {React.createElement(getTrendIcon(getTrendingMetric(analyticsData.trending_metrics, 'revenue_trends', 'total_orders')?.direction), {
+                        className: "w-3 h-3 sm:w-4 sm:h-4 mr-1"
+                      })}
+                      {formatTrendText(
+                        getTrendingMetric(analyticsData.trending_metrics, 'revenue_trends', 'total_orders')
+                      )}
                     </p>
                   </div>
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center">

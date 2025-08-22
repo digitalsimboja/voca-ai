@@ -1103,6 +1103,24 @@ export const apiService = {
     }
   },
 
+  async getTrendingMetrics(timeRange?: string): Promise<ApiResponse> {
+    try {
+      const queryParams = new URLSearchParams();
+      if (timeRange) queryParams.append('time_range', timeRange);
+
+      const endpoint = `/analytics/trends${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      const response = await makeApiCall(endpoint, { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get trending metrics error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch trending metrics',
+        data: null
+      };
+    }
+  },
+
   // Integration methods
   async getIntegrations(): Promise<ApiResponse<{ integrations: Integration[] }>> {
     try {

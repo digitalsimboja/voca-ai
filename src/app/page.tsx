@@ -141,7 +141,7 @@ const testimonials = [
   },
   {
     content:
-              "Our online store saw a 40% increase in sales after implementing Voca AI&apos;s intelligent customer support.",
+              "Our online store saw a 40% increase in sales after implementing Voca AI's intelligent customer support.",
     author: "Opeyemi Ogundele",
     role: "Operations Director",
     company: "RetailCorp Inc",
@@ -163,6 +163,7 @@ const pricingPlans = [
     description:
       "Perfect for small businesses getting started with AI phone agents.",
     features: [
+      "1 Agent",
       "Up to 1,000 calls/month",
       "2 channels (Voice + SMS)",
       "Basic AI conversation flows",
@@ -178,6 +179,7 @@ const pricingPlans = [
     period: "/month",
     description: "Ideal for growing businesses with advanced AI capabilities.",
     features: [
+      "10 Agents",
       "Up to 10,000 calls/month",
       "All channels (Voice, SMS, WhatsApp, Email)",
       "Advanced AI with custom flows",
@@ -195,6 +197,7 @@ const pricingPlans = [
     description:
       "For large organizations with unlimited scale and custom requirements.",
     features: [
+      "Unlimited Agents",
       "Unlimited calls",
       "All channels and features",
       "Custom AI model training",
@@ -224,11 +227,11 @@ export default function HomePage() {
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Meet the Future of Contact Centre —{" "}
+              Meet the Future of Contact Centre —
               <span className="text-blue-600">Voca AI Phone Agents</span>
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              AI phone agents that sound human, resolve problems, and grow your
+              AI phone agents that sound human, respond to enquiries, resolve problems, and grow your
               business — perfect for microfinance and online retail.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
@@ -243,7 +246,7 @@ export default function HomePage() {
                 className="flex items-center space-x-2 text-sm font-semibold leading-6 text-gray-900"
               >
                 <Play className="h-5 w-5" />
-                <span>Watch demo</span>
+                <span className="text-blue-600 cursor-pointer hover:text-blue-500">Watch demo</span>
               </button>
             </div>
           </div>
@@ -267,7 +270,7 @@ export default function HomePage() {
             <p className="mt-6 text-lg leading-8 text-gray-600">
               Leveraging AWS&apos;s enterprise-grade infrastructure, Voca AI delivers
               intelligent conversations that understand industry-specific needs
-              and regulatory requirements.
+              and customer expectations.
             </p>
           </div>
           <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">

@@ -177,7 +177,7 @@ export default function AgentDetailsModal({
                   Profile
                 </h5>
                 <p className="text-xs sm:text-sm text-gray-700 break-words font-medium">
-                  {agent.agentData.profile.bio}
+                  {agent.agentData?.profile?.bio || 'No bio available'}
                 </p>
               </div>
 
@@ -188,25 +188,29 @@ export default function AgentDetailsModal({
                   Social Media Platforms
                 </h5>
                 <div className="space-y-0.5 sm:space-y-1">
-                  {Object.entries(agent.agentData.socialMedia.platforms).map(
-                    ([platform, config]) => (
-                      <div
-                        key={platform}
-                        className="flex flex-col sm:flex-row sm:items-center justify-between text-xs sm:text-sm"
-                      >
-                        <span className="capitalize break-words font-medium">{platform}</span>
-                        <span
-                          className={`mt-0.5 sm:mt-0 px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium border ${
-                            config.enabled
-                              ? 'bg-green-100 text-green-700 border-green-200'
-                              : 'bg-gray-100 text-gray-500 border-gray-200'
-                          }`}
+                  {agent.agentData?.socialMedia?.platforms ? 
+                    Object.entries(agent.agentData.socialMedia.platforms).map(
+                      ([platform, config]) => (
+                        <div
+                          key={platform}
+                          className="flex flex-col sm:flex-row sm:items-center justify-between text-xs sm:text-sm"
                         >
-                          {config.enabled ? 'Enabled' : 'Disabled'}
-                        </span>
-                      </div>
+                          <span className="capitalize break-words font-medium">{platform}</span>
+                          <span
+                            className={`mt-0.5 sm:mt-0 px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium border ${
+                              config.enabled
+                                ? 'bg-green-100 text-green-700 border-green-200'
+                                : 'bg-gray-100 text-gray-500 border-gray-200'
+                            }`}
+                          >
+                            {config.enabled ? 'Enabled' : 'Disabled'}
+                          </span>
+                        </div>
+                      )
+                    ) : (
+                      <p className="text-xs sm:text-sm text-gray-500">No social media platforms configured</p>
                     )
-                  )}
+                  }
                 </div>
               </div>
 
@@ -220,19 +224,19 @@ export default function AgentDetailsModal({
                   <div>
                     <span className="text-gray-600 font-medium">Response Time:</span>
                     <span className="ml-1 text-gray-900 font-semibold">
-                      {agent.agentData.customerService.responseTime} minutes
+                      {agent.agentData?.customerService?.responseTime || 'Not set'} minutes
                     </span>
                   </div>
                   <div>
                     <span className="text-gray-600 font-medium">Auto Responses:</span>
                     <span
                       className={`ml-1 px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium border ${
-                        agent.agentData.customerService.autoResponses
+                        agent.agentData?.customerService?.autoResponses
                           ? 'bg-green-100 text-green-700 border-green-200'
                           : 'bg-gray-100 text-gray-500 border-gray-200'
                       }`}
                     >
-                      {agent.agentData.customerService.autoResponses ? 'Enabled' : 'Disabled'}
+                      {agent.agentData?.customerService?.autoResponses ? 'Enabled' : 'Disabled'}
                     </span>
                   </div>
                 </div>
@@ -245,27 +249,31 @@ export default function AgentDetailsModal({
                   AI Capabilities
                 </h5>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-2">
-                  {Object.entries(agent.agentData.aiCapabilities).map(
-                    ([capability, enabled]) => (
-                      <div
-                        key={capability}
-                        className="flex flex-col sm:flex-row sm:items-center justify-between text-xs sm:text-sm"
-                      >
-                        <span className="capitalize break-words font-medium">
-                          {capability.replace(/([A-Z])/g, ' $1').trim()}
-                        </span>
-                        <span
-                          className={`mt-0.5 sm:mt-0 px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium border ${
-                            enabled
-                              ? 'bg-green-100 text-green-700 border-green-200'
-                              : 'bg-gray-100 text-gray-500 border-gray-200'
-                          }`}
+                  {agent.agentData?.aiCapabilities ? 
+                    Object.entries(agent.agentData.aiCapabilities).map(
+                      ([capability, enabled]) => (
+                        <div
+                          key={capability}
+                          className="flex flex-col sm:flex-row sm:items-center justify-between text-xs sm:text-sm"
                         >
-                          {enabled ? 'Enabled' : 'Disabled'}
-                        </span>
-                      </div>
+                          <span className="capitalize break-words font-medium">
+                            {capability.replace(/([A-Z])/g, ' $1').trim()}
+                          </span>
+                          <span
+                            className={`mt-0.5 sm:mt-0 px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium border ${
+                              enabled
+                                ? 'bg-green-100 text-green-700 border-green-200'
+                                : 'bg-gray-100 text-gray-500 border-gray-200'
+                            }`}
+                          >
+                            {enabled ? 'Enabled' : 'Disabled'}
+                          </span>
+                        </div>
+                      )
+                    ) : (
+                      <p className="text-xs sm:text-sm text-gray-500">No AI capabilities configured</p>
                     )
-                  )}
+                  }
                 </div>
               </div>
             </div>

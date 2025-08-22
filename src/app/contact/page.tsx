@@ -120,10 +120,30 @@ export default function ContactPage() {
     setIsLoading(true)
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      // Send data to backend API
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        if (result.errors) {
+          // Handle validation errors from backend
+          setErrors(result.errors)
+        } else {
+          setErrors({ general: result.message || 'An error occurred. Please try again.' })
+        }
+        return
+      }
+
       setSubmitSuccess(true)
-    } catch {
+    } catch (error) {
+      console.error('Contact form error:', error)
       setErrors({ general: 'An error occurred. Please try again.' })
     } finally {
       setIsLoading(false)

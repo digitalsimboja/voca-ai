@@ -116,8 +116,8 @@ export default function PublicCatalogPage() {
     )
   }
 
-  const selectedPricingTier = catalog.pricingTiers[selectedTier]
-  const totalAmount = selectedPricingTier.price * quantity
+  const selectedPricingTier = catalog.pricingTiers?.[selectedTier]
+  const totalAmount = selectedPricingTier?.price ? selectedPricingTier.price * quantity : 0
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -225,9 +225,9 @@ export default function PublicCatalogPage() {
                     <div className="flex items-center justify-between">
                       <div>
                         <h4 className="font-medium text-gray-900">
-                          {tier.packs} {tier.packs === 1 ? 'Pack' : 'Packs'}
+                          {tier.packs || 1} {(tier.packs || 1) === 1 ? 'Pack' : 'Packs'}
                         </h4>
-                        <p className="text-sm text-gray-600">{tier.description}</p>
+                        <p className="text-sm text-gray-600">{tier.description || ''}</p>
                         {tier.discount && (
                           <Badge variant="default" className="mt-1">
                             {tier.discount}
@@ -241,11 +241,11 @@ export default function PublicCatalogPage() {
                       </div>
                       <div className="text-right">
                         <p className="text-2xl font-bold text-blue-600">
-                          {formatPrice(tier.price)}
+                          {formatPrice(tier.price || 0)}
                         </p>
-                        {tier.packs > 1 && (
+                        {(tier.packs || 1) > 1 && (
                           <p className="text-sm text-gray-500">
-                            {formatPrice(tier.price / tier.packs)} per pack
+                            {formatPrice((tier.price || 0) / (tier.packs || 1))} per pack
                           </p>
                         )}
                       </div>
@@ -288,7 +288,7 @@ export default function PublicCatalogPage() {
                     {formatPrice(totalAmount)}
                   </span>
                 </div>
-                {selectedPricingTier.freeDelivery && (
+                {selectedPricingTier?.freeDelivery && (
                   <p className="text-sm text-green-600 flex items-center">
                     <Truck className="w-4 h-4 mr-1" />
                     Free delivery included

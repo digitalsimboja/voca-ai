@@ -110,17 +110,17 @@ export default function PublicCatalogPage() {
         customer_phone: orderForm.customerPhone,
         delivery_address: orderForm.deliveryAddress,
         items: [{
-          name: `${orderForm.selectedTier.packs} Pack${orderForm.selectedTier.packs > 1 ? 's' : ''} - ${catalog.name}`,
+          name: `${orderForm.selectedTier?.packs || 1} Pack${(orderForm.selectedTier?.packs || 1) > 1 ? 's' : ''} - ${catalog.name}`,
           quantity: orderForm.quantity,
-          price: orderForm.selectedTier.price,
-          image: orderForm.selectedTier.image
+          price: orderForm.selectedTier?.price || 0,
+          image: orderForm.selectedTier?.image || ''
         }],
-        total_amount: orderForm.selectedTier.price * orderForm.quantity,
+        total_amount: (orderForm.selectedTier?.price || 0) * orderForm.quantity,
         store_id: catalog.storeId,
         catalog_id: catalog.id,
         agent_id: catalog.agentId,
 
-        notes: orderForm.specialInstructions || `Selected tier: ${orderForm.selectedTier.packs} pack${orderForm.selectedTier.packs > 1 ? 's' : ''}`
+        notes: orderForm.specialInstructions || `Selected tier: ${orderForm.selectedTier?.packs || 1} pack${(orderForm.selectedTier?.packs || 1) > 1 ? 's' : ''}`
       };
 
       const response = await apiService.createOrder(orderData);

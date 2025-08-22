@@ -109,11 +109,18 @@ export default function CreateStoreModal({
   };
 
   const handleStoreNameChange = (value: string) => {
-    setStoreName(value);
-    if (value.trim()) {
+    // Remove spaces and replace with underscores
+    const sanitizedValue = value.replace(/\s+/g, '_');
+    
+    // Only allow letters, numbers, underscores, and hyphens
+    const filteredValue = sanitizedValue.replace(/[^a-zA-Z0-9_-]/g, '');
+    
+    setStoreName(filteredValue);
+    
+    if (filteredValue.trim()) {
       // Debounce the API call
       const timeoutId = setTimeout(() => {
-        checkStoreNameAvailability(value);
+        checkStoreNameAvailability(filteredValue);
       }, 500);
       
       return () => clearTimeout(timeoutId);
@@ -125,6 +132,22 @@ export default function CreateStoreModal({
   const handleSubmit = async () => {
     if (!storeName.trim()) {
       toast.error("Please enter a store name");
+      return;
+    }
+
+    // Additional validation for store name format
+    if (storeName.length < 3) {
+      toast.error("Store name must be at least 3 characters long");
+      return;
+    }
+
+    if (storeName.length > 30) {
+      toast.error("Store name must be no more than 30 characters long");
+      return;
+    }
+
+    if (!/^[a-zA-Z0-9_-]+$/.test(storeName)) {
+      toast.error("Store name can only contain letters, numbers, underscores (_), and hyphens (-)");
       return;
     }
 
@@ -254,7 +277,7 @@ export default function CreateStoreModal({
               </span>
             </p>
             <p className="text-xs text-gray-500 mt-1">
-              Store name must be 3-30 characters, letters, numbers, underscores, and hyphens only.
+              Store name must be 3-30 characters. Only letters, numbers, underscores (_), and hyphens (-) are allowed. Spaces will be automatically converted to underscores.
             </p>
           </div>
 
