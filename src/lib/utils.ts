@@ -5,9 +5,18 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function formatPhoneNumber(phoneNumber: string): string {
+export function formatPhoneNumber(phoneNumber: string | undefined | null): string {
+  if (!phoneNumber || typeof phoneNumber !== 'string') {
+    return 'No phone'
+  }
+  
   // Remove all non-digit characters
   const cleaned = phoneNumber.replace(/\D/g, '')
+  
+  // If no digits found, return original
+  if (cleaned.length === 0) {
+    return phoneNumber
+  }
   
   // Format as (XXX) XXX-XXXX
   if (cleaned.length === 10) {
@@ -40,8 +49,17 @@ export function formatCurrency(amount: number, currency = 'USD'): string {
   }).format(amount)
 }
 
-export function getInitials(name: string): string {
-  return name
+export function getInitials(name: string | undefined | null): string {
+  if (!name || typeof name !== 'string') {
+    return '?'
+  }
+  
+  const trimmedName = name.trim()
+  if (trimmedName.length === 0) {
+    return '?'
+  }
+  
+  return trimmedName
     .split(' ')
     .map(word => word.charAt(0))
     .join('')

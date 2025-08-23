@@ -375,6 +375,22 @@ export const apiService = {
     }
   },
 
+  async getAgentsDebug(): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall(`/agent/debug`, {
+        method: 'GET',
+      });
+      return response;
+    } catch (error) {
+      console.error('Get agents debug error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to get debug agent data',
+        data: null
+      };
+    }
+  },
+
   async getAgentsByStore(storeId: string): Promise<ApiResponse> {
     try {
       const response = await makeApiCall(`/agent/store/${storeId}`, { method: 'GET' });
@@ -859,6 +875,37 @@ export const apiService = {
       return {
         status: 'error',
         message: 'Failed to fetch customer orders',
+        data: null
+      };
+    }
+  },
+
+  async updateCustomer(customerId: string, customerData: Record<string, unknown>): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall(`/customers/${customerId}`, {
+        method: 'PUT',
+        body: JSON.stringify(customerData),
+      });
+      return response;
+    } catch (error) {
+      console.error('Update customer error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to update customer',
+        data: null
+      };
+    }
+  },
+
+  async deleteCustomer(customerId: string): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall(`/customers/${customerId}`, { method: 'DELETE' });
+      return response;
+    } catch (error) {
+      console.error('Delete customer error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to delete customer',
         data: null
       };
     }

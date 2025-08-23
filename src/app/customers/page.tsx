@@ -18,7 +18,8 @@ import {
   MoreVertical,
   Eye,
   Edit,
-  Loader2
+  Loader2,
+  ShoppingBag
 } from 'lucide-react'
 import { formatPhoneNumber, getInitials } from '@/lib/utils'
 import { apiService } from '@/services/apiService'
@@ -46,9 +47,9 @@ interface Customer {
 }
 
 const customerTypeColors = {
-  microfinance: 'blue',
-  retailer: 'green',
-  individual: 'purple'
+  microfinance: 'default',
+  retailer: 'success',
+  individual: 'warning'
 } as const
 
 const statusColors = {
@@ -350,90 +351,77 @@ export default function CustomersPage() {
                   const lastInteractionDate = new Date(customer.lastInteraction)
                   
                   return (
-                    <div key={customer.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 sm:p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors gap-3 sm:gap-4">
-                      <div className="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                          <span className="text-xs sm:text-sm font-medium text-gray-700">
+                    <div key={customer.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
+                          <span className="text-sm font-medium text-gray-700">
                             {getInitials(customer.name)}
                           </span>
                         </div>
                         
                         <div className="flex-1 min-w-0">
-                          <div className="flex flex-wrap items-center gap-2 mb-2">
-                            <h4 className="text-sm sm:text-base font-medium text-gray-900 truncate">{customer.name}</h4>
+                          <div className="flex items-center gap-2 mb-1">
+                            <h4 className="text-sm font-medium text-gray-900 truncate">{customer.name}</h4>
                             <Badge variant={statusColors[customer.status]} size="sm">
                               {customer.status}
                             </Badge>
                             <Badge variant={customerTypeColors[customer.customerType] as "default" | "success" | "warning" | "info"} size="sm">
                               {customer.customerType}
                             </Badge>
+                            <Badge variant={customerTypeColors[customer.customerType] as "default" | "success" | "warning" | "info"} size="sm">
+                              <ShoppingBag className="w-3 h-3 flex-shrink-0" />
+                              <span>Total Orders: {customer.totalOrders}</span>
+                            </Badge>
                           </div>
                           
-                          {/* Contact Info - Mobile Stacked */}
-                          <div className="space-y-1 sm:space-y-0 sm:flex sm:items-center sm:space-x-4 mb-2">
-                            <div className="flex items-center gap-1 text-xs text-gray-500">
+                          {/* Contact Info - Compact Layout */}
+                          <div className="flex items-center gap-4 text-xs text-gray-500">
+                            <div className="flex items-center gap-1">
                               <Phone className="w-3 h-3 flex-shrink-0" />
                               <span className="truncate">{formatPhoneNumber(customer.phone)}</span>
                             </div>
-                            <div className="flex items-center gap-1 text-xs text-gray-500">
+                            <div className="flex items-center gap-1">
                               <Mail className="w-3 h-3 flex-shrink-0" />
                               <span className="truncate">{customer.email}</span>
                             </div>
-                          </div>
-                          
-                          {/* Organization and Location - Mobile Stacked */}
-                          <div className="space-y-1 sm:space-y-0 sm:flex sm:items-center sm:space-x-4 mb-2">
-                            <div className="flex items-center gap-1 text-xs text-gray-500">
+                            <div className="flex items-center gap-1">
                               <Building className="w-3 h-3 flex-shrink-0" />
                               <span className="truncate">{customer.organization}</span>
                             </div>
-                            <div className="flex items-center gap-1 text-xs text-gray-500">
+                            <div className="flex items-center gap-1">
                               <MapPin className="w-3 h-3 flex-shrink-0" />
                               <span className="truncate">{customer.location}</span>
                             </div>
-                          </div>
-                          
-                          {/* Conversations and Last Contact - Mobile Stacked */}
-                          <div className="space-y-1 sm:space-y-0 sm:flex sm:items-center sm:space-x-4">
-                            <div className="flex items-center gap-1 text-xs text-gray-500">
+                            <div className="flex items-center gap-1">
                               <MessageSquare className="w-3 h-3 flex-shrink-0" />
                               <span>{customer.totalConversations} conversations</span>
                             </div>
-                            <div className="flex items-center gap-1 text-xs text-gray-500">
-                              <Calendar className="w-3 h-3 flex-shrink-0" />
+                            <div className="flex items-center gap-1">
+                              <ShoppingBag className="w-3 h-3 flex-shrink-0" />
                               <span>Last: {lastInteractionDate.toLocaleDateString()}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Calendar className="w-3 h-3 flex-shrink-0" />
+                              <span>Total: ₦{customer.totalSpent}</span>
                             </div>
                           </div>
                         </div>
                       </div>
 
-                      {/* Tags and Actions - Mobile Stacked */}
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                        <div className="flex flex-wrap gap-1 max-w-full sm:max-w-32">
-                          {customer.tags.slice(0, 2).map((tag, index) => (
-                            <span key={index} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                              {tag}
-                            </span>
-                          ))}
-                          {customer.tags.length > 2 && (
-                            <span className="text-xs text-gray-500">+{customer.tags.length - 2}</span>
-                          )}
-                        </div>
-                        
-                        <div className="flex items-center gap-1">
-                          <button className="p-1.5 rounded hover:bg-gray-200 transition-colors" title="View customer">
-                            <Eye className="w-4 h-4 text-gray-600" />
-                          </button>
-                          <button className="p-1.5 rounded hover:bg-gray-200 transition-colors" title="Edit customer">
-                            <Edit className="w-4 h-4 text-gray-600" />
-                          </button>
-                          <button className="p-1.5 rounded hover:bg-gray-200 transition-colors" title="Call customer">
-                            <Phone className="w-4 h-4 text-gray-600" />
-                          </button>
-                          <button className="p-1.5 rounded hover:bg-gray-200 transition-colors" title="More options">
-                            <MoreVertical className="w-4 h-4 text-gray-600" />
-                          </button>
-                        </div>
+                      {/* Actions - Compact */}
+                      <div className="flex items-center gap-1 ml-4">
+                        <button onClick={() => window.location.href = `/customers/${customer.id}`} className="p-1.5 rounded hover:bg-gray-200 transition-colors" title="View customer">
+                          <Eye className="w-4 h-4 text-gray-600" />
+                        </button>
+                        <button onClick={() => window.location.href = `/customers/${customer.id}/edit`} className="p-1.5 rounded hover:bg-gray-200 transition-colors" title="Edit customer">
+                          <Edit className="w-4 h-4 text-gray-600" />
+                        </button>
+                        <button onClick={() => window.location.href = `/customers/${customer.id}/call`} className="p-1.5 rounded hover:bg-gray-200 transition-colors" title="Call customer">
+                          <Phone className="w-4 h-4 text-gray-600" />
+                        </button>
+                        <button onClick={() => window.location.href = `/customers/${customer.id}/more`} className="p-1.5 rounded hover:bg-gray-200 transition-colors" title="More options">
+                          <MoreVertical className="w-4 h-4 text-gray-600" />
+                        </button>
                       </div>
                     </div>
                   )
