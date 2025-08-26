@@ -1,6 +1,5 @@
 "use client";
 
-
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
@@ -26,7 +25,7 @@ const features = [
   {
     name: "Voice & Multichannel Support",
     description:
-      "Handle phone calls, WhatsApp, SMS, and email seamlessly with unified conversation management.",
+      "Handle phone calls, WhatsApp, SMS, and Social Media seamlessly with unified conversation management.",
     icon: Phone,
     color: "bg-blue-500",
   },
@@ -141,7 +140,7 @@ const testimonials = [
   },
   {
     content:
-              "Our online store saw a 40% increase in sales after implementing Voca AI's intelligent customer support.",
+      "Our online store saw a 40% increase in sales after implementing Voca AI's intelligent customer support.",
     author: "Opeyemi Ogundele",
     role: "Operations Director",
     company: "RetailCorp Inc",
@@ -181,7 +180,7 @@ const pricingPlans = [
     features: [
       "10 Agents",
       "Up to 10,000 calls/month",
-      "All channels (Voice, SMS, WhatsApp, Email)",
+      "All channels (Voice, SMS, WhatsApp, Social Media)",
       "Advanced AI with custom flows",
       "Priority support",
       "Advanced analytics",
@@ -211,7 +210,6 @@ const pricingPlans = [
 ];
 
 export default function HomePage() {
-  
   const router = useRouter();
 
   return (
@@ -231,8 +229,9 @@ export default function HomePage() {
               <span className="text-blue-600">Voca AI Phone Agents</span>
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              AI phone agents that sound human, respond to enquiries, resolve problems, and grow your
-              business — perfect for microfinance and online retail.
+              AI phone agents that sound human, respond to enquiries, resolve
+              problems, and grow your business — perfect for microfinance and
+              online retail.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link
@@ -246,7 +245,9 @@ export default function HomePage() {
                 className="flex items-center space-x-2 text-sm font-semibold leading-6 text-gray-900"
               >
                 <Play className="h-5 w-5" />
-                <span className="text-blue-600 cursor-pointer hover:text-blue-500">Watch demo</span>
+                <span className="text-blue-600 cursor-pointer hover:text-blue-500">
+                  Watch demo
+                </span>
               </button>
             </div>
           </div>
@@ -268,9 +269,8 @@ export default function HomePage() {
               Purpose-built for financial services and e-commerce
             </p>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Leveraging AWS&apos;s enterprise-grade infrastructure, Voca AI delivers
-              intelligent conversations that understand industry-specific needs
-              and customer expectations.
+              Voca AI delivers intelligent conversations that understand
+              industry-specific needs and customer expectations.
             </p>
           </div>
           <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
@@ -413,7 +413,9 @@ export default function HomePage() {
                       />
                     ))}
                   </div>
-                  <p className="text-gray-600 mb-6">&quot;{testimonial.content}&quot;</p>
+                  <p className="text-gray-600 mb-6">
+                    &quot;{testimonial.content}&quot;
+                  </p>
                   <div>
                     <p className="font-semibold text-gray-900">
                       {testimonial.author}

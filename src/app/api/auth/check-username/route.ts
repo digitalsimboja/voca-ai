@@ -8,6 +8,8 @@ export async function POST(request: NextRequest) {
     
     // Validate required fields
     const { username } = body
+
+    console.log('username', username)
     
     if (!username) {
       return NextResponse.json(
@@ -17,10 +19,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate username format
-    const usernameRegex = /^[a-zA-Z0-9_-]{3,20}$/
+    const usernameRegex = /^[a-zA-Z0-9_-]{4,20}$/
     if (!usernameRegex.test(username)) {
       return NextResponse.json(
-        { error: 'Username must be 3-20 characters long and contain only letters, numbers, underscores, and hyphens' },
+        { error: 'Username must be 4-20 characters long and contain only letters, numbers, underscores, and hyphens' },
         { status: 400 }
       )
     }

@@ -105,6 +105,7 @@ export default function SettingsPage() {
       try {
         const settingsResult = await apiService.getSettings();
         if (settingsResult.status === 'success' && settingsResult.data) {
+          console.log('settingsResult', settingsResult.data)
           setSettings((prev) => ({
             ...prev,
             ...(settingsResult.data as Record<string, unknown>),

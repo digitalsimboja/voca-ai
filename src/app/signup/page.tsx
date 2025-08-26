@@ -1,238 +1,255 @@
-'use client'
+"use client";
 
-import { useState, useEffect, Suspense } from 'react'
-import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { Eye, EyeOff, Mail, Lock, ArrowLeft, AlertCircle, CheckCircle, User, Building, CreditCard, ShoppingCart } from 'lucide-react'
-import { useAuth } from '@/hooks/useAuth'
+import { useState, useEffect, Suspense } from "react";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import {
+  Eye,
+  EyeOff,
+  Mail,
+  Lock,
+  ArrowLeft,
+  AlertCircle,
+  CheckCircle,
+  User,
+  Building,
+  CreditCard,
+  ShoppingCart,
+} from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
-type BusinessType = 'banking' | 'retail'
+type BusinessType = "banking" | "retail";
 
 function SignupPageContent() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const { signup, user, loading } = useAuth()
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { signup, user, loading } = useAuth();
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    companyName: '',
-    businessType: 'retail' as BusinessType,
+    firstName: "",
+    lastName: "",
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    companyName: "",
+    businessType: "retail" as BusinessType,
     agreeToTerms: false,
-    agreeToMarketing: false
-  })
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [errors, setErrors] = useState<{ [key: string]: string }>({})
-  const [signupSuccess, setSignupSuccess] = useState(false)
-  const [usernameStatus, setUsernameStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle')
+    agreeToMarketing: false,
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [signupSuccess, setSignupSuccess] = useState(false);
+  const [usernameStatus, setUsernameStatus] = useState<
+    "idle" | "checking" | "available" | "taken"
+  >("idle");
 
   const businessTypes = [
     {
-      id: 'banking',
-      title: 'Microfinance Bank',
-      description: 'Transform loan processing and customer support with intelligent AI agents',
+      id: "banking",
+      title: "Microfinance Bank",
+      description:
+        "Transform loan processing and customer support with intelligent AI agents",
       icon: CreditCard,
       features: [
-        '24/7 loan inquiry support',
-        'Automated KYC verification',
-        'Payment reminder calls',
-        'Account balance inquiries'
-      ]
+        "24/7 loan inquiry support",
+        "Automated KYC verification",
+        "Payment reminder calls",
+        "Account balance inquiries",
+      ],
     },
     {
-      id: 'retail',
-      title: 'Online Retailer',
-      description: 'Enhance customer experience and boost sales with AI-powered support',
+      id: "retail",
+      title: "Online Retailer",
+      description:
+        "Enhance customer experience and boost sales with AI-powered support",
       icon: ShoppingCart,
       features: [
-        'Order status inquiries',
-        'Return and refund processing',
-        'Product recommendations',
-        'Delivery tracking updates'
-      ]
-    }
-  ]
-
-
+        "Order status inquiries",
+        "Return and refund processing",
+        "Product recommendations",
+        "Delivery tracking updates",
+      ],
+    },
+  ];
 
   const validateForm = () => {
-    const newErrors: { [key: string]: string } = {}
+    const newErrors: { [key: string]: string } = {};
 
     // First Name validation
     if (!formData.firstName.trim()) {
-      newErrors.firstName = 'First name is required'
-    } else if (formData.firstName.trim().length < 2) {
-      newErrors.firstName = 'First name must be at least 2 characters'
+      newErrors.firstName = "First name is required";
+    } else if (formData.firstName.trim().length < 4) {
+      newErrors.firstName = "First name must be at least 3 characters";
     }
 
     // Last Name validation
     if (!formData.lastName.trim()) {
-      newErrors.lastName = 'Last name is required'
-    } else if (formData.lastName.trim().length < 2) {
-      newErrors.lastName = 'Last name must be at least 2 characters'
+      newErrors.lastName = "Last name is required";
+    } else if (formData.lastName.trim().length < 3) {
+      newErrors.lastName = "Last name must be at least 3 characters";
     }
 
     // Username validation
     if (!formData.username.trim()) {
-      newErrors.username = 'Username is required'
-    } else if (formData.username.trim().length < 3) {
-      newErrors.username = 'Username must be at least 3 characters'
+      newErrors.username = "Username is required";
+    } else if (formData.username.trim().length < 4) {
+      newErrors.username = "Username must be at least 4 characters";
     } else if (formData.username.trim().length > 20) {
-      newErrors.username = 'Username must be 20 characters or less'
+      newErrors.username = "Username must be 20 characters or less";
     } else if (!/^[a-zA-Z0-9_-]+$/.test(formData.username)) {
-      newErrors.username = 'Username can only contain letters, numbers, underscores, and hyphens'
-    } else if (usernameStatus === 'taken') {
-      newErrors.username = 'Username is already taken'
-    } else if (usernameStatus === 'checking') {
-      newErrors.username = 'Please wait while we check username availability'
+      newErrors.username =
+        "Username can only contain letters, numbers, underscores, and hyphens";
+    } else if (usernameStatus === "taken") {
+      newErrors.username = "Username is already taken";
+    } else if (usernameStatus === "checking") {
+      newErrors.username = "Please wait while we check username availability";
     }
 
     // Email validation
     if (!formData.email) {
-      newErrors.email = 'Email is required'
+      newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address'
+      newErrors.email = "Please enter a valid email address";
     }
 
     // Password validation
     if (!formData.password) {
-      newErrors.password = 'Password is required'
+      newErrors.password = "Password is required";
     } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters'
+      newErrors.password = "Password must be at least 8 characters";
     } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      newErrors.password = 'Password must contain at least one uppercase letter, one lowercase letter, and one number'
+      newErrors.password =
+        "Password must contain at least one uppercase letter, one lowercase letter, and one number";
     }
 
     // Confirm Password validation
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password'
+      newErrors.confirmPassword = "Please confirm your password";
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match'
+      newErrors.confirmPassword = "Passwords do not match";
     }
 
     // Company Name validation
     if (!formData.companyName.trim()) {
-      newErrors.companyName = 'Company name is required'
+      newErrors.companyName = "Company name is required";
     }
-
-
 
     // Business Type validation
     if (!formData.businessType) {
-      newErrors.businessType = 'Please select your business type'
+      newErrors.businessType = "Please select your business type";
     }
 
     // Terms agreement validation
     if (!formData.agreeToTerms) {
-      newErrors.agreeToTerms = 'You must agree to the Terms of Service and Privacy Policy'
+      newErrors.agreeToTerms =
+        "You must agree to the Terms of Service and Privacy Policy";
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target
-    
-    setFormData(prev => ({
+    const { name, value, type, checked } = e.target;
+
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }))
-    
+      [name]: type === "checkbox" ? checked : value,
+    }));
+
     // Clear error when user starts typing
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }))
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
 
     // Check username availability when username field changes
-    if (name === 'username') {
+    if (name === "username") {
       const debounceTimeout = setTimeout(() => {
-        checkUsernameAvailability(value)
-      }, 500) // Debounce for 500ms
+        checkUsernameAvailability(value);
+      }, 500); // Debounce for 500ms
 
-      return () => clearTimeout(debounceTimeout)
+      return () => clearTimeout(debounceTimeout);
     }
-  }
+  };
 
   const handleBusinessTypeSelect = (businessType: BusinessType) => {
-    setFormData(prev => ({ ...prev, businessType }))
+    setFormData((prev) => ({ ...prev, businessType }));
     if (errors.businessType) {
-      setErrors(prev => ({ ...prev, businessType: '' }))
+      setErrors((prev) => ({ ...prev, businessType: "" }));
     }
-  }
+  };
 
   const checkUsernameAvailability = async (username: string) => {
-    if (!username || username.length < 3) {
-      setUsernameStatus('idle')
-      return
+    if (!username || username.length < 4) {
+      setUsernameStatus("idle");
+      return;
     }
 
-    setUsernameStatus('checking')
-    
+    setUsernameStatus("checking");
+
     try {
-      const response = await fetch('/api/auth/check-username', {
-        method: 'POST',
+      const response = await fetch("/api/auth/check-username", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ username }),
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (response.ok && data.success) {
-        setUsernameStatus(data.data.available ? 'available' : 'taken')
+        setUsernameStatus(data.data.available ? "available" : "taken");
       } else {
-        setUsernameStatus('idle')
+        setUsernameStatus("idle");
       }
     } catch (error) {
-      console.error('Username check failed:', error)
-      setUsernameStatus('idle')
+      console.error("Username check failed:", error);
+      setUsernameStatus("idle");
     }
-  }
+  };
 
   // Redirect if already authenticated
   useEffect(() => {
     if (user && !loading) {
-      const redirectTo = searchParams.get('redirect') || '/dashboard'
-      router.push(redirectTo)
+      const redirectTo = searchParams.get("redirect") || "/dashboard";
+      router.push(redirectTo);
     }
-  }, [user, loading, router, searchParams])
+  }, [user, loading, router, searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
+    e.preventDefault();
+
     if (!validateForm()) {
-      return
+      return;
     }
 
-    setIsLoading(true)
-    setErrors({})
-    
+    setIsLoading(true);
+    setErrors({});
+
     try {
-      const result = await signup(formData)
-      
+      const result = await signup(formData);
+
       if (result.success) {
-        setSignupSuccess(true)
-        const redirectTo = searchParams.get('redirect') || '/dashboard'
+        setSignupSuccess(true);
+        const redirectTo = searchParams.get("redirect") || "/dashboard";
         setTimeout(() => {
-          router.push(redirectTo)
-        }, 1500)
+          router.push(redirectTo);
+        }, 1500);
       } else {
-        setErrors({ general: result.error || 'Signup failed' })
+        setErrors({ general: result.error || "Signup failed" });
       }
     } catch (error) {
-      console.error('Signup error:', error)
-      setErrors({ general: 'Network error. Please check your connection and try again.' })
+      console.error("Signup error:", error);
+      setErrors({
+        general: "Network error. Please check your connection and try again.",
+      });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -293,7 +310,10 @@ function SignupPageContent() {
               {/* Name Fields */}
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="firstName"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     First name
                   </label>
                   <div className="mt-1 relative">
@@ -309,18 +329,23 @@ function SignupPageContent() {
                       value={formData.firstName}
                       onChange={handleInputChange}
                       className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
-                        errors.firstName ? 'border-red-300' : 'border-gray-300'
+                        errors.firstName ? "border-red-300" : "border-gray-300"
                       }`}
                       placeholder="Enter your first name"
                     />
                   </div>
                   {errors.firstName && (
-                    <p className="mt-2 text-sm text-red-600">{errors.firstName}</p>
+                    <p className="mt-2 text-sm text-red-600">
+                      {errors.firstName}
+                    </p>
                   )}
                 </div>
 
                 <div>
-                  <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="lastName"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Last name
                   </label>
                   <div className="mt-1 relative">
@@ -336,20 +361,25 @@ function SignupPageContent() {
                       value={formData.lastName}
                       onChange={handleInputChange}
                       className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
-                        errors.lastName ? 'border-red-300' : 'border-gray-300'
+                        errors.lastName ? "border-red-300" : "border-gray-300"
                       }`}
                       placeholder="Enter your last name"
                     />
                   </div>
                   {errors.lastName && (
-                    <p className="mt-2 text-sm text-red-600">{errors.lastName}</p>
+                    <p className="mt-2 text-sm text-red-600">
+                      {errors.lastName}
+                    </p>
                   )}
                 </div>
               </div>
 
               {/* Username Field */}
               <div>
-                <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="username"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Username
                 </label>
                 <div className="mt-1 relative">
@@ -365,20 +395,24 @@ function SignupPageContent() {
                     value={formData.username}
                     onChange={handleInputChange}
                     className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
-                      errors.username ? 'border-red-300' : 
-                      usernameStatus === 'available' ? 'border-green-300' :
-                      usernameStatus === 'taken' ? 'border-red-300' : 'border-gray-300'
+                      errors.username
+                        ? "border-red-300"
+                        : usernameStatus === "available"
+                        ? "border-green-300"
+                        : usernameStatus === "taken"
+                        ? "border-red-300"
+                        : "border-gray-300"
                     }`}
                     placeholder="Choose a unique username"
                   />
                   <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                    {usernameStatus === 'checking' && (
+                    {usernameStatus === "checking" && (
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
                     )}
-                    {usernameStatus === 'available' && (
+                    {usernameStatus === "available" && (
                       <CheckCircle className="h-4 w-4 text-green-600" />
                     )}
-                    {usernameStatus === 'taken' && (
+                    {usernameStatus === "taken" && (
                       <AlertCircle className="h-4 w-4 text-red-600" />
                     )}
                   </div>
@@ -386,11 +420,15 @@ function SignupPageContent() {
                 {errors.username && (
                   <p className="mt-2 text-sm text-red-600">{errors.username}</p>
                 )}
-                {usernameStatus === 'available' && (
-                  <p className="mt-2 text-sm text-green-600">Username is available</p>
+                {usernameStatus === "available" && (
+                  <p className="mt-2 text-sm text-green-600">
+                    Username is available
+                  </p>
                 )}
-                {usernameStatus === 'taken' && (
-                  <p className="mt-2 text-sm text-red-600">Username is already taken</p>
+                {usernameStatus === "taken" && (
+                  <p className="mt-2 text-sm text-red-600">
+                    Username is already taken
+                  </p>
                 )}
                 <p className="mt-1 text-xs text-gray-500">
                   This will be your unique identifier on the platform
@@ -399,7 +437,10 @@ function SignupPageContent() {
 
               {/* Email Field */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Email address
                 </label>
                 <div className="mt-1 relative">
@@ -415,7 +456,7 @@ function SignupPageContent() {
                     value={formData.email}
                     onChange={handleInputChange}
                     className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
-                      errors.email ? 'border-red-300' : 'border-gray-300'
+                      errors.email ? "border-red-300" : "border-gray-300"
                     }`}
                     placeholder="Enter your email"
                   />
@@ -427,7 +468,10 @@ function SignupPageContent() {
 
               {/* Company Name */}
               <div>
-                <label htmlFor="companyName" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="companyName"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Company name
                 </label>
                 <div className="mt-1 relative">
@@ -443,17 +487,17 @@ function SignupPageContent() {
                     value={formData.companyName}
                     onChange={handleInputChange}
                     className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
-                      errors.companyName ? 'border-red-300' : 'border-gray-300'
+                      errors.companyName ? "border-red-300" : "border-gray-300"
                     }`}
                     placeholder="Enter your company name"
                   />
                 </div>
                 {errors.companyName && (
-                  <p className="mt-2 text-sm text-red-600">{errors.companyName}</p>
+                  <p className="mt-2 text-sm text-red-600">
+                    {errors.companyName}
+                  </p>
                 )}
               </div>
-
-
 
               {/* Business Type Selection */}
               <div>
@@ -464,31 +508,50 @@ function SignupPageContent() {
                   {businessTypes.map((type) => (
                     <div
                       key={type.id}
-                      onClick={() => handleBusinessTypeSelect(type.id as BusinessType)}
+                      onClick={() =>
+                        handleBusinessTypeSelect(type.id as BusinessType)
+                      }
                       className={`relative cursor-pointer rounded-lg border p-4 transition-all hover:shadow-md ${
                         formData.businessType === type.id
-                          ? 'border-blue-500 bg-blue-50'
-                          : 'border-gray-300 hover:border-gray-400'
+                          ? "border-blue-500 bg-blue-50"
+                          : "border-gray-300 hover:border-gray-400"
                       }`}
                     >
                       <div className="flex items-start space-x-3">
-                        <div className={`h-8 w-8 rounded-lg flex items-center justify-center ${
-                          formData.businessType === type.id ? 'bg-blue-500' : 'bg-gray-100'
-                        }`}>
-                          <type.icon className={`h-5 w-5 ${
-                            formData.businessType === type.id ? 'text-white' : 'text-gray-600'
-                          }`} />
+                        <div
+                          className={`h-8 w-8 rounded-lg flex items-center justify-center ${
+                            formData.businessType === type.id
+                              ? "bg-blue-500"
+                              : "bg-gray-100"
+                          }`}
+                        >
+                          <type.icon
+                            className={`h-5 w-5 ${
+                              formData.businessType === type.id
+                                ? "text-white"
+                                : "text-gray-600"
+                            }`}
+                          />
                         </div>
                         <div className="flex-1">
-                          <h3 className={`text-sm font-medium ${
-                            formData.businessType === type.id ? 'text-blue-900' : 'text-gray-900'
-                          }`}>
+                          <h3
+                            className={`text-sm font-medium ${
+                              formData.businessType === type.id
+                                ? "text-blue-900"
+                                : "text-gray-900"
+                            }`}
+                          >
                             {type.title}
                           </h3>
-                          <p className="text-xs text-gray-500 mt-1">{type.description}</p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            {type.description}
+                          </p>
                           <ul className="mt-2 space-y-1">
                             {type.features.slice(0, 2).map((feature, index) => (
-                              <li key={index} className="text-xs text-gray-600 flex items-center">
+                              <li
+                                key={index}
+                                className="text-xs text-gray-600 flex items-center"
+                              >
                                 <div className="h-1 w-1 bg-gray-400 rounded-full mr-2"></div>
                                 {feature}
                               </li>
@@ -507,14 +570,19 @@ function SignupPageContent() {
                   ))}
                 </div>
                 {errors.businessType && (
-                  <p className="mt-2 text-sm text-red-600">{errors.businessType}</p>
+                  <p className="mt-2 text-sm text-red-600">
+                    {errors.businessType}
+                  </p>
                 )}
               </div>
 
               {/* Password Fields */}
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Password
                   </label>
                   <div className="mt-1 relative">
@@ -524,13 +592,13 @@ function SignupPageContent() {
                     <input
                       id="password"
                       name="password"
-                      type={showPassword ? 'text' : 'password'}
+                      type={showPassword ? "text" : "password"}
                       autoComplete="new-password"
                       required
                       value={formData.password}
                       onChange={handleInputChange}
                       className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
-                        errors.password ? 'border-red-300' : 'border-gray-300'
+                        errors.password ? "border-red-300" : "border-gray-300"
                       }`}
                       placeholder="Create a password"
                     />
@@ -547,12 +615,17 @@ function SignupPageContent() {
                     </button>
                   </div>
                   {errors.password && (
-                    <p className="mt-2 text-sm text-red-600">{errors.password}</p>
+                    <p className="mt-2 text-sm text-red-600">
+                      {errors.password}
+                    </p>
                   )}
                 </div>
 
                 <div>
-                  <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="confirmPassword"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Confirm password
                   </label>
                   <div className="mt-1 relative">
@@ -562,20 +635,24 @@ function SignupPageContent() {
                     <input
                       id="confirmPassword"
                       name="confirmPassword"
-                      type={showConfirmPassword ? 'text' : 'password'}
+                      type={showConfirmPassword ? "text" : "password"}
                       autoComplete="new-password"
                       required
                       value={formData.confirmPassword}
                       onChange={handleInputChange}
                       className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
-                        errors.confirmPassword ? 'border-red-300' : 'border-gray-300'
+                        errors.confirmPassword
+                          ? "border-red-300"
+                          : "border-gray-300"
                       }`}
                       placeholder="Confirm your password"
                     />
                     <button
                       type="button"
                       className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
                     >
                       {showConfirmPassword ? (
                         <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
@@ -585,7 +662,9 @@ function SignupPageContent() {
                     </button>
                   </div>
                   {errors.confirmPassword && (
-                    <p className="mt-2 text-sm text-red-600">{errors.confirmPassword}</p>
+                    <p className="mt-2 text-sm text-red-600">
+                      {errors.confirmPassword}
+                    </p>
                   )}
                 </div>
               </div>
@@ -601,13 +680,22 @@ function SignupPageContent() {
                     onChange={handleInputChange}
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded mt-1"
                   />
-                  <label htmlFor="agreeToTerms" className="ml-2 block text-sm text-gray-900">
-                    I agree to the{' '}
-                    <Link href="/terms" className="text-blue-600 hover:text-blue-500">
+                  <label
+                    htmlFor="agreeToTerms"
+                    className="ml-2 block text-sm text-gray-900"
+                  >
+                    I agree to the{" "}
+                    <Link
+                      href="/terms"
+                      className="text-blue-600 hover:text-blue-500"
+                    >
                       Terms of Service
-                    </Link>{' '}
-                    and{' '}
-                    <Link href="/privacy" className="text-blue-600 hover:text-blue-500">
+                    </Link>{" "}
+                    and{" "}
+                    <Link
+                      href="/privacy"
+                      className="text-blue-600 hover:text-blue-500"
+                    >
                       Privacy Policy
                     </Link>
                   </label>
@@ -625,8 +713,12 @@ function SignupPageContent() {
                     onChange={handleInputChange}
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded mt-1"
                   />
-                  <label htmlFor="agreeToMarketing" className="ml-2 block text-sm text-gray-900">
-                    I would like to receive updates about Voca AI features and news
+                  <label
+                    htmlFor="agreeToMarketing"
+                    className="ml-2 block text-sm text-gray-900"
+                  >
+                    I would like to receive updates about Voca AI features and
+                    news
                   </label>
                 </div>
               </div>
@@ -644,7 +736,7 @@ function SignupPageContent() {
                       Creating account...
                     </div>
                   ) : (
-                    'Create account'
+                    "Create account"
                   )}
                 </button>
               </div>
@@ -658,7 +750,9 @@ function SignupPageContent() {
                 <div className="w-full border-t border-gray-300" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Already have an account?</span>
+                <span className="px-2 bg-white text-gray-500">
+                  Already have an account?
+                </span>
               </div>
             </div>
 
@@ -677,32 +771,34 @@ function SignupPageContent() {
       {/* Footer */}
       <div className="mt-8 text-center">
         <p className="text-xs text-gray-500">
-          By creating an account, you agree to our{' '}
+          By creating an account, you agree to our{" "}
           <Link href="/terms" className="text-blue-600 hover:text-blue-500">
             Terms of Service
-          </Link>{' '}
-          and{' '}
+          </Link>{" "}
+          and{" "}
           <Link href="/privacy" className="text-blue-600 hover:text-blue-500">
             Privacy Policy
           </Link>
         </p>
       </div>
     </div>
-  )
+  );
 }
 
 export default function SignupPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Voca AI</p>
-          <p className="mt-4 text-gray-600">Loading...</p>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Voca AI</p>
+            <p className="mt-4 text-gray-600">Loading...</p>
+          </div>
         </div>
-      </div>
-    }>
+      }
+    >
       <SignupPageContent />
     </Suspense>
-  )
+  );
 }
