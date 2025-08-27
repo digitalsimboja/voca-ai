@@ -27,7 +27,7 @@ const features = [
     description:
       "Handle phone calls, WhatsApp, SMS, and Social Media seamlessly with unified conversation management.",
     icon: Phone,
-    color: "bg-blue-500",
+    color: "bg-purple-500",
   },
   {
     name: "AI-Driven Conversations",
@@ -79,8 +79,8 @@ const useCases = [
       "Account balance inquiries",
       "Loan application status updates",
     ],
-    color: "bg-blue-50 border-blue-200",
-    iconColor: "bg-blue-500",
+    color: "bg-purple-50 border-purple-200",
+    iconColor: "bg-purple-500",
   },
   {
     title: "Online Retailers",
@@ -226,7 +226,7 @@ export default function HomePage() {
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
               Meet the Future of Contact Centre —
-              <span className="text-blue-600">Voca AI Phone Agents</span>
+              <span className="text-purple-600">Voca AI Phone Agents</span>
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
               AI phone agents that sound human, respond to enquiries, resolve
@@ -236,7 +236,7 @@ export default function HomePage() {
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link
                 href="#contact"
-                className="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                className="rounded-md bg-purple-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
               >
                 Get started
               </Link>
@@ -245,7 +245,7 @@ export default function HomePage() {
                 className="flex items-center space-x-2 text-sm font-semibold leading-6 text-gray-900"
               >
                 <Play className="h-5 w-5" />
-                <span className="text-blue-600 cursor-pointer hover:text-blue-500">
+                <span className="text-purple-600 cursor-pointer hover:text-purple-500">
                   Watch demo
                 </span>
               </button>
@@ -262,7 +262,7 @@ export default function HomePage() {
       <section id="features" className="py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-base font-semibold leading-7 text-blue-600">
+            <h2 className="text-base font-semibold leading-7 text-purple-600">
               Voca AI Core Strengths
             </h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -302,7 +302,7 @@ export default function HomePage() {
       <section id="use-cases" className="py-24 sm:py-32 bg-gray-50">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-base font-semibold leading-7 text-blue-600">
+            <h2 className="text-base font-semibold leading-7 text-purple-600">
               Enterprise Solutions
             </h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -351,7 +351,7 @@ export default function HomePage() {
       <section id="how-it-works" className="py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-base font-semibold leading-7 text-blue-600">
+            <h2 className="text-base font-semibold leading-7 text-purple-600">
               Voca AI Implementation
             </h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -368,7 +368,7 @@ export default function HomePage() {
               {howItWorks.map((step, index) => (
                 <div key={step.step} className="relative">
                   <div className="flex items-center space-x-4 mb-6">
-                    <div className="h-12 w-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
+                    <div className="h-12 w-12 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold">
                       {step.step}
                     </div>
                     {index < howItWorks.length - 1 && (
@@ -390,7 +390,7 @@ export default function HomePage() {
       <section className="py-24 sm:py-32 bg-gray-50">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-base font-semibold leading-7 text-blue-600">
+            <h2 className="text-base font-semibold leading-7 text-purple-600">
               Customer Success
             </h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -421,7 +421,7 @@ export default function HomePage() {
                       {testimonial.author}
                     </p>
                     <p className="text-sm text-gray-500">{testimonial.role}</p>
-                    <p className="text-sm text-blue-600">
+                    <p className="text-sm text-purple-600">
                       {testimonial.company}
                     </p>
                   </div>
@@ -433,10 +433,10 @@ export default function HomePage() {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-24 sm:py-32">
+      {/* <section id="pricing" className="py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-base font-semibold leading-7 text-blue-600">
+            <h2 className="text-base font-semibold leading-7 text-purple-600">
               Pricing
             </h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -455,13 +455,13 @@ export default function HomePage() {
                   key={plan.name}
                   className={`relative rounded-2xl border p-8 ${
                     plan.popular
-                      ? "border-blue-600 shadow-lg"
+                      ? "border-purple-600 shadow-lg"
                       : "border-gray-200"
                   }`}
                 >
                   {plan.popular && (
                     <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                      <span className="bg-purple-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
                         Most Popular
                       </span>
                     </div>
@@ -497,7 +497,7 @@ export default function HomePage() {
                       }}
                       className={`w-full rounded-lg px-4 py-2 font-semibold transition-colors ${
                         plan.popular
-                          ? "bg-blue-600 text-white hover:bg-blue-500"
+                          ? "bg-purple-600 text-white hover:bg-purple-500"
                           : "bg-gray-100 text-gray-900 hover:bg-gray-200"
                       }`}
                     >
@@ -509,16 +509,16 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section */}
-      <section id="contact" className="py-24 sm:py-32 bg-blue-600">
+      <section id="contact" className="py-24 sm:py-32 bg-purple-600">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Ready to revolutionize your customer interactions?
             </h2>
-            <p className="mt-6 text-lg leading-8 text-blue-100">
+            <p className="mt-6 text-lg leading-8 text-purple-100">
               Join forward-thinking microfinance banks and online retailers
               already leveraging Voca AI to deliver exceptional customer
               experiences and drive business growth.
@@ -526,13 +526,13 @@ export default function HomePage() {
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link
                 href="/login"
-                className="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-blue-600 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                className="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-purple-600 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
                 Start free trial
               </Link>
               <Link
                 href="/contact"
-                className="text-sm font-semibold leading-6 text-white hover:text-blue-100"
+                className="text-sm font-semibold leading-6 text-white hover:text-purple-100"
               >
                 Contact sales <ArrowRight className="inline h-4 w-4 ml-1" />
               </Link>

@@ -81,7 +81,7 @@ export default function OrderDetailPage() {
       <MainLayout>
         <div className="flex items-center justify-center h-64">
           <div className="flex items-center space-x-2">
-            <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+            <Loader2 className="w-6 h-6 animate-spin text-purple-600" />
             <span className="text-gray-600 text-sm sm:text-base">Loading order details...</span>
           </div>
         </div>
@@ -103,7 +103,7 @@ export default function OrderDetailPage() {
             </p>
             <button
               onClick={() => router.push('/orders')}
-              className="inline-flex items-center space-x-2 bg-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base"
+              className="inline-flex items-center space-x-2 bg-purple-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm sm:text-base"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to Orders</span>
@@ -139,7 +139,7 @@ export default function OrderDetailPage() {
             <Badge variant={statusColors[order.status]} size="lg">
               {order.status}
             </Badge>
-            <button className="flex items-center space-x-1 sm:space-x-2 bg-blue-600 text-white px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg hover:bg-blue-700 transition-colors text-xs sm:text-sm">
+            <button className="flex items-center space-x-1 sm:space-x-2 bg-purple-600 text-white px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg hover:bg-purple-700 transition-colors text-xs sm:text-sm">
               <Edit className="w-3 h-3 sm:w-4 sm:h-4" />
               <span>Edit</span>
             </button>
@@ -166,7 +166,7 @@ export default function OrderDetailPage() {
                           <div className="flex flex-col items-center">
                             <div className={`w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center ${
                               isCompleted 
-                                ? 'bg-blue-600 text-white' 
+                                ? 'bg-purple-600 text-white' 
                                 : 'bg-gray-200 text-gray-400'
                             }`}>
                               <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -179,7 +179,7 @@ export default function OrderDetailPage() {
                           </div>
                           {index < statusSteps.length - 1 && (
                             <div className={`w-6 sm:w-12 h-0.5 mx-1 sm:mx-2 ${
-                              isCompleted ? 'bg-blue-600' : 'bg-gray-200'
+                              isCompleted ? 'bg-purple-600' : 'bg-gray-200'
                             }`} />
                           )}
                         </div>
@@ -291,7 +291,7 @@ export default function OrderDetailPage() {
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm sm:text-base text-gray-700">
                   <div className="flex items-center space-x-2">
-                    <MessageSquare className="w-4 h-4 text-blue-600" />
+                    <MessageSquare className="w-4 h-4 text-purple-600" />
                     <span className="font-medium text-gray-900">Order Processing Agent</span>
                   </div>
                   <div>
@@ -303,7 +303,7 @@ export default function OrderDetailPage() {
                     <li>Delivery status notifications</li>
                     <li>Payment processing</li>
                   </ul>
-                  <button className="w-full mt-3 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors text-sm">
+                  <button className="w-full mt-3 px-3 py-2 bg-purple-50 text-purple-600 rounded-lg hover:bg-purple-100 transition-colors text-sm">
                     View Agent Details
                   </button>
                 </CardContent>

@@ -1,15 +1,17 @@
 import React from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/Card";
 import { Settings as SettingsType, Agent } from "@/lib/types";
+import { ChangedFieldIndicator } from "./ChangedFieldIndicator";
 
 interface GeneralSettingsProps {
   settings: SettingsType & { agents: Agent[] };
+  originalSettings?: SettingsType & { agents: Agent[] };
   onSettingsChange: (settings: SettingsType & { agents: Agent[] }) => void;
 }
 
 const availableLanguages = ["English", "Igbo", "Yoruba", "Hausa", "Spanish", "French"];
 
-export default function GeneralSettings({ settings, onSettingsChange }: GeneralSettingsProps) {
+export default function GeneralSettings({ settings, originalSettings, onSettingsChange }: GeneralSettingsProps) {
   const updateOrganization = (updates: Partial<SettingsType["organization"]>) => {
     onSettingsChange({
       ...settings,
@@ -36,12 +38,17 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
             {/* Organization Name */}
             <div className="w-full">
               <label className="block text-sm font-medium text-gray-700 mb-1.5">Organization Name</label>
-              <input
-                type="text"
-                value={settings.organization.name}
-                onChange={(e) => updateOrganization({ name: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
+              <ChangedFieldIndicator 
+                currentValue={settings.organization.name}
+                originalValue={originalSettings?.organization.name}
+              >
+                <input
+                  type="text"
+                  value={settings.organization.name}
+                  onChange={(e) => updateOrganization({ name: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                />
+              </ChangedFieldIndicator>
             </div>
 
             {/* Industry */}
@@ -50,7 +57,7 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
               <select
                 value={settings.organization.industry}
                 onChange={(e) => updateOrganization({ industry: e.target.value as "microfinance" })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               >
                 <option value="microfinance">Microfinance</option>
                 <option value="retail">Retail</option>
@@ -64,7 +71,7 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
               <select
                 value={settings.organization.timezone}
                 onChange={(e) => updateOrganization({ timezone: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               >
                 <option value="America/New_York">Eastern Time</option>
                 <option value="America/Chicago">Central Time</option>
@@ -117,7 +124,7 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
                     businessHours: { ...settings.organization.businessHours, start: e.target.value },
                   })
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
             </div>
 
@@ -132,7 +139,7 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
                     businessHours: { ...settings.organization.businessHours, end: e.target.value },
                   })
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
             </div>
 
@@ -154,7 +161,7 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
                   placeholder="Delay (seconds)"
                   value={settings.autoResponse.delay}
                   onChange={(e) => updateAutoResponse({ delay: parseInt(e.target.value) || 0 })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 />
               </div>
             </div>

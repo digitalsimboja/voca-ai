@@ -10,6 +10,7 @@ export interface SocialMediaAgentData {
       instagram: { enabled: boolean; handle: string };
       facebook: { enabled: boolean; page: string; messenger: boolean };
       tiktok: { enabled: boolean; username: string };
+      twitter: { enabled: boolean; username: string };
     };
     contentTypes: string[];
   };

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { API_CONFIG, buildApiUrl, API_ENDPOINTS, getAuthHeaders, handleApiError } from '@/config/api'
+import { validatePasswordStrength } from '@/utils/passwordStrength'
 
 export async function POST(request: NextRequest) {
   try {
@@ -38,9 +39,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate password strength
-    if (password.length < 8) {
+    const passwordStrength = validatePasswordStrength(password)
+    if (!passwordStrength.isValid) {
       return NextResponse.json(
-        { error: 'Password must be at least 8 characters long' },
+        { 
+          error: 'Password does not meet strength requirements',
+          details: passwordStrength.missingRequirements,
+          feedback: passwordStrength.feedback
+        },
         { status: 400 }
       )
     }

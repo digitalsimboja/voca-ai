@@ -132,7 +132,7 @@ export default function KnowledgeBaseModal({
                       name: e.target.value
                     })}
                     placeholder="Enter knowledge base name"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   />
                 </div>
                 
@@ -148,7 +148,7 @@ export default function KnowledgeBaseModal({
                       description: e.target.value
                     })}
                     placeholder="Brief description of the knowledge base"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   />
                 </div>
               </div>
@@ -176,7 +176,7 @@ export default function KnowledgeBaseModal({
                   })}
                   placeholder="Enter knowledge base content, FAQs, product information, policies, etc..."
                   rows={8}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 />
                 <p className="text-xs text-gray-500 mt-2">
                   You can paste text content, FAQs, product information, company policies, or any relevant information here.
@@ -214,7 +214,7 @@ export default function KnowledgeBaseModal({
                     />
                     <label
                       htmlFor="file-upload"
-                      className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
+                      className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors cursor-pointer"
                     >
                       Choose Files
                     </label>
@@ -265,7 +265,7 @@ export default function KnowledgeBaseModal({
                 </h3>
                 <button
                   onClick={handleAddSource}
-                  className="bg-blue-600 text-white px-3 py-1 rounded-lg text-sm hover:bg-blue-700"
+                  className="bg-purple-600 text-white px-3 py-1 rounded-lg text-sm hover:bg-purple-700"
                 >
                   Add Source
                 </button>
@@ -281,14 +281,14 @@ export default function KnowledgeBaseModal({
                         value={source.url}
                         onChange={(e) => handleSourceChange(index, 'url', e.target.value)}
                         placeholder="Enter URL (e.g., https://example.com/docs)"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       />
                       <input
                         type="text"
                         value={source.description}
                         onChange={(e) => handleSourceChange(index, 'description', e.target.value)}
                         placeholder="Description of this source"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       />
                     </div>
                     <button
@@ -316,14 +316,14 @@ export default function KnowledgeBaseModal({
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                <div className="text-center p-3 bg-blue-50 rounded-lg">
-                  <p className="text-2xl font-bold text-blue-600">
+                <div className="text-center p-3 bg-purple-50 rounded-lg">
+                  <p className="text-2xl font-bold text-purple-600">
                     {knowledgeBase.content.length > 0 ? Math.ceil(knowledgeBase.content.length / 100) : 0}
                   </p>
                   <p className="text-gray-600">Content Blocks</p>
                 </div>
                 <div className="text-center p-3 bg-green-50 rounded-lg">
-                  <p className="text-2xl font-bold text-green-600">{knowledgeBase.files.length}</p>
+                  <p className="text-2xl font-bold text-green-400">{knowledgeBase.files.length}</p>
                   <p className="text-gray-600">Files Uploaded</p>
                 </div>
                 <div className="text-center p-3 bg-purple-50 rounded-lg">
@@ -344,7 +344,7 @@ export default function KnowledgeBaseModal({
             </button>
             <button
               onClick={handleSubmit}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
             >
               Save Knowledge Base
             </button>

@@ -1,60 +1,130 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { buildApiUrl } from '@/config/api';
+import { NextRequest, NextResponse } from 'next/server'
+import { API_CONFIG, buildApiUrl, API_ENDPOINTS, getAuthHeaders, handleApiError } from '@/config/api'
 
 export async function GET(request: NextRequest) {
   try {
-    const token = request.cookies.get('voca_auth_token')?.value;
+    // Get token from cookies
+    const token = request.cookies.get('voca_auth_token')?.value
+    
     if (!token) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      )
     }
-    
-    const response = await fetch(buildApiUrl('SETTINGS', '/v1/settings'), {
+
+    // Call the settings service
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.TIMEOUT)
+
+    const settingsResponse = await fetch(buildApiUrl('SETTINGS', API_ENDPOINTS.SETTINGS.GET), {
       method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
-    
-    const result = await response.json();
-    
-    if (!response.ok) {
-      return NextResponse.json({ error: result.message || 'Failed to fetch settings' }, { status: response.status });
+      headers: getAuthHeaders(token),
+      signal: controller.signal
+    })
+
+    clearTimeout(timeoutId)
+
+    if (!settingsResponse.ok) {
+      const errorData = await settingsResponse.json().catch(() => ({}))
+      
+      return NextResponse.json(
+        { 
+          error: 'Failed to fetch settings', 
+          details: errorData.message || errorData.error 
+        },
+        { status: settingsResponse.status }
+      )
     }
-    
-    return NextResponse.json(result);
+
+    const settingsData = await settingsResponse.json()
+
+    return NextResponse.json({
+      status: 'success',
+      message: 'Settings retrieved successfully',
+      data: settingsData.data
+    })
+
   } catch (error) {
-    console.error('Error fetching settings:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    const errorResult = handleApiError(error, 'Internal server error')
+    return NextResponse.json(
+      errorResult,
+      { status: 500 }
+    )
   }
 }
 
 export async function PUT(request: NextRequest) {
   try {
-    const settingsData = await request.json();
-    const token = request.cookies.get('voca_auth_token')?.value;
+    // Get token from cookies
+    const token = request.cookies.get('voca_auth_token')?.value
     
     if (!token) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      )
     }
+
+    // Parse the request body
+    const body = await request.json()
     
-    const response = await fetch(buildApiUrl('SETTINGS', '/v1/settings'), {
+    // Validate required fields
+    if (!body) {
+      return NextResponse.json(
+        { error: 'Settings data is required' },
+        { status: 400 }
+      )
+    }
+
+    // Call the settings service
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.TIMEOUT)
+
+    const settingsResponse = await fetch(buildApiUrl('SETTINGS', API_ENDPOINTS.SETTINGS.UPDATE), {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify(settingsData),
-    });
-    
-    const result = await response.json();
-    
-    if (!response.ok) {
-      return NextResponse.json({ error: result.message || 'Failed to update settings' }, { status: response.status });
+      headers: getAuthHeaders(token),
+      body: JSON.stringify(body),
+      signal: controller.signal
+    })
+
+    clearTimeout(timeoutId)
+
+    if (!settingsResponse.ok) {
+      const errorData = await settingsResponse.json().catch(() => ({}))
+      
+      if (settingsResponse.status === 400) {
+        return NextResponse.json(
+          { 
+            error: 'Invalid settings data', 
+            details: errorData.errors || errorData.details 
+          },
+          { status: 400 }
+        )
+      }
+
+      return NextResponse.json(
+        { 
+          error: 'Failed to update settings', 
+          details: errorData.message || errorData.error 
+        },
+        { status: settingsResponse.status }
+      )
     }
-    
-    return NextResponse.json(result);
+
+    const settingsData = await settingsResponse.json()
+
+    return NextResponse.json({
+      status: 'success',
+      message: 'Settings updated successfully',
+      data: settingsData.data
+    })
+
   } catch (error) {
-    console.error('Error updating settings:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    const errorResult = handleApiError(error, 'Internal server error')
+    return NextResponse.json(
+      errorResult,
+      { status: 500 }
+    )
   }
 }

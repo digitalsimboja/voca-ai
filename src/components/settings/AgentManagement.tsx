@@ -32,7 +32,7 @@ export default function AgentManagement({
             </h3>
             <button
               onClick={onShowCreateAgent}
-              className="flex items-center justify-center space-x-2 bg-green-600 text-white px-3 py-2 rounded-md hover:bg-green-700 transition-colors text-sm w-full sm:w-auto"
+              className="flex items-center justify-center space-x-2 bg-green-400 text-white px-3 py-2 rounded-md hover:bg-green-500 transition-colors text-sm w-full sm:w-auto"
             >
               <User className="w-4 h-4" />
               <span>Create Agent</span>
@@ -44,14 +44,14 @@ export default function AgentManagement({
             {agents?.map((agent) => (
               <div
                 key={agent.id}
-                className="border border-gray-200 rounded-lg p-3 sm:p-4 hover:shadow-md hover:border-blue-300 transition-all cursor-pointer group"
+                className="border border-gray-200 rounded-lg p-3 sm:p-4 hover:shadow-md hover:border-purple-300 transition-all cursor-pointer group"
                 onClick={() => onShowAgentDetails(agent)}
               >
                 {/* Top Row */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
                   <div className="flex items-center space-x-2">
-                    <div className="w-8 h-8 sm:w-9 sm:h-9 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <User className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 bg-purple-100 rounded-lg flex items-center justify-center">
+                      <User className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
                     </div>
                     <div>
                       <h4 className="text-sm sm:text-base font-medium text-gray-900">
@@ -66,7 +66,7 @@ export default function AgentManagement({
                     <span
                       className={`text-xs px-2 py-1 rounded-full font-medium ${
                         agent.status === "active"
-                          ? "bg-green-100 text-green-700"
+                          ? "bg-green-100 text-green-500"
                           : "bg-gray-100 text-gray-600"
                       }`}
                     >
@@ -141,7 +141,7 @@ export default function AgentManagement({
                     <div className="flex items-center space-x-1">
                       <span
                         className={`text-xs ${
-                          agent.knowledgeBase ? "text-green-600" : "text-red-600"
+                          agent.knowledgeBase ? "text-green-400" : "text-red-600"
                         }`}
                       >
                         {agent.knowledgeBase ? "Connected" : "Not Connected"}
@@ -151,7 +151,7 @@ export default function AgentManagement({
                           e.stopPropagation();
                           onConnectKnowledgeBase(agent.id);
                         }}
-                        className="text-blue-600 hover:text-blue-700 text-xs font-medium"
+                        className="text-purple-600 hover:text-purple-700 text-xs font-medium"
                       >
                         {agent.knowledgeBase ? "Manage" : "Connect"}
                       </button>
@@ -183,16 +183,16 @@ export default function AgentManagement({
                 </p>
                 <button
                   onClick={onShowCreateAgent}
-                  className="bg-blue-600 text-white px-4 py-2 sm:px-6 sm:py-2.5 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium shadow-sm hover:shadow-md flex items-center mx-auto"
+                  className="bg-purple-600 text-white px-4 py-2 sm:px-6 sm:py-2.5 rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium shadow-sm hover:shadow-md flex items-center mx-auto"
                 >
                   <User className="w-4 h-4 mr-2" />
                   Create Your First Agent
                 </button>
-                <div className="mt-6 p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-100 text-left">
-                  <h4 className="text-sm font-medium text-blue-900 mb-2">
+                <div className="mt-6 p-3 sm:p-4 bg-purple-50 rounded-lg border border-purple-100 text-left">
+                  <h4 className="text-sm font-medium text-purple-900 mb-2">
                     What can AI agents do?
                   </h4>
-                  <ul className="text-xs text-blue-800 space-y-1">
+                  <ul className="text-xs text-purple-800 space-y-1">
                     <li>• Handle customer inquiries 24/7</li>
                     <li>• Process orders and track deliveries</li>
                     <li>• Provide product recommendations</li>

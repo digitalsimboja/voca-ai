@@ -164,7 +164,7 @@ export default function ContactPage() {
               Back to Home
             </Link>
             <div className="flex items-center">
-              <div className="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
+              <div className="h-8 w-8 bg-purple-600 rounded-lg flex items-center justify-center mr-3">
                 <span className="text-white font-bold text-sm">V</span>
               </div>
               <span className="text-lg font-semibold text-gray-900">Voca AI</span>
@@ -190,7 +190,7 @@ export default function ContactPage() {
               {submitSuccess ? (
                 <div className="text-center py-12">
                   <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-6">
-                    <CheckCircle className="h-8 w-8 text-green-600" />
+                    <CheckCircle className="h-8 w-8 text-green-400" />
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-4">
                     Thank you for your message!
@@ -200,7 +200,7 @@ export default function ContactPage() {
                   </p>
                   <Link
                     href="/"
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700"
                   >
                     Return to Home
                   </Link>
@@ -230,7 +230,7 @@ export default function ContactPage() {
                         name="firstName"
                         value={formData.firstName}
                         onChange={handleInputChange}
-                        className={`mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-900 placeholder-gray-500 ${
+                        className={`mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm text-gray-900 placeholder-gray-500 ${
                           errors.firstName ? 'border-red-300' : 'border-gray-300'
                         }`}
                         placeholder="Enter your first name"
@@ -250,7 +250,7 @@ export default function ContactPage() {
                         name="lastName"
                         value={formData.lastName}
                         onChange={handleInputChange}
-                        className={`mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-900 placeholder-gray-500 ${
+                        className={`mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm text-gray-900 placeholder-gray-500 ${
                           errors.lastName ? 'border-red-300' : 'border-gray-300'
                         }`}
                         placeholder="Enter your last name"
@@ -273,7 +273,7 @@ export default function ContactPage() {
                         name="email"
                         value={formData.email}
                         onChange={handleInputChange}
-                        className={`mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-900 placeholder-gray-500 ${
+                        className={`mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm text-gray-900 placeholder-gray-500 ${
                           errors.email ? 'border-red-300' : 'border-gray-300'
                         }`}
                         placeholder="Enter your email"
@@ -293,7 +293,7 @@ export default function ContactPage() {
                         name="company"
                         value={formData.company}
                         onChange={handleInputChange}
-                        className={`mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-900 placeholder-gray-500 ${
+                        className={`mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm text-gray-900 placeholder-gray-500 ${
                           errors.company ? 'border-red-300' : 'border-gray-300'
                         }`}
                         placeholder="Enter your company name"
@@ -315,7 +315,7 @@ export default function ContactPage() {
                           key={type.id}
                           className={`relative cursor-pointer rounded-lg border p-3 transition-all ${
                             formData.businessType === type.id
-                              ? 'border-blue-500 bg-blue-50'
+                              ? 'border-purple-500 bg-purple-50'
                               : 'border-gray-300 hover:border-gray-400'
                           }`}
                         >
@@ -330,7 +330,7 @@ export default function ContactPage() {
                           <div className="text-sm font-medium text-gray-900">{type.label}</div>
                           {formData.businessType === type.id && (
                             <div className="absolute top-2 right-2">
-                              <div className="h-4 w-4 bg-blue-500 rounded-full flex items-center justify-center">
+                              <div className="h-4 w-4 bg-purple-500 rounded-full flex items-center justify-center">
                                 <CheckCircle className="h-3 w-3 text-white" />
                               </div>
                             </div>
@@ -355,7 +355,7 @@ export default function ContactPage() {
                         name="phone"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-900 placeholder-gray-500"
+                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm text-gray-900 placeholder-gray-500"
                         placeholder="Enter your phone number"
                       />
                     </div>
@@ -369,7 +369,7 @@ export default function ContactPage() {
                         name="budget"
                         value={formData.budget}
                         onChange={handleInputChange}
-                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-900"
+                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm text-gray-900"
                       >
                         <option value="">Select budget range</option>
                         {budgetRanges.map((budget) => (
@@ -391,7 +391,7 @@ export default function ContactPage() {
                       name="timeline"
                       value={formData.timeline}
                       onChange={handleInputChange}
-                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-900"
+                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm text-gray-900"
                     >
                       <option value="">Select timeline</option>
                       {timelineOptions.map((timeline) => (
@@ -413,7 +413,7 @@ export default function ContactPage() {
                       rows={4}
                       value={formData.message}
                       onChange={handleInputChange}
-                      className={`mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-900 placeholder-gray-500 ${
+                      className={`mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm text-gray-900 placeholder-gray-500 ${
                         errors.message ? 'border-red-300' : 'border-gray-300'
                       }`}
                       placeholder="Describe your customer service challenges and how Voca AI can help..."
@@ -431,7 +431,7 @@ export default function ContactPage() {
                       type="checkbox"
                       checked={formData.agreeToContact}
                       onChange={handleInputChange}
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded mt-1"
+                      className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded mt-1"
                     />
                     <label htmlFor="agreeToContact" className="ml-2 block text-sm text-gray-900">
                       I agree to be contacted by Voca AI regarding my inquiry *
@@ -446,7 +446,7 @@ export default function ContactPage() {
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                       {isLoading ? (
                         <>
@@ -473,14 +473,14 @@ export default function ContactPage() {
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact Information</h3>
               <div className="space-y-4">
                 <div className="flex items-start">
-                  <Mail className="h-5 w-5 text-blue-600 mt-0.5 mr-3" />
+                  <Mail className="h-5 w-5 text-purple-600 mt-0.5 mr-3" />
                   <div>
                     <p className="text-sm font-medium text-gray-900">Email</p>
                     <p className="text-sm text-gray-600">hello@vocaai.com</p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <Phone className="h-5 w-5 text-blue-600 mt-0.5 mr-3" />
+                  <Phone className="h-5 w-5 text-purple-600 mt-0.5 mr-3" />
                   <div>
                     <p className="text-sm font-medium text-gray-900">Phone</p>
                     <p className="text-sm text-gray-600">+234 808 083 4882</p>
@@ -488,16 +488,16 @@ export default function ContactPage() {
                 </div>
                 <div className="flex items-start">
                   <div className="h-5 w-5 bg-green-100 rounded-full flex items-center justify-center mt-0.5 mr-3">
-                    <span className="text-green-600 text-xs font-bold">AI</span>
+                    <span className="text-green-400 text-xs font-bold">AI</span>
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-900">AI Agent Contact</p>
-                    <p className="text-sm text-green-600 font-medium">Available 24/7</p>
+                    <p className="text-sm text-green-400 font-medium">Available 24/7</p>
                     <p className="text-sm text-gray-600">1-800-VOCA-AI (1-800-862-224)</p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <MapPin className="h-5 w-5 text-blue-600 mt-0.5 mr-3" />
+                  <MapPin className="h-5 w-5 text-purple-600 mt-0.5 mr-3" />
                   <div>
                     <p className="text-sm font-medium text-gray-900">Address</p>
                     <p className="text-sm text-gray-600">
@@ -507,11 +507,11 @@ export default function ContactPage() {
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <Clock className="h-5 w-5 text-blue-600 mt-0.5 mr-3" />
+                  <Clock className="h-5 w-5 text-purple-600 mt-0.5 mr-3" />
                   <div>
                     <p className="text-sm font-medium text-gray-900">Business Hours</p>
                     <p className="text-sm text-gray-600">
-                      <span className="font-medium text-green-600">🤖 AI Agent: 24/7 Available</span><br />
+                      <span className="font-medium text-green-400">🤖 AI Agent: 24/7 Available</span><br />
                       <span className="text-gray-500">👥 Human Support:</span><br />
                       Mon - Fri: 9:00 AM - 6:00 PM<br />
                       Sat: 10:00 AM - 2:00 PM
@@ -527,21 +527,21 @@ export default function ContactPage() {
               <div className="space-y-3">
                 <Link
                   href="/"
-                  className="flex items-center text-sm text-blue-600 hover:text-blue-500 transition-colors"
+                  className="flex items-center text-sm text-purple-600 hover:text-purple-500 transition-colors"
                 >
                   <Globe className="h-4 w-4 mr-2" />
                   Visit our website
                 </Link>
                 <Link
                   href="/login"
-                  className="flex items-center text-sm text-blue-600 hover:text-blue-500 transition-colors"
+                  className="flex items-center text-sm text-purple-600 hover:text-purple-500 transition-colors"
                 >
                   <User className="h-4 w-4 mr-2" />
                   Sign in to dashboard
                 </Link>
                 <Link
                   href="/signup"
-                  className="flex items-center text-sm text-blue-600 hover:text-blue-500 transition-colors"
+                  className="flex items-center text-sm text-purple-600 hover:text-purple-500 transition-colors"
                 >
                   <Building className="h-4 w-4 mr-2" />
                   Create account
@@ -550,12 +550,12 @@ export default function ContactPage() {
             </div>
 
             {/* Response Time */}
-            <div className="bg-blue-50 rounded-lg p-6">
+            <div className="bg-purple-50 rounded-lg p-6">
               <div className="flex items-center mb-3">
-                <MessageSquare className="h-5 w-5 text-blue-600 mr-2" />
-                <h4 className="text-sm font-semibold text-blue-900">Response Time</h4>
+                <MessageSquare className="h-5 w-5 text-purple-600 mr-2" />
+                <h4 className="text-sm font-semibold text-purple-900">Response Time</h4>
               </div>
-              <p className="text-sm text-blue-800">
+              <p className="text-sm text-purple-800">
                 We typically respond to all inquiries within 24 hours during business days.
               </p>
             </div>

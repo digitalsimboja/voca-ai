@@ -19,10 +19,7 @@ export async function POST(request: NextRequest) {
 
     const authResponse = await fetch(buildApiUrl('AUTH', API_ENDPOINTS.AUTH.VERIFY), {
       method: 'POST',
-      headers: {
-        ...getAuthHeaders(),
-        'Authorization': `Bearer ${token}`
-      },
+      headers: getAuthHeaders(token),
       body: JSON.stringify({ token }),
       signal: controller.signal
     })

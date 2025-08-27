@@ -28,7 +28,7 @@ export default function AgentDetailsModal({
     <div className="fixed inset-0 bg-gradient-to-br from-black/70 via-black/50 to-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-3 md:p-4">
       <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-200">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 p-2 sm:p-4 md:p-5 text-white sticky top-0 z-10">
+        <div className="bg-gradient-to-r from-purple-600 via-purple-600 to-purple-600 p-2 sm:p-4 md:p-5 text-white sticky top-0 z-10">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 sm:space-x-3">
               <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
@@ -38,7 +38,7 @@ export default function AgentDetailsModal({
                 <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-semibold truncate">
                   {agent.name}
                 </h3>
-                <p className="text-[10px] sm:text-xs md:text-sm text-blue-100 truncate">
+                <p className="text-[10px] sm:text-xs md:text-sm text-purple-100 truncate">
                   {agent.role} • {agent.businessType}
                 </p>
               </div>
@@ -59,13 +59,13 @@ export default function AgentDetailsModal({
             {/* Status */}
             <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-2 sm:p-3 md:p-4 border border-gray-200">
               <div className="flex items-center space-x-1.5 sm:space-x-2 mb-1.5 sm:mb-2">
-                <Activity className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600" />
+                <Activity className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600" />
                 <h4 className="text-xs sm:text-sm font-semibold text-gray-900">Status</h4>
               </div>
               <span
                 className={`px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs md:text-sm font-medium ${
                   agent.status === 'active'
-                    ? 'bg-green-100 text-green-700'
+                    ? 'bg-green-100 text-green-500'
                     : agent.status === 'training'
                     ? 'bg-yellow-100 text-yellow-700'
                     : 'bg-gray-100 text-gray-600'
@@ -78,7 +78,7 @@ export default function AgentDetailsModal({
             {/* Created */}
             <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-2 sm:p-3 md:p-4 border border-gray-200">
               <div className="flex items-center space-x-1.5 sm:space-x-2 mb-1.5 sm:mb-2">
-                <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600" />
+                <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600" />
                 <h4 className="text-xs sm:text-sm font-semibold text-gray-900">Created</h4>
               </div>
               <p className="text-[11px] sm:text-xs md:text-sm text-gray-700 break-words font-medium">
@@ -89,7 +89,7 @@ export default function AgentDetailsModal({
             {/* Last Active */}
             <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-2 sm:p-3 md:p-4 border border-gray-200">
               <div className="flex items-center space-x-1.5 sm:space-x-2 mb-1.5 sm:mb-2">
-                <Activity className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600" />
+                <Activity className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600" />
                 <h4 className="text-xs sm:text-sm font-semibold text-gray-900">Last Active</h4>
               </div>
               <p className="text-[11px] sm:text-xs md:text-sm text-gray-700 break-words font-medium">
@@ -101,14 +101,14 @@ export default function AgentDetailsModal({
           {/* Communication Channels */}
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-2 sm:p-3 md:p-4 border border-gray-200">
             <div className="flex items-center space-x-1.5 sm:space-x-2 mb-2">
-              <MessageSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600" />
+              <MessageSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600" />
               <h4 className="text-xs sm:text-sm font-semibold text-gray-900">Communication Channels</h4>
             </div>
             <div className="flex flex-wrap gap-1.5 sm:gap-2">
               {agent.channels.map((channel) => (
                 <span
                   key={channel}
-                  className="px-2 sm:px-2.5 py-0.5 sm:py-1 bg-blue-100 text-blue-700 rounded-full text-[10px] sm:text-xs md:text-sm font-medium border border-blue-200"
+                  className="px-2 sm:px-2.5 py-0.5 sm:py-1 bg-purple-100 text-purple-700 rounded-full text-[10px] sm:text-xs md:text-sm font-medium border border-purple-200"
                 >
                   {channel.replace('_', ' ')}
                 </span>
@@ -119,14 +119,14 @@ export default function AgentDetailsModal({
           {/* Languages */}
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-2 sm:p-3 md:p-4 border border-gray-200">
             <div className="flex items-center space-x-1.5 sm:space-x-2 mb-2">
-              <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600" />
+              <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600" />
               <h4 className="text-xs sm:text-sm font-semibold text-gray-900">Supported Languages</h4>
             </div>
             <div className="flex flex-wrap gap-1.5 sm:gap-2">
               {agent.languages.map((language) => (
                 <span
                   key={language}
-                  className="px-2 sm:px-2.5 py-0.5 sm:py-1 bg-green-100 text-green-700 rounded-full text-[10px] sm:text-xs md:text-sm font-medium border border-green-200"
+                  className="px-2 sm:px-2.5 py-0.5 sm:py-1 bg-green-100 text-green-500 rounded-full text-[10px] sm:text-xs md:text-sm font-medium border border-green-200"
                 >
                   {language}
                 </span>
@@ -137,14 +137,14 @@ export default function AgentDetailsModal({
           {/* Knowledge Base */}
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-2 sm:p-3 md:p-4 border border-gray-200">
             <div className="flex items-center space-x-1.5 sm:space-x-2 mb-2">
-              <Database className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600" />
+              <Database className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600" />
               <h4 className="text-xs sm:text-sm font-semibold text-gray-900">Knowledge Base</h4>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2">
               <div>
                 <span
                   className={`text-xs sm:text-sm font-semibold ${
-                    agent.knowledgeBase ? 'text-green-600' : 'text-red-600'
+                    agent.knowledgeBase ? 'text-green-400' : 'text-red-600'
                   }`}
                 >
                   {agent.knowledgeBase ? 'Connected' : 'Not Connected'}
@@ -156,7 +156,7 @@ export default function AgentDetailsModal({
                   </p>
                 )}
               </div>
-              <button className="text-blue-600 hover:text-blue-700 text-xs sm:text-sm font-semibold whitespace-nowrap bg-blue-50 px-2 py-1 rounded-md border border-blue-200 hover:bg-blue-100 transition-colors">
+              <button className="text-purple-600 hover:text-purple-700 text-xs sm:text-sm font-semibold whitespace-nowrap bg-purple-50 px-2 py-1 rounded-md border border-purple-200 hover:bg-purple-100 transition-colors">
                 {agent.knowledgeBase ? 'Manage' : 'Connect'}
               </button>
             </div>
@@ -166,14 +166,14 @@ export default function AgentDetailsModal({
           {agent.agentData && (
             <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-2 sm:p-3 md:p-4 space-y-3 sm:space-y-4 border border-gray-200">
               <div className="flex items-center space-x-1.5 sm:space-x-2 mb-2">
-                <Settings className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600" />
+                <Settings className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600" />
                 <h4 className="text-xs sm:text-sm font-semibold text-gray-900">Agent Configuration</h4>
               </div>
 
               {/* Profile */}
               <div className="bg-white rounded-lg p-2 sm:p-3 border border-gray-200">
                 <h5 className="text-[10px] sm:text-xs font-semibold text-gray-900 mb-1 sm:mb-1.5 flex items-center">
-                  <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-1.5"></span>
+                  <span className="w-1.5 h-1.5 bg-purple-500 rounded-full mr-1.5"></span>
                   Profile
                 </h5>
                 <p className="text-xs sm:text-sm text-gray-700 break-words font-medium">
@@ -199,7 +199,7 @@ export default function AgentDetailsModal({
                           <span
                             className={`mt-0.5 sm:mt-0 px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium border ${
                               config.enabled
-                                ? 'bg-green-100 text-green-700 border-green-200'
+                                ? 'bg-green-100 text-green-500 border-green-200'
                                 : 'bg-gray-100 text-gray-500 border-gray-200'
                             }`}
                           >
@@ -232,7 +232,7 @@ export default function AgentDetailsModal({
                     <span
                       className={`ml-1 px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium border ${
                         agent.agentData?.customerService?.autoResponses
-                          ? 'bg-green-100 text-green-700 border-green-200'
+                          ? 'bg-green-100 text-green-500 border-green-200'
                           : 'bg-gray-100 text-gray-500 border-gray-200'
                       }`}
                     >
@@ -262,7 +262,7 @@ export default function AgentDetailsModal({
                           <span
                             className={`mt-0.5 sm:mt-0 px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium border ${
                               enabled
-                                ? 'bg-green-100 text-green-700 border-green-200'
+                                ? 'bg-green-100 text-green-500 border-green-200'
                                 : 'bg-gray-100 text-gray-500 border-gray-200'
                             }`}
                           >

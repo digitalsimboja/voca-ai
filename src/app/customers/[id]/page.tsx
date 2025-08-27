@@ -114,7 +114,7 @@ export default function CustomerDetailPage() {
       <MainLayout>
         <div className="space-y-4 sm:space-y-6">
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 animate-spin text-blue-600" />
+            <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 animate-spin text-purple-600" />
             <span className="ml-2 text-sm sm:text-base text-gray-600">
               Loading customer details...
             </span>
@@ -275,8 +275,8 @@ export default function CustomerDetailPage() {
                   <p className="text-sm font-medium text-gray-600">Total Orders</p>
                   <p className="text-2xl font-bold text-gray-900">{displayTotalOrders}</p>
                 </div>
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Package className="w-5 h-5 text-blue-600" />
+                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <Package className="w-5 h-5 text-purple-600" />
                 </div>
               </div>
             </CardContent>
@@ -290,7 +290,7 @@ export default function CustomerDetailPage() {
                   <p className="text-2xl font-bold text-gray-900">₦{displayTotalSpent.toLocaleString()}</p>
                 </div>
                 <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                  <DollarSign className="w-5 h-5 text-green-600" />
+                  <DollarSign className="w-5 h-5 text-green-400" />
                 </div>
               </div>
             </CardContent>

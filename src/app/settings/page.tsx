@@ -53,6 +53,39 @@ export default function SettingsPage() {
     }
   }, []);
 
+  const [originalSettings, setOriginalSettings] = useState<SettingsType & { agents: Agent[] }>({
+    organization: {
+      name: "Voca AI Solutions",
+      industry: "microfinance",
+      timezone: "America/New_York",
+      supportedLanguages: ["English", "Igbo", "Yoruba", "Hausa"],
+      businessHours: {
+        start: "09:00",
+        end: "17:00",
+        timezone: "America/New_York",
+      },
+    },
+    autoResponse: {
+      enabled: true,
+      message:
+        "Thank you for contacting us. An AI agent will assist you shortly.",
+      delay: 30,
+    },
+    routingRules: [],
+    security: {
+      twoFactorAuth: true,
+      sessionTimeout: 30,
+      ipWhitelist: ["192.168.1.0/24", "10.0.0.0/8"],
+      auditLogging: true,
+    },
+    notifications: {
+      sms: false,
+      webhook: true,
+      webhookUrl: "https://api.vocaai.com/webhook/notifications",
+    },
+    agents: [],
+  });
+
   const [settings, setSettings] = useState<SettingsType & { agents: Agent[] }>({
     organization: {
       name: "Voca AI Solutions",
@@ -98,6 +131,8 @@ export default function SettingsPage() {
   const [selectedAgentForDetails, setSelectedAgentForDetails] =
     useState<Agent | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   // Load settings + agents
   useEffect(() => {
@@ -105,12 +140,13 @@ export default function SettingsPage() {
       try {
         const settingsResult = await apiService.getSettings();
         if (settingsResult.status === 'success' && settingsResult.data) {
-          console.log('settingsResult', settingsResult.data)
-          setSettings((prev) => ({
-            ...prev,
+          const newSettings = {
+            ...settings,
             ...(settingsResult.data as Record<string, unknown>),
-            agents: prev.agents,
-          }));
+            agents: settings.agents,
+          };
+          setSettings(newSettings);
+          setOriginalSettings(newSettings);
         }
 
         // Only get user-specific agents
@@ -135,6 +171,34 @@ export default function SettingsPage() {
 
     loadData();
   }, [user?.userId]);
+
+  // Warn user before leaving with unsaved changes
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [hasUnsavedChanges]);
+
+  // Keyboard shortcut for saving (Ctrl+S)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        if (hasUnsavedChanges && !isSaving) {
+          handleSaveSettings();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [hasUnsavedChanges, isSaving]);
 
   // --- handlers (unchanged) ---
 
@@ -267,6 +331,39 @@ export default function SettingsPage() {
     setSelectedAgentForKB(null);
   };
 
+  const handleSaveSettings = async () => {
+    if (!user?.userId) {
+      toast.error('User not authenticated. Please log in to save settings.');
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      // Remove agents from settings data as it's handled separately
+      const { agents, ...settingsData } = settings;
+      
+      const result = await apiService.updateSettings(settingsData);
+      
+      if (result.status === 'success') {
+        setOriginalSettings(settings);
+        setHasUnsavedChanges(false);
+        toast.success('Settings saved successfully!');
+      } else {
+        toast.error(result.message || 'Failed to save settings');
+      }
+    } catch (error) {
+      console.error('Error saving settings:', error);
+      toast.error('Failed to save settings. Please try again.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleSettingsChange = (newSettings: SettingsType & { agents: Agent[] }) => {
+    setSettings(newSettings);
+    setHasUnsavedChanges(true);
+  };
+
   // update settings (unchanged)...
 
   return (
@@ -281,6 +378,37 @@ export default function SettingsPage() {
             <p className="text-gray-600 text-sm">
               Configure your AI Contact Center
             </p>
+          </div>
+          <div className="flex items-center gap-2">
+            {hasUnsavedChanges && (
+              <span className="text-sm text-orange-600 font-medium flex items-center gap-1">
+                <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+                Unsaved changes
+              </span>
+            )}
+            <button
+              onClick={handleSaveSettings}
+              disabled={isSaving || !hasUnsavedChanges}
+              className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors flex items-center gap-2 ${
+                isSaving || !hasUnsavedChanges
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  : 'bg-purple-600 text-white hover:bg-purple-700'
+              }`}
+            >
+              {isSaving ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                  </svg>
+                  Save Changes
+                </>
+              )}
+            </button>
           </div>
         </div>
 
@@ -345,25 +473,26 @@ export default function SettingsPage() {
           {activeTab === "general" && (
             <GeneralSettings
               settings={settings}
-              onSettingsChange={setSettings}
+              originalSettings={originalSettings}
+              onSettingsChange={handleSettingsChange}
             />
           )}
           {activeTab === "routing" && (
             <RoutingSettings
               settings={settings}
-              onSettingsChange={setSettings}
+              onSettingsChange={handleSettingsChange}
             />
           )}
           {activeTab === "security" && (
             <SecuritySettings
               settings={settings}
-              onSettingsChange={setSettings}
+              onSettingsChange={handleSettingsChange}
             />
           )}
           {activeTab === "notifications" && (
             <NotificationSettings
               settings={settings}
-              onSettingsChange={setSettings}
+              onSettingsChange={handleSettingsChange}
             />
           )}
           {activeTab === "integrations" && <IntegrationSettings />}
@@ -371,7 +500,7 @@ export default function SettingsPage() {
             <AgentManagement
               agents={settings.agents || []}
               settings={settings}
-              onSettingsChange={setSettings}
+              onSettingsChange={handleSettingsChange}
               onShowCreateAgent={() => setShowCreateAgent(true)}
               onDeleteAgent={handleDeleteAgent}
               onShowAgentDetails={handleShowAgentDetails}

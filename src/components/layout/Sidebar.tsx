@@ -54,7 +54,7 @@ export default function Sidebar({ mobile = false, onClose }: SidebarProps) {
         <div className="flex items-center justify-between p-3 lg:p-4 border-b border-gray-200">
           {!collapsed && (
             <div className="flex items-center space-x-2 min-w-0">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
                 <Headphones className="w-5 h-5 text-white" />
               </div>
               <span className="text-lg font-semibold text-gray-900 truncate">Voca AI</span>
@@ -86,14 +86,14 @@ export default function Sidebar({ mobile = false, onClose }: SidebarProps) {
               className={cn(
                 "flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group",
                 isActive
-                  ? "bg-blue-50 text-blue-700 border border-blue-200 shadow-sm"
+                  ? "bg-purple-50 text-purple-700 border border-purple-200 shadow-sm"
                   : "text-gray-700 hover:bg-gray-50 hover:text-gray-900 hover:shadow-sm"
               )}
               title={collapsed ? item.name : undefined}
             >
               <item.icon className={cn(
                 "w-5 h-5 flex-shrink-0 transition-colors",
-                isActive ? "text-blue-600" : "text-gray-500 group-hover:text-gray-700"
+                isActive ? "text-purple-600" : "text-gray-500 group-hover:text-gray-700"
               )} />
               {(mobile || !collapsed) && (
                 <span className="truncate">{item.name}</span>

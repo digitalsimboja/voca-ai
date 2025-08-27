@@ -165,7 +165,7 @@ export default function CreateIntegrationModal({
                   type="checkbox"
                   checked={formData.is_active}
                   onChange={(e) => handleInputChange('is_active', e.target.checked)}
-                  className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-green-400 focus:ring-green-500 border-gray-300 rounded"
                   disabled={isLoading}
                 />
                 <span className="ml-2 text-sm text-gray-700">Active Integration</span>

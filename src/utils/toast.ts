@@ -23,9 +23,9 @@ class ToastManager {
     const baseStyles = 'flex items-center p-4 rounded-lg shadow-lg max-w-sm transform transition-all duration-300 ease-in-out';
     
     const typeStyles = {
-      success: 'bg-green-500 text-white border-l-4 border-green-600',
+      success: 'bg-green-500 text-white border-l-4 border-green-400',
       error: 'bg-red-500 text-white border-l-4 border-red-600',
-      info: 'bg-blue-500 text-white border-l-4 border-blue-600',
+      info: 'bg-purple-500 text-white border-l-4 border-purple-600',
       warning: 'bg-yellow-500 text-white border-l-4 border-yellow-600'
     };
 
@@ -44,6 +44,11 @@ class ToastManager {
 
   show(message: string, type: ToastType = 'info', options: ToastOptions = {}): void {
     const { duration = 5000, position = 'top-right' } = options;
+    
+    // Ensure we're in a browser environment
+    if (typeof window === 'undefined') {
+      return;
+    }
     
     const container = this.createContainer();
     

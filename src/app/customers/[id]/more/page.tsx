@@ -225,7 +225,7 @@ Conversations: ${customer?.totalConversations}
       <MainLayout>
         <div className="space-y-4 sm:space-y-6">
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 animate-spin text-blue-600" />
+            <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 animate-spin text-purple-600" />
             <span className="ml-2 text-sm sm:text-base text-gray-600">
               Loading customer details...
             </span>
@@ -391,7 +391,7 @@ Conversations: ${customer?.totalConversations}
                   <div key={action.id} className="border border-gray-200 rounded-lg p-4">
                     <div className="flex items-start justify-between mb-3">
                       <IconComponent className="w-5 h-5 text-gray-600" />
-                      {isLoading && <Loader2 className="w-4 h-4 animate-spin text-blue-600" />}
+                      {isLoading && <Loader2 className="w-4 h-4 animate-spin text-purple-600" />}
                     </div>
                     <h4 className="font-medium text-gray-900 mb-1">{action.label}</h4>
                     <p className="text-sm text-gray-600 mb-3">{action.description}</p>

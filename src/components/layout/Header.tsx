@@ -154,7 +154,7 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
             <input
               type="text"
               placeholder="Search conversations, customers..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
             />
           </div>
         </div>
@@ -164,29 +164,29 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
           {/* Create AI Agent Button */}
           <button 
             onClick={() => setShowCreateAgentModal(true)}
-            className="hidden sm:flex items-center space-x-2 bg-green-600 text-white px-2 lg:px-4 py-1.5 lg:py-2 rounded-lg hover:bg-blue-700 transition-colors text-xs lg:text-sm"
+            className="hidden sm:flex items-center space-x-2 bg-green-400 text-white px-2 lg:px-4 py-1.5 lg:py-2 rounded-lg hover:bg-green-500 transition-colors text-xs lg:text-sm"
           >
             <Plus className="w-3 h-3 lg:w-4 lg:h-4" />
             <span>Create Agent</span>
           </button>
           <button 
             onClick={() => setShowCreateAgentModal(true)}
-            className="sm:hidden flex items-center bg-blue-600 text-white p-1.5 rounded-lg hover:bg-blue-700 transition-colors"
+            className="sm:hidden flex items-center bg-purple-600 text-white p-1.5 rounded-lg hover:bg-purple-700 transition-colors"
           >
             <Plus className="w-3 h-3" />
           </button>
 
           {/* Channel Status */}
           <div className="hidden md:flex items-center space-x-2">
-            <div className="flex items-center space-x-1 text-green-600">
+            <div className="flex items-center space-x-1 text-green-400">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
               <Phone className="w-4 h-4" />
             </div>
-            <div className="flex items-center space-x-1 text-green-600">
+            <div className="flex items-center space-x-1 text-green-400">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
               <MessageCircle className="w-4 h-4" />
             </div>
-            <div className="flex items-center space-x-1 text-green-600">
+            <div className="flex items-center space-x-1 text-green-400">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
               <Mail className="w-4 h-4" />
             </div>
@@ -221,7 +221,7 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
                       <div className="flex items-start space-x-3">
                         <div className={cn(
                           "w-2 h-2 rounded-full mt-2",
-                          notification.type === 'conversation' && "bg-blue-500",
+                          notification.type === 'conversation' && "bg-purple-500",
                           notification.type === 'system' && "bg-green-500",
                           notification.type === 'alert' && "bg-red-500"
                         )}></div>
@@ -234,7 +234,7 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
                   ))}
                 </div>
                 <div className="p-4 border-t border-gray-200">
-                  <button className="text-sm text-blue-600 hover:text-blue-700">
+                  <button className="text-sm text-purple-600 hover:text-purple-700">
                     View all notifications
                   </button>
                 </div>
@@ -253,7 +253,7 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
               onClick={() => setShowUserMenu(!showUserMenu)}
               className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100"
             >
-              <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
                 <span className="text-xs font-medium text-white">
                   {user ? getInitials(`${user.firstName} ${user.lastName}`) : 'U'}
                 </span>
@@ -269,7 +269,7 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
               <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
                 <div className="p-3 border-b border-gray-200">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center shrink-0">
                       <span className="text-sm font-medium text-white leading-none">
                         {user ? getInitials(`${user.firstName} ${user.lastName}`) : 'U'}
                       </span>

@@ -25,7 +25,7 @@ export default function StepIndicator({ activeStep, totalSteps }: StepIndicatorP
                   i + 1 < activeStep
                     ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-sm shadow-green-500/30"
                     : i + 1 === activeStep
-                    ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-sm shadow-blue-500/30 animate-pulse"
+                    ? "bg-gradient-to-r from-purple-500 to-purple-500 text-white shadow-sm shadow-purple-500/30 animate-pulse"
                     : "bg-gray-100 text-gray-400 border border-gray-200"
                 }`}
               >

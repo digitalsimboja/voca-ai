@@ -23,6 +23,7 @@ interface SocialMediaAgentData {
       instagram: { enabled: boolean; handle: string };
       facebook: { enabled: boolean; page: string; messenger: boolean };
       tiktok: { enabled: boolean; username: string };
+      twitter: { enabled: boolean; username: string };
     };
     contentTypes: string[];
   };
@@ -69,6 +70,7 @@ interface ValidationErrors {
     instagram?: string;
     facebook?: string;
     tiktok?: string;
+    twitter?: string;
   };
   customerService?: {
     responseTime?: string;
@@ -87,6 +89,7 @@ const initialData: SocialMediaAgentData = {
       instagram: { enabled: true, handle: "" },
       facebook: { enabled: false, page: "", messenger: true },
       tiktok: { enabled: false, username: "" },
+      twitter: { enabled: false, username: "" },
     },
     contentTypes: ["product_posts", "stories", "reels", "live_streams"],
   },
@@ -212,6 +215,16 @@ export default function CreateRetailAgentModal({
             tiktok: "TikTok username is required when TikTok is enabled",
           };
         }
+
+        if (
+          agent.socialMedia.platforms.twitter.enabled &&
+          !agent.socialMedia.platforms.twitter.username.trim()
+        ) {
+          errors.socialMedia = {
+            ...errors.socialMedia,
+            twitter: "Twitter username is required when Twitter is enabled",
+          };
+        }
         break;
 
       case 4: // Customer Service
@@ -326,14 +339,14 @@ export default function CreateRetailAgentModal({
     <div className="fixed inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60 backdrop-blur-md flex items-center justify-center z-50 p-1 sm:p-2">
       <div className="bg-gradient-to-br from-white via-gray-50 to-white rounded-xl w-full max-w-lg sm:max-w-xl max-h-[90vh] sm:max-h-[95vh] overflow-hidden shadow-2xl border border-gray-100 flex flex-col">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 p-3 text-white relative overflow-hidden flex-shrink-0">
+        <div className="bg-gradient-to-r from-purple-600 via-purple-600 to-pink-600 p-3 text-white relative overflow-hidden flex-shrink-0">
           <div className="absolute inset-0 bg-black/10"></div>
           <div className="relative z-10 flex items-center justify-between">
             <div>
               <h2 className="text-lg font-bold mb-0.5">
                 Create AI Call Center Agent
               </h2>
-              <p className="text-blue-100 text-xs">
+              <p className="text-purple-100 text-xs">
                 Transform your social media business with Voca AI Agent
               </p>
             </div>
@@ -396,7 +409,7 @@ export default function CreateRetailAgentModal({
                 <button
                   onClick={handleSubmit}
                   disabled={isSubmitting}
-                  className={`px-3 py-2 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white rounded-md hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 transition-all duration-200 font-bold shadow-md hover:shadow-lg flex items-center space-x-2 text-sm ${
+                  className={`px-3 py-2 bg-gradient-to-r from-purple-600 via-purple-600 to-pink-600 text-white rounded-md hover:from-purple-700 hover:via-purple-700 hover:to-pink-700 transition-all duration-200 font-bold shadow-md hover:shadow-lg flex items-center space-x-2 text-sm ${
                     isSubmitting ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                 >
@@ -441,7 +454,7 @@ export default function CreateRetailAgentModal({
               ) : (
                 <button
                   onClick={nextStep}
-                  className="px-3 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-md hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-bold shadow-md hover:shadow-lg flex items-center space-x-2 text-sm"
+                  className="px-3 py-2 bg-gradient-to-r from-purple-600 to-purple-600 text-white rounded-md hover:from-purple-700 hover:to-purple-700 transition-all duration-200 font-bold shadow-md hover:shadow-lg flex items-center space-x-2 text-sm"
                 >
                   <span>Next</span>
                   <svg

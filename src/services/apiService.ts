@@ -559,6 +559,24 @@ export const apiService = {
     }
   },
 
+  // Update user settings
+  async updateSettings(settings: Record<string, unknown>): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall('/settings', {
+        method: 'PUT',
+        body: JSON.stringify(settings),
+      });
+      return response;
+    } catch (error) {
+      console.error('Update settings error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to update settings',
+        data: null
+      };
+    }
+  },
+
   // Clear localStorage and sessionStorage
   async clearLocalStorage(): Promise<ApiResponse> {
     try {

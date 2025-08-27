@@ -102,7 +102,7 @@ export default function CatalogsPage() {
     return (
       <MainLayout>
         <div className="flex items-center justify-center min-h-[400px]">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
         </div>
       </MainLayout>
     );
@@ -121,7 +121,7 @@ export default function CatalogsPage() {
           </div>
           <button
             onClick={handleCreateCatalog}
-            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
+            className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors font-medium"
           >
             <Plus className="w-4 h-4 mr-2" />
             Create Catalog
@@ -144,7 +144,7 @@ export default function CatalogsPage() {
                 </p>
                 <button
                   onClick={handleCreateCatalog}
-                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
+                  className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors font-medium"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Create Your First Catalog
@@ -206,14 +206,14 @@ export default function CatalogsPage() {
                       <div className="flex space-x-1">
                         <button
                           onClick={() => handleViewCatalog(catalog.id)}
-                          className="p-1.5 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                          className="p-1.5 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-md transition-colors"
                           title="View catalog"
                         >
                           <Eye className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleEditCatalog(catalog.id)}
-                          className="p-1.5 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-md transition-colors"
+                          className="p-1.5 text-gray-600 hover:text-green-400 hover:bg-green-50 rounded-md transition-colors"
                           title="Edit catalog"
                         >
                           <Edit className="w-4 h-4" />

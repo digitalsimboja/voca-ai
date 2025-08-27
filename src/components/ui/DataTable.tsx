@@ -80,8 +80,8 @@ export function DataTable<T extends Record<string, any>>({
     }
 
     return sortConfig.direction === 'asc' 
-      ? <ChevronUp className="w-4 h-4 text-blue-600" />
-      : <ChevronDown className="w-4 h-4 text-blue-600" />;
+      ? <ChevronUp className="w-4 h-4 text-purple-600" />
+      : <ChevronDown className="w-4 h-4 text-purple-600" />;
   };
 
   const renderCell = (item: T, column: Column<T>) => {
@@ -102,7 +102,7 @@ export function DataTable<T extends Record<string, any>>({
       <Card className={className}>
         <CardContent className="p-8">
           <div className="flex items-center justify-center">
-            <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+            <Loader2 className="w-6 h-6 animate-spin text-purple-600" />
             <span className="ml-2 text-gray-600">Loading...</span>
           </div>
         </CardContent>

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { buildApiUrl } from '@/config/api';
+import { buildApiUrl, getAuthHeaders } from '@/config/api';
 
 export async function GET(request: NextRequest) {
   try {
@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
 
     const response = await fetch(buildApiUrl('AGENT', '/v1/agent/agents'), {
       method: 'GET',
-      headers: { 'Authorization': `Bearer ${token}` },
+      headers: getAuthHeaders(token),
     });
 
     const result = await response.json();

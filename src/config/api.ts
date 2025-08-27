@@ -102,6 +102,8 @@ export const API_ENDPOINTS = {
 
   // Settings Service
   SETTINGS: {
+    GET: '/v1/settings',
+    UPDATE: '/v1/settings',
     GENERAL: '/v1/settings/general',
     NOTIFICATIONS: '/v1/settings/notifications',
     SECURITY: '/v1/settings/security',

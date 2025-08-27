@@ -34,7 +34,7 @@ export default function CustomerServiceStep({
       key: "whatsapp",
       label: "WhatsApp",
       icon: MessageCircle,
-      color: "text-green-600",
+      color: "text-green-400",
     },
     {
       key: "instagram_dm",
@@ -46,7 +46,7 @@ export default function CustomerServiceStep({
       key: "facebook_messenger",
       label: "Facebook Messenger",
       icon: Facebook,
-      color: "text-blue-700",
+      color: "text-purple-700",
     },
     {
       key: "voice",
@@ -169,7 +169,7 @@ export default function CustomerServiceStep({
           {/* Response Time */}
           <div>
             <label className="block text-[10px] sm:text-xs md:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2 flex items-center">
-              <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-1.5"></span>
+              <span className="w-1.5 h-1.5 bg-purple-500 rounded-full mr-1.5"></span>
               Expected Response Time (minutes)
               <span className="text-red-500 ml-1">*</span>
             </label>

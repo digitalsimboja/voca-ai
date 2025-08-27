@@ -348,7 +348,7 @@ export default function CreateCatalogPage() {
           <button
             onClick={handleSubmit}
             disabled={!catalog.name.trim() || !catalog.agentId || !userStore || isCreatingCatalog}
-            className="flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors text-sm bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+            className="flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors text-sm bg-purple-600 text-white hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
             <Save className="w-4 h-4" />
             <span>{isCreatingCatalog ? "Creating..." : "Create Catalog"}</span>
@@ -374,7 +374,7 @@ export default function CreateCatalogPage() {
                     type="text"
                     value={catalog.name}
                     onChange={(e) => updateCatalog("name", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
                     placeholder="e.g., Premium Herbal Tea Pack"
                   />
                 </div>
@@ -389,7 +389,7 @@ export default function CreateCatalogPage() {
                       updateCatalog("description", e.target.value)
                     }
                     rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
                     placeholder="Describe your product..."
                   />
                 </div>
@@ -425,7 +425,7 @@ export default function CreateCatalogPage() {
                         />
                         <label
                           htmlFor="main-image-upload"
-                          className="text-sm text-gray-600 cursor-pointer hover:text-blue-600"
+                          className="text-sm text-gray-600 cursor-pointer hover:text-purple-600"
                         >
                           Click to upload image
                         </label>
@@ -458,12 +458,12 @@ export default function CreateCatalogPage() {
                     <div className="space-y-3">
                       <div className="bg-green-50 border border-green-200 rounded-lg p-3">
                         <div className="flex items-center space-x-2">
-                          <Store className="w-4 h-4 text-green-600" />
-                          <span className="text-sm font-medium text-green-800">
+                          <Store className="w-4 h-4 text-green-400" />
+                          <span className="text-sm font-medium text-green-600">
                             Store Found: {userStore.store_name}
                           </span>
                         </div>
-                        <p className="text-xs text-green-700 mt-1">
+                        <p className="text-xs text-green-500 mt-1">
                           Your store URL: {typeof window !== 'undefined' ? `${window.location.origin}/${userStore.store_name}` : `/${userStore.store_name}`}
                         </p>
                       </div>
@@ -483,21 +483,21 @@ export default function CreateCatalogPage() {
                     </div>
                   ) : (
                     <div className="space-y-3">
-                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                      <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
                         <div className="flex items-center space-x-2">
-                          <Store className="w-4 h-4 text-blue-600" />
-                          <span className="text-sm font-medium text-blue-800">
+                          <Store className="w-4 h-4 text-purple-600" />
+                          <span className="text-sm font-medium text-purple-800">
                             No Store Found
                           </span>
                         </div>
-                        <p className="text-xs text-blue-700 mt-1">
+                        <p className="text-xs text-purple-700 mt-1">
                           You need to create a store before you can create catalogs.
                         </p>
                       </div>
                       
                       <button
                         onClick={() => setShowStoreModal(true)}
-                        className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                        className="flex items-center space-x-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm"
                       >
                         <Plus className="w-3 h-3" />
                         <span>Create Your Store</span>
@@ -517,11 +517,11 @@ export default function CreateCatalogPage() {
                     <div className="space-y-3">
                       <div className="bg-green-50 border border-green-200 rounded-lg p-3">
                         <div className="flex items-center space-x-2">
-                          <span className="text-sm font-medium text-green-800">
+                          <span className="text-sm font-medium text-green-600">
                             Agent Found: {userAgents.find(agent => agent.id === catalog.agentId)?.name || userAgents[0]?.name}
                           </span>
                         </div>
-                        <p className="text-xs text-green-700 mt-1">
+                        <p className="text-xs text-green-500 mt-1">
                           Your AI agent will handle customer orders and inquiries.
                         </p>
                       </div>
@@ -534,7 +534,7 @@ export default function CreateCatalogPage() {
                           <select
                             value={catalog.agentId}
                             onChange={(e) => updateCatalog("agentId", e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm appearance-none bg-white"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm appearance-none bg-white"
                           >
                             {userAgents.map((agent) => (
                               <option key={agent.id} value={agent.id}>
@@ -548,13 +548,13 @@ export default function CreateCatalogPage() {
                     </div>
                   ) : (
                     <div className="space-y-3">
-                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                      <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
                         <div className="flex items-center space-x-2">
-                          <span className="text-sm font-medium text-blue-800">
+                          <span className="text-sm font-medium text-purple-800">
                             No Agent Found
                           </span>
                         </div>
-                        <p className="text-xs text-blue-700 mt-1">
+                        <p className="text-xs text-purple-700 mt-1">
                           You need to create an AI agent to handle customer orders.
                         </p>
                       </div>
@@ -574,11 +574,11 @@ export default function CreateCatalogPage() {
                 {userStore && userAgents.length > 0 && (
                   <div className="bg-green-50 border border-green-200 rounded-lg p-3">
                     <div className="flex items-center space-x-2">
-                      <span className="text-sm font-medium text-green-800">
+                      <span className="text-sm font-medium text-green-600">
                         ✓ Store and Agent Ready
                       </span>
                     </div>
-                    <p className="text-xs text-green-700 mt-1">
+                    <p className="text-xs text-green-500 mt-1">
                       Your store &quot;{userStore.store_name}&quot; is associated with agent &quot;{userAgents.find(agent => agent.id === catalog.agentId)?.name || userAgents[0]?.name}&quot;
                     </p>
                   </div>
@@ -590,7 +590,7 @@ export default function CreateCatalogPage() {
                     id="isPublic"
                     checked={catalog.isPublic}
                     onChange={(e) => updateCatalog("isPublic", e.target.checked)}
-                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                   />
                   <label htmlFor="isPublic" className="text-sm text-gray-700">
                     Make this catalog publicly accessible
@@ -609,7 +609,7 @@ export default function CreateCatalogPage() {
                   {catalog.pricingTiers.length < 3 && (
                     <button
                       onClick={addPricingTier}
-                      className="flex items-center space-x-1 bg-green-600 text-white px-3 py-1.5 rounded-lg hover:bg-green-700 transition-colors text-sm"
+                      className="flex items-center space-x-1 bg-green-400 text-white px-3 py-1.5 rounded-lg hover:bg-green-500 transition-colors text-sm"
                     >
                       <Plus className="w-3 h-3" />
                       <span>Add Tier</span>
@@ -675,7 +675,7 @@ export default function CreateCatalogPage() {
                                 />
                                 <label
                                   htmlFor={`tier-image-${tierIndex}`}
-                                  className="text-xs text-gray-600 cursor-pointer hover:text-blue-600"
+                                  className="text-xs text-gray-600 cursor-pointer hover:text-purple-600"
                                 >
                                   Upload image
                                 </label>
@@ -709,7 +709,7 @@ export default function CreateCatalogPage() {
                                     );
                                   }
                                 }}
-                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
                                 placeholder="1"
                               />
                             </div>
@@ -735,7 +735,7 @@ export default function CreateCatalogPage() {
                                     );
                                   }
                                 }}
-                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
                                 placeholder="0"
                               />
                             </div>
@@ -755,7 +755,7 @@ export default function CreateCatalogPage() {
                                   e.target.value
                                 )
                               }
-                              className="w-full px-2 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                              className="w-full px-2 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
                               placeholder="e.g., Perfect for trying out"
                             />
                           </div>
@@ -779,7 +779,7 @@ export default function CreateCatalogPage() {
                               </span>
                             </label>
                             <div className="text-right">
-                              <div className="text-sm font-bold text-blue-600">
+                              <div className="text-sm font-bold text-purple-600">
                                 ₦{tier.price.toLocaleString()}
                               </div>
                               {tier.discount && (
@@ -835,7 +835,7 @@ export default function CreateCatalogPage() {
                           <span className="text-sm font-medium">
                             {tier.packs} Pack{tier.packs > 1 ? "s" : ""}
                           </span>
-                          <span className="text-sm font-bold text-blue-600">
+                          <span className="text-sm font-bold text-purple-600">
                             ₦{tier.price.toLocaleString()}
                           </span>
                         </div>
@@ -860,7 +860,7 @@ export default function CreateCatalogPage() {
               <Card>
                 <CardHeader className="pb-3">
                   <div className="flex items-center space-x-2">
-                    <Link className="w-5 h-5 text-green-600" />
+                    <Link className="w-5 h-5 text-green-400" />
                     <h3 className="text-lg font-semibold text-gray-900">
                       Shareable Link
                     </h3>
@@ -880,18 +880,18 @@ export default function CreateCatalogPage() {
                       <button
                         onClick={copyToClipboard}
                         disabled={!catalog.shareableLink}
-                        className="flex items-center space-x-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm disabled:bg-gray-400 disabled:cursor-not-allowed"
+                        className="flex items-center space-x-1 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm disabled:bg-gray-400 disabled:cursor-not-allowed"
                       >
                         <Copy className="w-3 h-3" />
                         <span>Copy</span>
                       </button>
                     </div>
 
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                      <h4 className="font-medium text-blue-900 mb-2 text-sm">
+                    <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
+                      <h4 className="font-medium text-purple-900 mb-2 text-sm">
                         How it works:
                       </h4>
-                      <ul className="text-xs text-blue-800 space-y-1">
+                      <ul className="text-xs text-purple-800 space-y-1">
                         <li>
                           • Customers click your link and see your product
                         </li>
@@ -912,7 +912,7 @@ export default function CreateCatalogPage() {
                           window.open(catalog.shareableLink, "_blank")
                         }
                         disabled={!catalog.shareableLink}
-                        className="flex items-center justify-center space-x-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm disabled:bg-gray-400 disabled:cursor-not-allowed"
+                        className="flex items-center justify-center space-x-1 px-3 py-2 bg-green-400 text-white rounded-lg hover:bg-green-500 transition-colors text-sm disabled:bg-gray-400 disabled:cursor-not-allowed"
                       >
                         <Link className="w-3 h-3" />
                         <span>Preview Link</span>

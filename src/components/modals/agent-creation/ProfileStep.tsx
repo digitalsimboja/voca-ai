@@ -38,9 +38,9 @@ export default function ProfileStep({
   return (
     <StepLayout className="p-3 sm:p-4 max-w-lg mx-auto w-full">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-3 sm:p-4 border-b border-gray-100">
+        <div className="bg-gradient-to-r from-purple-50 to-purple-50 p-3 sm:p-4 border-b border-gray-100">
           <div className="flex items-center space-x-2">
-            <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-1 sm:p-1.5 rounded-md">
+            <div className="bg-gradient-to-r from-purple-500 to-purple-500 p-1 sm:p-1.5 rounded-md">
               <Users className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
             <div className="min-w-0 flex-1">
@@ -60,7 +60,7 @@ export default function ProfileStep({
             {/* Agent Name */}
             <div>
                                    <label className="block text-xs font-semibold text-gray-700 mb-1 flex items-center">
-                       <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-1.5 shrink-0"></span>
+                       <span className="w-1.5 h-1.5 bg-purple-500 rounded-full mr-1.5 shrink-0"></span>
                        Agent Name <span className="text-red-500 ml-1">*</span>
                      </label>
                      <div className="relative">
@@ -83,7 +83,7 @@ export default function ProfileStep({
                          className={`w-full px-3 py-2 pr-8 border rounded-md text-sm focus:ring-2 transition-all duration-200 ${
                            validationErrors.profile?.name 
                              ? "border-red-300 focus:ring-red-500/20 focus:border-red-500" 
-                             : "border-gray-200 focus:ring-blue-500/20 focus:border-blue-500"
+                             : "border-gray-200 focus:ring-purple-500/20 focus:border-purple-500"
                          }`}
                        />
                        <div className="absolute right-2 top-1/2 -translate-y-1/2">
@@ -171,9 +171,9 @@ export default function ProfileStep({
             </div>
 
             {/* Pro Tip */}
-            <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-2 sm:p-3 rounded-md border border-blue-100">
+            <div className="bg-gradient-to-r from-purple-50 to-purple-50 p-2 sm:p-3 rounded-md border border-purple-100">
               <div className="flex items-start space-x-2">
-                <div className="bg-blue-500 p-1 rounded-sm shrink-0">
+                <div className="bg-purple-500 p-1 rounded-sm shrink-0">
                   <svg
                     className="w-3.5 h-3.5 text-white"
                     fill="none"

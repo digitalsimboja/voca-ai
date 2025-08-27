@@ -164,7 +164,7 @@ export default function PublicCatalogPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
       </div>
     );
   }
@@ -261,7 +261,7 @@ export default function PublicCatalogPage() {
                     key={index}
                     className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
                       orderForm.selectedTier === tier
-                        ? "border-blue-500 bg-blue-50"
+                        ? "border-purple-500 bg-purple-50"
                         : "border-gray-200 hover:border-gray-300"
                     }`}
                     onClick={() => handleTierSelection(tier)}
@@ -270,7 +270,7 @@ export default function PublicCatalogPage() {
                       <div className="flex items-center space-x-3">
                         <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
                           orderForm.selectedTier === tier
-                            ? "border-blue-500 bg-blue-500"
+                            ? "border-purple-500 bg-purple-500"
                             : "border-gray-300"
                         }`}>
                           {orderForm.selectedTier === tier && (
@@ -285,7 +285,7 @@ export default function PublicCatalogPage() {
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-lg font-bold text-blue-600">
+                        <div className="text-lg font-bold text-purple-600">
                           {formatPrice(tier.price)}
                         </div>
                         {tier.freeDelivery && (
@@ -337,7 +337,7 @@ export default function PublicCatalogPage() {
                       type="text"
                       value={orderForm.customerName}
                       onChange={(e) => handleInputChange("customerName", e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       placeholder="Enter your full name"
                     />
                   </div>
@@ -349,7 +349,7 @@ export default function PublicCatalogPage() {
                       type="email"
                       value={orderForm.customerEmail}
                       onChange={(e) => handleInputChange("customerEmail", e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       placeholder="Enter your email"
                     />
                   </div>
@@ -363,7 +363,7 @@ export default function PublicCatalogPage() {
                     type="tel"
                     value={orderForm.customerPhone}
                     onChange={(e) => handleInputChange("customerPhone", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     placeholder="Enter your phone number"
                   />
                 </div>
@@ -376,7 +376,7 @@ export default function PublicCatalogPage() {
                     value={orderForm.deliveryAddress}
                     onChange={(e) => handleInputChange("deliveryAddress", e.target.value)}
                     rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     placeholder="Enter your delivery address"
                   />
                 </div>
@@ -389,7 +389,7 @@ export default function PublicCatalogPage() {
                     value={orderForm.specialInstructions}
                     onChange={(e) => handleInputChange("specialInstructions", e.target.value)}
                     rows={2}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     placeholder="Any special instructions for your order"
                   />
                 </div>
@@ -405,7 +405,7 @@ export default function PublicCatalogPage() {
                       <span className="font-medium">{formatPrice(calculateTotal())}</span>
                     </div>
                     {orderForm.selectedTier?.freeDelivery && (
-                      <div className="flex justify-between text-green-600">
+                      <div className="flex justify-between text-green-400">
                         <span>Free Delivery</span>
                         <span>₦0</span>
                       </div>
@@ -421,7 +421,7 @@ export default function PublicCatalogPage() {
                 <button
                   onClick={handleSubmitOrder}
                   disabled={submitting || !orderForm.selectedTier}
-                  className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
+                  className="w-full bg-purple-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
                 >
                   {submitting ? (
                     <>

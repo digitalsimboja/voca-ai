@@ -278,7 +278,7 @@ export default function DashboardPage() {
       <MainLayout>
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
             <p className="mt-4 text-gray-600">Loading dashboard...</p>
           </div>
         </div>
@@ -292,7 +292,7 @@ export default function DashboardPage() {
       <MainLayout>
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
             <p className="mt-4 text-gray-600">Redirecting to login...</p>
           </div>
         </div>
@@ -308,7 +308,7 @@ export default function DashboardPage() {
             <p className="text-red-600 mb-4">{error}</p>
             <button
               onClick={fetchDashboardData}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
             >
               Retry
             </button>
@@ -345,7 +345,7 @@ export default function DashboardPage() {
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
             >
               <option value="24h">Last 24 hours</option>
               <option value="7d">Last 7 days</option>
@@ -371,7 +371,7 @@ export default function DashboardPage() {
                     ).toLocaleString()}
                   </p>
                   <p className={`text-xs sm:text-sm flex items-center mt-1 ${
-                    getTrendingMetric(dashboardData.trending_metrics, 'revenue_trends', 'total_revenue')?.color || 'text-green-600'
+                    getTrendingMetric(dashboardData.trending_metrics, 'revenue_trends', 'total_revenue')?.color || 'text-green-400'
                   }`}>
                     {React.createElement(getTrendIcon(getTrendingMetric(dashboardData.trending_metrics, 'revenue_trends', 'total_revenue')?.direction), {
                       className: "w-3 h-3 sm:w-4 sm:h-4 mr-1"
@@ -382,7 +382,7 @@ export default function DashboardPage() {
                   </p>
                 </div>
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                  <Wallet className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+                  <Wallet className="w-5 h-5 sm:w-6 sm:h-6 text-green-400" />
                 </div>
               </div>
             </CardContent>
@@ -399,7 +399,7 @@ export default function DashboardPage() {
                     {dashboardData.overview.total_orders || 0}
                   </p>
                   <p className={`text-xs sm:text-sm flex items-center mt-1 ${
-                    getTrendingMetric(dashboardData.trending_metrics, 'revenue_trends', 'total_orders')?.color || 'text-green-600'
+                    getTrendingMetric(dashboardData.trending_metrics, 'revenue_trends', 'total_orders')?.color || 'text-green-400'
                   }`}>
                     {React.createElement(getTrendIcon(getTrendingMetric(dashboardData.trending_metrics, 'revenue_trends', 'total_orders')?.direction), {
                       className: "w-3 h-3 sm:w-4 sm:h-4 mr-1"
@@ -409,8 +409,8 @@ export default function DashboardPage() {
                     )}
                   </p>
                 </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
                 </div>
               </div>
             </CardContent>
@@ -472,7 +472,7 @@ export default function DashboardPage() {
                     {dashboardData.overview.total_conversations || 0}
                   </p>
                   <p className={`text-xs sm:text-sm flex items-center mt-1 ${
-                    getTrendingMetric(dashboardData.trending_metrics, 'conversation_trends', 'total_conversations')?.color || 'text-green-600'
+                    getTrendingMetric(dashboardData.trending_metrics, 'conversation_trends', 'total_conversations')?.color || 'text-green-400'
                   }`}>
                     {React.createElement(getTrendIcon(getTrendingMetric(dashboardData.trending_metrics, 'conversation_trends', 'total_conversations')?.direction), {
                       className: "w-3 h-3 sm:w-4 sm:h-4 mr-1"
@@ -482,8 +482,8 @@ export default function DashboardPage() {
                     )}
                   </p>
                 </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Activity className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <Activity className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
                 </div>
               </div>
             </CardContent>
@@ -499,13 +499,13 @@ export default function DashboardPage() {
                   <p className="text-lg sm:text-2xl font-bold text-gray-900">
                     {dashboardData.overview.active_conversations || 0}
                   </p>
-                  <p className="text-xs sm:text-sm text-blue-600 flex items-center mt-1">
+                  <p className="text-xs sm:text-sm text-purple-600 flex items-center mt-1">
                     <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                     Real-time
                   </p>
                 </div>
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                  <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+                  <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-green-400" />
                 </div>
               </div>
             </CardContent>
@@ -522,7 +522,7 @@ export default function DashboardPage() {
                     {dashboardData.overview.average_response_time || 0}s
                   </p>
                   <p className={`text-xs sm:text-sm flex items-center mt-1 ${
-                    getTrendingMetric(dashboardData.trending_metrics, 'performance_trends', 'average_response_time')?.color || 'text-green-600'
+                    getTrendingMetric(dashboardData.trending_metrics, 'performance_trends', 'average_response_time')?.color || 'text-green-400'
                   }`}>
                     {React.createElement(getTrendIcon(getTrendingMetric(dashboardData.trending_metrics, 'performance_trends', 'average_response_time')?.direction), {
                       className: "w-3 h-3 sm:w-4 sm:h-4 mr-1"
@@ -550,7 +550,7 @@ export default function DashboardPage() {
                     {dashboardData.overview.customer_satisfaction || 0.0}/5
                   </p>
                   <p className={`text-xs sm:text-sm flex items-center mt-1 ${
-                    getTrendingMetric(dashboardData.trending_metrics, 'satisfaction_trends', 'customer_satisfaction')?.color || 'text-green-600'
+                    getTrendingMetric(dashboardData.trending_metrics, 'satisfaction_trends', 'customer_satisfaction')?.color || 'text-green-400'
                   }`}>
                     {React.createElement(getTrendIcon(getTrendingMetric(dashboardData.trending_metrics, 'satisfaction_trends', 'customer_satisfaction')?.direction), {
                       className: "w-3 h-3 sm:w-4 sm:h-4 mr-1"
@@ -581,7 +581,7 @@ export default function DashboardPage() {
                     {dashboardData.overview.resolution_rate || 0}%
                   </p>
                   <p className={`text-xs sm:text-sm flex items-center mt-1 ${
-                    getTrendingMetric(dashboardData.trending_metrics, 'performance_trends', 'resolution_rate')?.color || 'text-green-600'
+                    getTrendingMetric(dashboardData.trending_metrics, 'performance_trends', 'resolution_rate')?.color || 'text-green-400'
                   }`}>
                     {React.createElement(getTrendIcon(getTrendingMetric(dashboardData.trending_metrics, 'performance_trends', 'resolution_rate')?.direction), {
                       className: "w-3 h-3 sm:w-4 sm:h-4 mr-1"
@@ -609,7 +609,7 @@ export default function DashboardPage() {
                     {dashboardData.overview.total_customers || 0}
                   </p>
                   <p className={`text-xs sm:text-sm flex items-center mt-1 ${
-                    getTrendingMetric(dashboardData.trending_metrics, 'conversation_trends', 'unique_customers')?.color || 'text-green-600'
+                    getTrendingMetric(dashboardData.trending_metrics, 'conversation_trends', 'unique_customers')?.color || 'text-green-400'
                   }`}>
                     {React.createElement(getTrendIcon(getTrendingMetric(dashboardData.trending_metrics, 'conversation_trends', 'unique_customers')?.direction), {
                       className: "w-3 h-3 sm:w-4 sm:h-4 mr-1"
@@ -640,7 +640,7 @@ export default function DashboardPage() {
                     ).toLocaleString()}
                   </p>
                   <p className={`text-xs sm:text-sm flex items-center mt-1 ${
-                    getTrendingMetric(dashboardData.trending_metrics, 'revenue_trends', 'avg_order_value')?.color || 'text-green-600'
+                    getTrendingMetric(dashboardData.trending_metrics, 'revenue_trends', 'avg_order_value')?.color || 'text-green-400'
                   }`}>
                     {React.createElement(getTrendIcon(getTrendingMetric(dashboardData.trending_metrics, 'revenue_trends', 'avg_order_value')?.direction), {
                       className: "w-3 h-3 sm:w-4 sm:h-4 mr-1"
@@ -651,7 +651,7 @@ export default function DashboardPage() {
                   </p>
                 </div>
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                  <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+                  <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-green-400" />
                 </div>
               </div>
             </CardContent>
@@ -792,10 +792,10 @@ export default function DashboardPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <button
                 onClick={() => router.push("/conversations")}
-                className="flex items-center space-x-3 p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+                className="flex items-center space-x-3 p-4 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors"
               >
-                <MessageCircle className="w-6 h-6 text-blue-600" />
-                <span className="text-sm font-medium text-blue-900">
+                <MessageCircle className="w-6 h-6 text-purple-600" />
+                <span className="text-sm font-medium text-purple-900">
                   View Conversations
                 </span>
               </button>
@@ -804,8 +804,8 @@ export default function DashboardPage() {
                 onClick={() => router.push("/orders")}
                 className="flex items-center space-x-3 p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors"
               >
-                <ShoppingCart className="w-6 h-6 text-green-600" />
-                <span className="text-sm font-medium text-green-900">
+                <ShoppingCart className="w-6 h-6 text-green-400" />
+                <span className="text-sm font-medium text-green-700">
                   View Orders
                 </span>
               </button>

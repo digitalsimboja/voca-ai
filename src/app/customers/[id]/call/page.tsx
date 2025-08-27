@@ -180,9 +180,9 @@ export default function CallCustomerPage() {
   const getCallTypeColor = (type: string) => {
     switch (type) {
       case 'incoming':
-        return 'text-green-600'
+        return 'text-green-400'
       case 'outgoing':
-        return 'text-blue-600'
+        return 'text-purple-600'
       case 'missed':
         return 'text-red-600'
       default:
@@ -195,7 +195,7 @@ export default function CallCustomerPage() {
       <MainLayout>
         <div className="space-y-4 sm:space-y-6">
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 animate-spin text-blue-600" />
+            <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 animate-spin text-purple-600" />
             <span className="ml-2 text-sm sm:text-base text-gray-600">
               Loading customer details...
             </span>
@@ -295,7 +295,7 @@ export default function CallCustomerPage() {
                   onClick={initiateCall}
                   disabled={calling}
                   size="lg"
-                  className="bg-green-600 hover:bg-green-700"
+                  className="bg-green-400 hover:bg-green-500"
                 >
                   {calling ? (
                     <>
@@ -324,8 +324,8 @@ export default function CallCustomerPage() {
                   <p className="text-sm font-medium text-gray-600">Total Calls</p>
                   <p className="text-2xl font-bold text-gray-900">{callHistory.length}</p>
                 </div>
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Phone className="w-5 h-5 text-blue-600" />
+                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <Phone className="w-5 h-5 text-purple-600" />
                 </div>
               </div>
             </CardContent>
@@ -341,7 +341,7 @@ export default function CallCustomerPage() {
                   </p>
                 </div>
                 <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                  <PhoneOutgoing className="w-5 h-5 text-green-600" />
+                  <PhoneOutgoing className="w-5 h-5 text-green-400" />
                 </div>
               </div>
             </CardContent>

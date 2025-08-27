@@ -93,7 +93,7 @@ export default function PublicCatalogPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading product...</p>
         </div>
       </div>
@@ -149,7 +149,7 @@ export default function PublicCatalogPage() {
               </a>
               <a
                 href={`tel:+2341234567890`}
-                className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                className="p-2 text-green-400 hover:bg-green-50 rounded-lg transition-colors"
               >
                 <Phone className="w-5 h-5" />
               </a>
@@ -173,12 +173,12 @@ export default function PublicCatalogPage() {
             {/* Product Features */}
             <div className="grid grid-cols-3 gap-4">
               <div className="text-center p-4 bg-white rounded-lg">
-                <Truck className="w-6 h-6 text-blue-600 mx-auto mb-2" />
+                <Truck className="w-6 h-6 text-purple-600 mx-auto mb-2" />
                 <p className="text-sm font-medium text-gray-900">Fast Delivery</p>
                 <p className="text-xs text-gray-600">1-3 days</p>
               </div>
               <div className="text-center p-4 bg-white rounded-lg">
-                <Shield className="w-6 h-6 text-green-600 mx-auto mb-2" />
+                <Shield className="w-6 h-6 text-green-400 mx-auto mb-2" />
                 <p className="text-sm font-medium text-gray-900">Secure Payment</p>
                 <p className="text-xs text-gray-600">100% safe</p>
               </div>
@@ -217,7 +217,7 @@ export default function PublicCatalogPage() {
                     key={index}
                     className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
                       selectedTier === index
-                        ? 'border-blue-500 bg-blue-50'
+                        ? 'border-purple-500 bg-purple-50'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                     onClick={() => setSelectedTier(index)}
@@ -240,7 +240,7 @@ export default function PublicCatalogPage() {
                         )}
                       </div>
                       <div className="text-right">
-                        <p className="text-2xl font-bold text-blue-600">
+                        <p className="text-2xl font-bold text-purple-600">
                           {formatPrice(tier.price || 0)}
                         </p>
                         {(tier.packs || 1) > 1 && (
@@ -261,7 +261,7 @@ export default function PublicCatalogPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Quantity
                 </label>
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-3 text-gray-900">
                   <Button
                     variant="outline"
                     size="sm"
@@ -284,12 +284,12 @@ export default function PublicCatalogPage() {
               <div className="bg-gray-50 p-4 rounded-lg">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-gray-600">Total Amount:</span>
-                  <span className="text-2xl font-bold text-blue-600">
+                  <span className="text-2xl font-bold text-purple-600">
                     {formatPrice(totalAmount)}
                   </span>
                 </div>
                 {selectedPricingTier?.freeDelivery && (
-                  <p className="text-sm text-green-600 flex items-center">
+                  <p className="text-sm text-green-400 flex items-center">
                     <Truck className="w-4 h-4 mr-1" />
                     Free delivery included
                   </p>
@@ -298,7 +298,7 @@ export default function PublicCatalogPage() {
 
               <Button
                 onClick={handleOrder}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3"
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3"
                 size="lg"
               >
                 <ShoppingCart className="w-5 h-5 mr-2" />

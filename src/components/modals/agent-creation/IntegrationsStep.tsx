@@ -45,7 +45,7 @@ export default function IntegrationsStep({
           <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-100 rounded-lg p-4">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-3">
               <div className="flex items-center space-x-3">
-                <CreditCard className="w-5 h-5 text-green-600 shrink-0" />
+                <CreditCard className="w-5 h-5 text-green-400 shrink-0" />
                 <div>
                   <h4 className="text-base font-semibold text-gray-900">
                     Payment Gateways
@@ -73,7 +73,7 @@ export default function IntegrationsStep({
                   }
                   className="sr-only peer"
                 />
-                <div className="w-10 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600"></div>
+                <div className="w-10 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-400"></div>
               </label>
             </div>
 
@@ -188,7 +188,7 @@ export default function IntegrationsStep({
                   />
                   <div>
                     <div className="flex items-center mb-1">
-                      <Icon className="w-4 h-4 mr-2 text-blue-600 shrink-0" />
+                      <Icon className="w-4 h-4 mr-2 text-purple-600 shrink-0" />
                       <span className="text-sm font-medium text-gray-700">
                         {label}
                       </span>

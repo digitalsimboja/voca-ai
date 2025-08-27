@@ -34,7 +34,7 @@ export default function SettingsTabs({ activeTab, onTabChange }: SettingsTabsPro
               onClick={() => onTabChange(tab.id)}
               className={`flex items-center whitespace-nowrap cursor-pointer space-x-1.5 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeTab === tab.id
-                  ? "bg-white text-blue-600 shadow-sm"
+                  ? "bg-white text-purple-600 shadow-sm"
                   : "text-gray-600 hover:text-gray-900"
               }`}
             >

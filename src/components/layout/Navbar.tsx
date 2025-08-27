@@ -20,7 +20,7 @@ export default function Navbar() {
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
         <div className="flex lg:flex-1">
           <Link href="/" className="-m-1.5 p-1.5 flex items-center space-x-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
               <Headphones className="w-5 h-5 text-white" />
             </div>
             <span className="text-xl font-bold text-gray-900">Voca AI</span>
@@ -43,23 +43,23 @@ export default function Navbar() {
             <a
               key={item.name}
               href={item.href}
-              className="text-sm font-semibold leading-6 text-gray-900 hover:text-blue-600 transition-colors"
+              className="text-sm font-semibold leading-6 text-gray-900 hover:text-purple-600 transition-colors"
             >
               {item.name}
             </a>
           ))}
         </div>
         
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-4">
+        <div className="hidden lg:flex lg:flex-1 lg:justify-center lg:items-center lg:gap-x-4">
           <Link
             href="/login"
-            className="text-sm font-semibold leading-6 text-gray-900 hover:text-blue-600 transition-colors"
+            className="text-sm font-semibold leading-6 rounded-lg px-4 py-2 text-white bg-purple-500 hover:text-purple-600 transition-colors"
           >
-            Log in
+            Get Started
           </Link>
           <Link
             href="/contact"
-            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 transition-colors"
+            className="rounded-lg bg-purple-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 transition-colors"
           >
             Request Demo
           </Link>
@@ -73,7 +73,7 @@ export default function Navbar() {
           <div className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between">
               <Link href="/" className="-m-1.5 p-1.5 flex items-center space-x-2">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
                   <Headphones className="w-5 h-5 text-white" />
                 </div>
                 <span className="text-xl font-bold text-gray-900">Voca AI</span>
@@ -111,7 +111,7 @@ export default function Navbar() {
                   </Link>
                   <Link
                     href="/contact"
-                    className="block rounded-lg bg-blue-600 px-4 py-2 text-base font-semibold text-white text-center hover:bg-blue-500 transition-colors"
+                    className="block rounded-lg bg-purple-600 px-4 py-2 text-base font-semibold text-white text-center hover:bg-purple-500 transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Get Started

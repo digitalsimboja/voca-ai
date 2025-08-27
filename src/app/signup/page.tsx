@@ -17,6 +17,8 @@ import {
   ShoppingCart,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { PasswordStrengthIndicator } from "@/components/PasswordStrengthIndicator";
+import { validatePasswordStrength } from "@/utils/passwordStrength";
 
 type BusinessType = "banking" | "retail";
 
@@ -44,6 +46,9 @@ function SignupPageContent() {
   const [usernameStatus, setUsernameStatus] = useState<
     "idle" | "checking" | "available" | "taken"
   >("idle");
+  const [passwordStrength, setPasswordStrength] = useState(
+    validatePasswordStrength("")
+  );
 
   const businessTypes = [
     {
@@ -117,11 +122,11 @@ function SignupPageContent() {
     // Password validation
     if (!formData.password) {
       newErrors.password = "Password is required";
-    } else if (formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters";
-    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      newErrors.password =
-        "Password must contain at least one uppercase letter, one lowercase letter, and one number";
+    } else {
+      const passwordStrength = validatePasswordStrength(formData.password);
+      if (!passwordStrength.isValid) {
+        newErrors.password = passwordStrength.feedback;
+      }
     }
 
     // Confirm Password validation
@@ -162,6 +167,11 @@ function SignupPageContent() {
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+
+    // Update password strength when password changes
+    if (name === "password") {
+      setPasswordStrength(validatePasswordStrength(value));
     }
 
     // Check username availability when username field changes
@@ -267,7 +277,7 @@ function SignupPageContent() {
 
         {/* Logo and Title */}
         <div className="text-center">
-          <div className="mx-auto h-12 w-12 bg-blue-600 rounded-lg flex items-center justify-center mb-4">
+          <div className="mx-auto h-12 w-12 bg-purple-600 rounded-lg flex items-center justify-center mb-4">
             <span className="text-white font-bold text-xl">V</span>
           </div>
           <h2 className="text-3xl font-bold tracking-tight text-gray-900">
@@ -284,7 +294,7 @@ function SignupPageContent() {
           {signupSuccess ? (
             <div className="text-center">
               <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
-                <CheckCircle className="h-6 w-6 text-green-600" />
+                <CheckCircle className="h-6 w-6 text-green-400" />
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-2">
                 Account Created Successfully!
@@ -328,7 +338,7 @@ function SignupPageContent() {
                       required
                       value={formData.firstName}
                       onChange={handleInputChange}
-                      className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
+                      className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${
                         errors.firstName ? "border-red-300" : "border-gray-300"
                       }`}
                       placeholder="Enter your first name"
@@ -360,7 +370,7 @@ function SignupPageContent() {
                       required
                       value={formData.lastName}
                       onChange={handleInputChange}
-                      className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
+                      className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${
                         errors.lastName ? "border-red-300" : "border-gray-300"
                       }`}
                       placeholder="Enter your last name"
@@ -394,7 +404,7 @@ function SignupPageContent() {
                     required
                     value={formData.username}
                     onChange={handleInputChange}
-                    className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
+                    className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${
                       errors.username
                         ? "border-red-300"
                         : usernameStatus === "available"
@@ -407,10 +417,10 @@ function SignupPageContent() {
                   />
                   <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                     {usernameStatus === "checking" && (
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-purple-600"></div>
                     )}
                     {usernameStatus === "available" && (
-                      <CheckCircle className="h-4 w-4 text-green-600" />
+                      <CheckCircle className="h-4 w-4 text-green-400" />
                     )}
                     {usernameStatus === "taken" && (
                       <AlertCircle className="h-4 w-4 text-red-600" />
@@ -421,7 +431,7 @@ function SignupPageContent() {
                   <p className="mt-2 text-sm text-red-600">{errors.username}</p>
                 )}
                 {usernameStatus === "available" && (
-                  <p className="mt-2 text-sm text-green-600">
+                  <p className="mt-2 text-sm text-green-400">
                     Username is available
                   </p>
                 )}
@@ -455,7 +465,7 @@ function SignupPageContent() {
                     required
                     value={formData.email}
                     onChange={handleInputChange}
-                    className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
+                    className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${
                       errors.email ? "border-red-300" : "border-gray-300"
                     }`}
                     placeholder="Enter your email"
@@ -486,7 +496,7 @@ function SignupPageContent() {
                     required
                     value={formData.companyName}
                     onChange={handleInputChange}
-                    className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
+                    className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${
                       errors.companyName ? "border-red-300" : "border-gray-300"
                     }`}
                     placeholder="Enter your company name"
@@ -513,7 +523,7 @@ function SignupPageContent() {
                       }
                       className={`relative cursor-pointer rounded-lg border p-4 transition-all hover:shadow-md ${
                         formData.businessType === type.id
-                          ? "border-blue-500 bg-blue-50"
+                          ? "border-purple-500 bg-purple-50"
                           : "border-gray-300 hover:border-gray-400"
                       }`}
                     >
@@ -521,7 +531,7 @@ function SignupPageContent() {
                         <div
                           className={`h-8 w-8 rounded-lg flex items-center justify-center ${
                             formData.businessType === type.id
-                              ? "bg-blue-500"
+                              ? "bg-purple-500"
                               : "bg-gray-100"
                           }`}
                         >
@@ -537,7 +547,7 @@ function SignupPageContent() {
                           <h3
                             className={`text-sm font-medium ${
                               formData.businessType === type.id
-                                ? "text-blue-900"
+                                ? "text-purple-900"
                                 : "text-gray-900"
                             }`}
                           >
@@ -561,7 +571,7 @@ function SignupPageContent() {
                       </div>
                       {formData.businessType === type.id && (
                         <div className="absolute top-2 right-2">
-                          <div className="h-4 w-4 bg-blue-500 rounded-full flex items-center justify-center">
+                          <div className="h-4 w-4 bg-purple-500 rounded-full flex items-center justify-center">
                             <CheckCircle className="h-3 w-3 text-white" />
                           </div>
                         </div>
@@ -597,7 +607,7 @@ function SignupPageContent() {
                       required
                       value={formData.password}
                       onChange={handleInputChange}
-                      className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
+                      className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${
                         errors.password ? "border-red-300" : "border-gray-300"
                       }`}
                       placeholder="Create a password"
@@ -619,6 +629,10 @@ function SignupPageContent() {
                       {errors.password}
                     </p>
                   )}
+                  <PasswordStrengthIndicator 
+                    password={formData.password} 
+                    showIndicator={formData.password.length > 0}
+                  />
                 </div>
 
                 <div>
@@ -640,7 +654,7 @@ function SignupPageContent() {
                       required
                       value={formData.confirmPassword}
                       onChange={handleInputChange}
-                      className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
+                      className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${
                         errors.confirmPassword
                           ? "border-red-300"
                           : "border-gray-300"
@@ -678,7 +692,7 @@ function SignupPageContent() {
                     type="checkbox"
                     checked={formData.agreeToTerms}
                     onChange={handleInputChange}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded mt-1"
+                    className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded mt-1"
                   />
                   <label
                     htmlFor="agreeToTerms"
@@ -687,14 +701,14 @@ function SignupPageContent() {
                     I agree to the{" "}
                     <Link
                       href="/terms"
-                      className="text-blue-600 hover:text-blue-500"
+                      className="text-purple-600 hover:text-purple-500"
                     >
                       Terms of Service
                     </Link>{" "}
                     and{" "}
                     <Link
                       href="/privacy"
-                      className="text-blue-600 hover:text-blue-500"
+                      className="text-purple-600 hover:text-purple-500"
                     >
                       Privacy Policy
                     </Link>
@@ -711,7 +725,7 @@ function SignupPageContent() {
                     type="checkbox"
                     checked={formData.agreeToMarketing}
                     onChange={handleInputChange}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded mt-1"
+                    className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded mt-1"
                   />
                   <label
                     htmlFor="agreeToMarketing"
@@ -728,7 +742,7 @@ function SignupPageContent() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   {isLoading ? (
                     <div className="flex items-center">
@@ -759,7 +773,7 @@ function SignupPageContent() {
             <div className="mt-6 text-center">
               <Link
                 href="/login"
-                className="font-medium text-blue-600 hover:text-blue-500"
+                className="font-medium text-purple-600 hover:text-purple-500"
               >
                 Sign in to your account
               </Link>
@@ -772,11 +786,11 @@ function SignupPageContent() {
       <div className="mt-8 text-center">
         <p className="text-xs text-gray-500">
           By creating an account, you agree to our{" "}
-          <Link href="/terms" className="text-blue-600 hover:text-blue-500">
+          <Link href="/terms" className="text-purple-600 hover:text-purple-500">
             Terms of Service
           </Link>{" "}
           and{" "}
-          <Link href="/privacy" className="text-blue-600 hover:text-blue-500">
+          <Link href="/privacy" className="text-purple-600 hover:text-purple-500">
             Privacy Policy
           </Link>
         </p>
@@ -791,7 +805,7 @@ export default function SignupPage() {
       fallback={
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
             <p className="mt-4 text-gray-600">Voca AI</p>
             <p className="mt-4 text-gray-600">Loading...</p>
           </div>

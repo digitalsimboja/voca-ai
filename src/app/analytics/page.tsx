@@ -241,7 +241,7 @@ export default function AnalyticsPage() {
       <MainLayout>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
             <p className="text-gray-600">Loading analytics data...</p>
           </div>
         </div>
@@ -257,7 +257,7 @@ export default function AnalyticsPage() {
             <p className="text-red-600 mb-4">{error}</p>
             <button 
               onClick={fetchAnalyticsData}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
             >
               Retry
             </button>
@@ -290,14 +290,14 @@ export default function AnalyticsPage() {
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
             >
               <option value="24h">Last 24 hours</option>
               <option value="7d">Last 7 days</option>
               <option value="30d">Last 30 days</option>
               <option value="90d">Last 90 days</option>
             </select>
-            <button className="flex items-center justify-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg bg-blue-500 hover:bg-blue-50 text-sm">
+            <button className="flex items-center justify-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg bg-purple-500 hover:bg-purple-50 text-sm">
               <Download className="w-4 h-4" />
               <span className="text-sm">Export</span>
             </button>
@@ -313,7 +313,7 @@ export default function AnalyticsPage() {
                   <p className="text-xs sm:text-sm font-medium text-gray-600">Total Conversations</p>
                   <p className="text-lg sm:text-2xl font-bold text-gray-900">{analyticsData.overview.total_conversations || 0}</p>
                   <p className={`text-xs sm:text-sm flex items-center mt-1 ${
-                    getTrendingMetric(analyticsData.trending_metrics, 'conversation_trends', 'total_conversations')?.color || 'text-green-600'
+                    getTrendingMetric(analyticsData.trending_metrics, 'conversation_trends', 'total_conversations')?.color || 'text-green-400'
                   }`}>
                     {React.createElement(getTrendIcon(getTrendingMetric(analyticsData.trending_metrics, 'conversation_trends', 'total_conversations')?.direction), {
                       className: "w-3 h-3 sm:w-4 sm:h-4 mr-1"
@@ -323,8 +323,8 @@ export default function AnalyticsPage() {
                     )}
                   </p>
                 </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
                 </div>
               </div>
             </CardContent>
@@ -337,7 +337,7 @@ export default function AnalyticsPage() {
                   <p className="text-xs sm:text-sm font-medium text-gray-600">Avg Response Time</p>
                   <p className="text-lg sm:text-2xl font-bold text-gray-900">{analyticsData.overview.average_response_time || 0}s</p>
                   <p className={`text-xs sm:text-sm flex items-center mt-1 ${
-                    getTrendingMetric(analyticsData.trending_metrics, 'performance_trends', 'average_response_time')?.color || 'text-green-600'
+                    getTrendingMetric(analyticsData.trending_metrics, 'performance_trends', 'average_response_time')?.color || 'text-green-400'
                   }`}>
                     {React.createElement(getTrendIcon(getTrendingMetric(analyticsData.trending_metrics, 'performance_trends', 'average_response_time')?.direction), {
                       className: "w-3 h-3 sm:w-4 sm:h-4 mr-1"
@@ -348,7 +348,7 @@ export default function AnalyticsPage() {
                   </p>
                 </div>
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                  <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+                  <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-green-400" />
                 </div>
               </div>
             </CardContent>
@@ -361,7 +361,7 @@ export default function AnalyticsPage() {
                   <p className="text-xs sm:text-sm font-medium text-gray-600">Satisfaction Score</p>
                   <p className="text-lg sm:text-2xl font-bold text-gray-900">{analyticsData.overview.customer_satisfaction || 0.0}/5</p>
                   <p className={`text-xs sm:text-sm flex items-center mt-1 ${
-                    getTrendingMetric(analyticsData.trending_metrics, 'satisfaction_trends', 'customer_satisfaction')?.color || 'text-green-600'
+                    getTrendingMetric(analyticsData.trending_metrics, 'satisfaction_trends', 'customer_satisfaction')?.color || 'text-green-400'
                   }`}>
                     {React.createElement(getTrendIcon(getTrendingMetric(analyticsData.trending_metrics, 'satisfaction_trends', 'customer_satisfaction')?.direction), {
                       className: "w-3 h-3 sm:w-4 sm:h-4 mr-1"
@@ -385,7 +385,7 @@ export default function AnalyticsPage() {
                   <p className="text-xs sm:text-sm font-medium text-gray-600">Resolution Rate</p>
                   <p className="text-lg sm:text-2xl font-bold text-gray-900">{analyticsData.overview.resolution_rate || 0}%</p>
                   <p className={`text-xs sm:text-sm flex items-center mt-1 ${
-                    getTrendingMetric(analyticsData.trending_metrics, 'performance_trends', 'resolution_rate')?.color || 'text-green-600'
+                    getTrendingMetric(analyticsData.trending_metrics, 'performance_trends', 'resolution_rate')?.color || 'text-green-400'
                   }`}>
                     {React.createElement(getTrendIcon(getTrendingMetric(analyticsData.trending_metrics, 'performance_trends', 'resolution_rate')?.direction), {
                       className: "w-3 h-3 sm:w-4 sm:h-4 mr-1"
@@ -416,7 +416,7 @@ export default function AnalyticsPage() {
                     <p className="text-xs sm:text-sm font-medium text-gray-600">Total Orders</p>
                     <p className="text-lg sm:text-2xl font-bold text-gray-900">{analyticsData.order_analytics?.total_orders || 0}</p>
                     <p className={`text-xs sm:text-sm flex items-center mt-1 ${
-                      getTrendingMetric(analyticsData.trending_metrics, 'revenue_trends', 'total_orders')?.color || 'text-green-600'
+                      getTrendingMetric(analyticsData.trending_metrics, 'revenue_trends', 'total_orders')?.color || 'text-green-400'
                     }`}>
                       {React.createElement(getTrendIcon(getTrendingMetric(analyticsData.trending_metrics, 'revenue_trends', 'total_orders')?.direction), {
                         className: "w-3 h-3 sm:w-4 sm:h-4 mr-1"
@@ -426,8 +426,8 @@ export default function AnalyticsPage() {
                       )}
                     </p>
                   </div>
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
                   </div>
                 </div>
               </CardContent>
@@ -439,13 +439,13 @@ export default function AnalyticsPage() {
                   <div>
                     <p className="text-xs sm:text-sm font-medium text-gray-600">Total Revenue</p>
                     <p className="text-lg sm:text-2xl font-bold text-gray-900">₦{(analyticsData.order_analytics?.total_revenue || 0).toLocaleString()}</p>
-                    <p className="text-xs sm:text-sm text-green-600 flex items-center mt-1">
+                    <p className="text-xs sm:text-sm text-green-400 flex items-center mt-1">
                       <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                       +{analyticsData.order_analytics?.revenue_growth || 0}% from last period
                     </p>
                   </div>
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                    <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+                    <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-green-400" />
                   </div>
                 </div>
               </CardContent>
@@ -457,7 +457,7 @@ export default function AnalyticsPage() {
                   <div>
                     <p className="text-xs sm:text-sm font-medium text-gray-600">Avg Order Value</p>
                     <p className="text-lg sm:text-2xl font-bold text-gray-900">₦{(analyticsData.order_analytics?.avg_order_value || 0).toLocaleString()}</p>
-                    <p className="text-xs sm:text-sm text-green-600 flex items-center mt-1">
+                    <p className="text-xs sm:text-sm text-green-400 flex items-center mt-1">
                       <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                       +5% from last period
                     </p>
@@ -475,7 +475,7 @@ export default function AnalyticsPage() {
                   <div>
                     <p className="text-xs sm:text-sm font-medium text-gray-600">Completion Rate</p>
                     <p className="text-lg sm:text-2xl font-bold text-gray-900">{analyticsData.order_analytics?.completion_rate || 0}%</p>
-                    <p className="text-xs sm:text-sm text-green-600 flex items-center mt-1">
+                    <p className="text-xs sm:text-sm text-green-400 flex items-center mt-1">
                       <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                       +2% from last period
                     </p>
@@ -513,8 +513,8 @@ export default function AnalyticsPage() {
                     <p className="text-lg sm:text-2xl font-bold text-gray-900">{analyticsData.agent_analytics?.support_agents || 0}</p>
                     <p className="text-xs sm:text-sm text-gray-500">Customer support</p>
                   </div>
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
                   </div>
                 </div>
               </CardContent>
@@ -529,7 +529,7 @@ export default function AnalyticsPage() {
                     <p className="text-xs sm:text-sm text-gray-500">of {analyticsData.catalog_analytics?.total_catalogs || 0} total</p>
                   </div>
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                    <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+                    <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-green-400" />
                   </div>
                 </div>
               </CardContent>
@@ -598,7 +598,7 @@ export default function AnalyticsPage() {
                     <div className="flex items-center space-x-2 sm:space-x-3">
                       <div className="w-16 sm:w-24 bg-gray-200 rounded-full h-2">
                         <div
-                          className="bg-blue-600 h-2 rounded-full"
+                          className="bg-purple-600 h-2 rounded-full"
                           style={{ width: `${lang.percentage}%` }}
                         ></div>
                       </div>
@@ -628,7 +628,7 @@ export default function AnalyticsPage() {
                   `}>
                     <span className={`
                       text-sm sm:text-lg font-bold
-                      ${sentiment.sentiment === 'Positive' ? 'text-green-600' : ''}
+                      ${sentiment.sentiment === 'Positive' ? 'text-green-400' : ''}
                       ${sentiment.sentiment === 'Neutral' ? 'text-gray-600' : ''}
                       ${sentiment.sentiment === 'Negative' ? 'text-red-600' : ''}
                     `}>
@@ -651,7 +651,7 @@ export default function AnalyticsPage() {
               <select
                 value={selectedMetric}
                 onChange={(e) => setSelectedMetric(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
               >
                 <option value="conversations">Conversations</option>
                 <option value="duration">Duration</option>
@@ -752,7 +752,7 @@ export default function AnalyticsPage() {
                         <td className="py-2 text-center">
                           <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                             catalog.is_public 
-                              ? 'bg-green-100 text-green-800' 
+                              ? 'bg-green-100 text-green-600' 
                               : 'bg-gray-100 text-gray-800'
                           }`}>
                             {catalog.is_public ? 'Public' : 'Private'}
