@@ -45,6 +45,9 @@ export default function EditIntegrationModal({
     metadata: {}
   });
 
+  const [configText, setConfigText] = useState('');
+  const [metadataText, setMetadataText] = useState('');
+
   useEffect(() => {
     if (integration) {
       setFormData({
@@ -54,6 +57,8 @@ export default function EditIntegrationModal({
         is_active: integration.is_active,
         metadata: integration.metadata
       });
+      setConfigText(JSON.stringify(integration.config, null, 2));
+      setMetadataText(JSON.stringify(integration.metadata, null, 2));
     }
   }, [integration]);
 
@@ -61,7 +66,30 @@ export default function EditIntegrationModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSave(formData);
+    
+    // Parse JSON fields before saving
+    let finalConfig = formData.config;
+    let finalMetadata = formData.metadata;
+    
+    try {
+      finalConfig = JSON.parse(configText);
+    } catch (error) {
+      console.warn('Invalid config JSON, using empty object');
+      finalConfig = {};
+    }
+    
+    try {
+      finalMetadata = JSON.parse(metadataText);
+    } catch (error) {
+      console.warn('Invalid metadata JSON, using empty object');
+      finalMetadata = {};
+    }
+    
+    await onSave({
+      ...formData,
+      config: finalConfig,
+      metadata: finalMetadata
+    });
   };
 
   const handleInputChange = (field: string, value: unknown) => {
@@ -169,15 +197,8 @@ export default function EditIntegrationModal({
               </label>
               <textarea
                 id="config"
-                value={JSON.stringify(formData.config, null, 2)}
-                onChange={(e) => {
-                  try {
-                    const parsed = JSON.parse(e.target.value);
-                    handleInputChange('config', parsed);
-                  } catch (error) {
-                    // Keep the raw value if JSON is invalid
-                  }
-                }}
+                value={configText}
+                onChange={(e) => setConfigText(e.target.value)}
                 rows={6}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 font-mono text-sm"
                 placeholder='{"key": "value"}'
@@ -192,15 +213,8 @@ export default function EditIntegrationModal({
               </label>
               <textarea
                 id="metadata"
-                value={JSON.stringify(formData.metadata, null, 2)}
-                onChange={(e) => {
-                  try {
-                    const parsed = JSON.parse(e.target.value);
-                    handleInputChange('metadata', parsed);
-                  } catch (error) {
-                    // Keep the raw value if JSON is invalid
-                  }
-                }}
+                value={metadataText}
+                onChange={(e) => setMetadataText(e.target.value)}
                 rows={4}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 font-mono text-sm"
                 placeholder='{"key": "value"}'

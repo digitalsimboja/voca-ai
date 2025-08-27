@@ -367,7 +367,7 @@ export default function CreateCatalogPage() {
               </CardHeader>
               <CardContent className="pt-0 space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1 mt-2">
                     Product Name
                   </label>
                   <input
