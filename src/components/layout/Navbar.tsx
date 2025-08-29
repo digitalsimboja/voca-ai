@@ -53,13 +53,13 @@ export default function Navbar() {
         <div className="hidden lg:flex lg:flex-1 lg:justify-center lg:items-center lg:gap-x-4">
           <Link
             href="/login"
-            className="text-sm font-semibold leading-6 rounded-lg px-4 py-2 text-white bg-purple-500 hover:text-purple-600 transition-colors"
+            className="text-sm font-semibold leading-6 rounded-lg px-4 py-2 text-purple-600 bg-white border border-purple-600 hover:bg-purple-50 transition-colors"
           >
             Get Started
           </Link>
           <Link
             href="/contact"
-            className="rounded-lg bg-purple-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 transition-colors"
+            className="rounded-lg bg-purple-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-purple-700 transition-colors"
           >
             Request Demo
           </Link>
@@ -110,11 +110,18 @@ export default function Navbar() {
                     Log in
                   </Link>
                   <Link
-                    href="/contact"
-                    className="block rounded-lg bg-purple-600 px-4 py-2 text-base font-semibold text-white text-center hover:bg-purple-500 transition-colors"
+                    href="/login"
+                    className="block rounded-lg px-4 py-2 text-base font-semibold text-purple-600 border border-purple-600 text-center hover:bg-purple-50 transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Get Started
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="block rounded-lg bg-purple-600 px-4 py-2 text-base font-semibold text-white text-center hover:bg-purple-700 transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Request Demo
                   </Link>
                 </div>
               </div>

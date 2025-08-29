@@ -185,19 +185,21 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
 
         {/* Quick Actions */}
         <div className="flex items-center space-x-2 lg:space-x-4">
-          {/* Create AI Agent Button */}
+          {/* Action Buttons */}
+          <div className="hidden sm:flex items-center space-x-3">
+            <button 
+              onClick={() => setShowCreateAgentModal(true)}
+              className="flex items-center space-x-2 bg-purple-600 text-white px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg hover:bg-purple-700 transition-all duration-200 shadow-md hover:shadow-lg text-sm lg:text-sm font-medium"
+            >
+              <Plus className="w-4 h-4 lg:w-4 lg:h-4" />
+              <span>Create Agent</span>
+            </button>
+          </div>
           <button 
             onClick={() => setShowCreateAgentModal(true)}
-            className="hidden sm:flex items-center space-x-2 bg-green-400 text-white px-2 lg:px-4 py-1.5 lg:py-2 rounded-lg hover:bg-green-500 transition-colors text-xs lg:text-sm"
+            className="sm:hidden flex items-center bg-purple-600 text-white p-2 rounded-lg hover:bg-purple-700 transition-all duration-200 shadow-md"
           >
-            <Plus className="w-3 h-3 lg:w-4 lg:h-4" />
-            <span>Create Agent</span>
-          </button>
-          <button 
-            onClick={() => setShowCreateAgentModal(true)}
-            className="sm:hidden flex items-center bg-purple-600 text-white p-1.5 rounded-lg hover:bg-purple-700 transition-colors"
-          >
-            <Plus className="w-3 h-3" />
+            <Plus className="w-4 h-4" />
           </button>
 
           {/* Channel Status */}
