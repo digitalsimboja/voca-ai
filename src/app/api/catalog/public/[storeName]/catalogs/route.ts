@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { makePublicApiCall, API_ENDPOINTS, ApiResponse } from '@/lib/api-utils';
+import { makePublicApiCall, createErrorResponse } from '@/lib/api';
 
 // GET /api/catalog/public/[storeName]/catalogs - Get public catalogs for a store
 export async function GET(
@@ -10,13 +10,17 @@ export async function GET(
     const resolvedParams = await params;
     const response = await makePublicApiCall('CATALOG', `/public/${resolvedParams.storeName}/catalogs`, {
       method: 'GET',
-    }) as ApiResponse;
+    });
+
+    if (response.status === 'error') {
+      return NextResponse.json(response, { status: 400 });
+    }
 
     return NextResponse.json(response);
   } catch (error) {
     console.error('Get public catalogs error:', error);
     return NextResponse.json(
-      { status: 'error', message: 'Failed to fetch catalogs' },
+      createErrorResponse('Failed to fetch catalogs'),
       { status: 500 }
     );
   }

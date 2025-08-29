@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { makeAuthenticatedApiCall, API_ENDPOINTS, ApiResponse } from '@/lib/api-utils';
+import { 
+  makePublicApiCall,
+  createErrorResponse,
+  createSuccessResponse
+} from '@/lib/api';
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,25 +12,24 @@ export async function POST(request: NextRequest) {
 
     if (!email || !password) {
       return NextResponse.json(
-        { status: 'error', message: 'Email and password are required' },
+        createErrorResponse('Email and password are required'),
         { status: 400 }
       );
     }
 
-    const authResponse = await makeAuthenticatedApiCall('AUTH', API_ENDPOINTS.AUTH.LOGIN, {
+    // Use makePublicApiCall since login doesn't require authentication
+    const authResponse = await makePublicApiCall('AUTH', '/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
-    }) as ApiResponse<unknown>;
+    });
 
-    if (authResponse.status === 'success' && authResponse.data && typeof authResponse.data === 'object') {
+    if (authResponse.status === 'success' && authResponse.data) {
       const dataObj = authResponse.data as Record<string, unknown>;
       const token = typeof dataObj.token === 'string' ? dataObj.token : undefined;
       const backendUser = (dataObj.user as Record<string, unknown>) || dataObj;
 
-      const response = NextResponse.json({
-        status: 'success',
-        message: authResponse.message || 'Login successful',
-        data: {
+      const response = NextResponse.json(
+        createSuccessResponse({
           userId: (backendUser.user_id as string) ?? (backendUser.userId as string) ?? (backendUser.id as string) ?? '',
           email: (backendUser.email as string) ?? '',
           username: (backendUser.username as string) ?? '',
@@ -35,8 +38,8 @@ export async function POST(request: NextRequest) {
           businessType: (backendUser.business_type as 'banking'|'retail') ?? (backendUser.businessType as 'banking'|'retail') ?? 'retail',
           role: (backendUser.role as string) ?? 'user',
           isVerified: (backendUser.is_verified as boolean) ?? (backendUser.isVerified as boolean) ?? false,
-        }
-      }, { status: 200 });
+        }, authResponse.message || 'Login successful')
+      );
 
       if (token) {
         response.cookies.set('voca_auth_token', token, {
@@ -51,14 +54,14 @@ export async function POST(request: NextRequest) {
       return response;
     } else {
       return NextResponse.json(
-        { status: 'error', message: authResponse.message || 'Login failed' },
+        createErrorResponse(authResponse.message || 'Login failed'),
         { status: 401 }
       );
     }
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json(
-      { status: 'error', message: 'Internal server error' },
+      createErrorResponse('Internal server error'),
       { status: 500 }
     );
   }

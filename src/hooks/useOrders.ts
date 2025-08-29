@@ -161,11 +161,13 @@ export const useOrders = () => {
       const response = await apiService.getOrderById(orderId);
       
       if (response.status === 'success' && response.data) {
+        // The backend returns { order: Order } structure
         const orderData = response.data as { order: Order };
         return orderData.order;
       }
       return null;
     } catch (err) {
+      console.error('Error fetching order by ID:', err);
       return null;
     }
   }, []);

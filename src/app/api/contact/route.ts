@@ -1,33 +1,32 @@
-import { NextRequest, NextResponse } from 'next/server'
-
-const BACKEND_URL = process.env.CONTACT_SERVICE_URL || 'http://localhost:8006'
+import { NextRequest, NextResponse } from 'next/server';
+import { makePublicApiCall, createErrorResponse } from '@/lib/api';
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const body = await request.json();
 
-    // Forward the request to the backend contact service
-    const response = await fetch(`${BACKEND_URL}/contact`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body)
-    })
+    // Use makePublicApiCall to send data to backend service
+    const response = await makePublicApiCall(
+      'CONTACT',
+      '/create',
+      {
+        method: 'POST',
+        body: JSON.stringify(body)
+      }
+    );
 
-    const result = await response.json()
+    // Return the backend response
+    if (response.status === 'error') {
+      return NextResponse.json(response, { status: 400 });
+    }
 
-    // Return the backend response with the same status code
-    return NextResponse.json(result, { status: response.status })
+    return NextResponse.json(response);
 
   } catch (error) {
-    console.error('Contact API error:', error)
+    console.error('Contact API error:', error);
     return NextResponse.json(
-      { 
-        status: 'error', 
-        message: 'Internal server error' 
-      }, 
+      createErrorResponse('Internal server error'),
       { status: 500 }
-    )
+    );
   }
 }

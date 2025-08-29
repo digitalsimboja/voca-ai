@@ -89,3 +89,23 @@ export interface SettingsApiResponse {
   data: Settings | null;
   message: string;
 }
+
+// Store interface
+export interface Store {
+  id: string;
+  store_name: string;
+  description: string;
+  category: string;
+  website_url: string;
+  logo_url: string;
+  contact_email: string;
+  contact_phone: string;
+  address: string;
+  owner_id: number;
+  is_active: boolean;
+  metadata: Record<string, unknown>;
+  created_at: string;
+  updated_at: string;
+  owner_username: string;
+  owner_email: string;
+}

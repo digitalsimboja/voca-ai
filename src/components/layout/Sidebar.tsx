@@ -16,7 +16,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Package,
-  ShoppingCart
+  ShoppingCart,
+  Bell
 } from 'lucide-react'
 
 const navigation = [
@@ -26,6 +27,7 @@ const navigation = [
   { name: 'Catalogs', href: '/catalogs', icon: ShoppingCart },
   { name: 'Orders', href: '/orders', icon: Package },
   { name: 'Analytics', href: '/analytics', icon: BarChart3 },
+  { name: 'Notifications', href: '/notifications', icon: Bell },
   { name: 'Integrations', href: '/integrations', icon: Zap },
   { name: 'Settings', href: '/settings', icon: Settings },
 ]

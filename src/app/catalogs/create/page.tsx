@@ -832,7 +832,7 @@ export default function CreateCatalogPage() {
                         className="border border-gray-200 rounded-lg p-2"
                       >
                         <div className="flex justify-between items-center">
-                          <span className="text-sm font-medium">
+                          <span className="text-sm font-medium text-gray-900">
                             {tier.packs} Pack{tier.packs > 1 ? "s" : ""}
                           </span>
                           <span className="text-sm font-bold text-purple-600">
@@ -843,7 +843,7 @@ export default function CreateCatalogPage() {
                           <Badge
                             variant="success"
                             size="sm"
-                            className="text-xs mt-1"
+                            className="text-xs mt-1 text-gray-900"
                           >
                             {tier.discount}
                           </Badge>
@@ -868,7 +868,7 @@ export default function CreateCatalogPage() {
                 </CardHeader>
                 <CardContent className="pt-0">
                   <div className="space-y-3">
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-600 mt-2">
                       Your product catalog is now live! Share this link with
                       your customers.
                     </p>

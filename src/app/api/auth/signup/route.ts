@@ -1,63 +1,60 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { API_CONFIG, buildApiUrl, API_ENDPOINTS, getAuthHeaders, handleApiError } from '@/config/api'
-import { validatePasswordStrength } from '@/utils/passwordStrength'
+import { NextRequest, NextResponse } from 'next/server';
+import { 
+  makePublicApiCall,
+  createErrorResponse,
+  createSuccessResponse
+} from '@/lib/api';
+import { validatePasswordStrength } from '@/utils/passwordStrength';
 
 export async function POST(request: NextRequest) {
   try {
     // Parse the request body
-    const body = await request.json()
+    const body = await request.json();
     
     // Validate required fields
-    const { firstName, lastName, username, email, password, companyName, businessType } = body
+    const { firstName, lastName, username, email, password, companyName, businessType } = body;
     
     if (!firstName || !lastName || !username || !email || !password || !companyName || !businessType) {
       return NextResponse.json(
-        { 
-          error: 'Missing required fields',
-          details: 'firstName, lastName, username, email, password, companyName, and businessType are required'
-        },
+        createErrorResponse('Missing required fields: firstName, lastName, username, email, password, companyName, and businessType are required'),
         { status: 400 }
-      )
+      );
     }
 
     // Validate username format
-    const usernameRegex = /^[a-zA-Z0-9_-]{3,20}$/
+    const usernameRegex = /^[a-zA-Z0-9_-]{3,20}$/;
     if (!usernameRegex.test(username)) {
       return NextResponse.json(
-        { error: 'Username must be 3-20 characters long and contain only letters, numbers, underscores, and hyphens' },
+        createErrorResponse('Username must be 3-20 characters long and contain only letters, numbers, underscores, and hyphens'),
         { status: 400 }
-      )
+      );
     }
 
     // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json(
-        { error: 'Invalid email format' },
+        createErrorResponse('Invalid email format'),
         { status: 400 }
-      )
+      );
     }
 
     // Validate password strength
-    const passwordStrength = validatePasswordStrength(password)
+    const passwordStrength = validatePasswordStrength(password);
     if (!passwordStrength.isValid) {
       return NextResponse.json(
-        { 
-          error: 'Password does not meet strength requirements',
-          details: passwordStrength.missingRequirements,
-          feedback: passwordStrength.feedback
-        },
+        createErrorResponse(`Password does not meet strength requirements: ${passwordStrength.missingRequirements.join(', ')}`),
         { status: 400 }
-      )
+      );
     }
 
     // Validate business type
-    const validBusinessTypes = ['banking', 'retail']
+    const validBusinessTypes = ['banking', 'retail'];
     if (!validBusinessTypes.includes(businessType)) {
       return NextResponse.json(
-        { error: `Business type must be one of: ${validBusinessTypes.join(', ')}` },
+        createErrorResponse(`Business type must be one of: ${validBusinessTypes.join(', ')}`),
         { status: 400 }
-      )
+      );
     }
 
     // Prepare the request payload for the auth service
@@ -70,85 +67,64 @@ export async function POST(request: NextRequest) {
       company_name: companyName.trim(),
       business_type: businessType,
       marketing_consent: body.agreeToMarketing || false
-    }
+    };
 
-    // Call the auth service
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.TIMEOUT)
-
-    const authResponse = await fetch(buildApiUrl('AUTH', API_ENDPOINTS.AUTH.SIGNUP), {
+    // Call the auth service using the new api-utils
+    const authResponse = await makePublicApiCall('AUTH', '/signup', {
       method: 'POST',
-      headers: getAuthHeaders(),
-      body: JSON.stringify(authServicePayload),
-      signal: controller.signal
-    })
+      body: JSON.stringify(authServicePayload)
+    });
 
-    clearTimeout(timeoutId)
-
-    if (!authResponse.ok) {
-      const errorData = await authResponse.json().catch(() => ({}))
-      
+    if (authResponse.status === 'error') {
       // Handle specific error cases
-      if (authResponse.status === 409) {
+      if (authResponse.error_code === 'USER_EXISTS') {
         return NextResponse.json(
-          { error: 'User with this email already exists' },
+          createErrorResponse('User with this email already exists', 'USER_EXISTS'),
           { status: 409 }
-        )
+        );
       }
       
-      if (authResponse.status === 400) {
-        return NextResponse.json(
-          { 
-            error: errorData.message || 'Invalid data provided', 
-            details: errorData.errors || errorData.details 
-          },
-          { status: 400 }
-        )
-      }
-
       return NextResponse.json(
-        { error: 'Authentication service error', details: errorData.message || errorData.error },
-        { status: authResponse.status }
-      )
+        createErrorResponse(authResponse.message || 'Authentication service error'),
+        { status: 400 }
+      );
     }
 
-    const authData = await authResponse.json()
+    const authData = authResponse.data as Record<string, unknown>;
 
     // Store authentication token in secure cookie
-    const response = NextResponse.json({
-      success: true,
-      message: 'Account created successfully',
-      data: {
-        userId: authData.data?.user_id,
-        email: authData.data?.email,
-        username: authData.data?.username,
-        firstName: authData.data?.first_name,
-        lastName: authData.data?.last_name,
-        businessType: authData.data?.business_type,
-        role: authData.data?.role,
-        isVerified: authData.data?.is_verified,
-        requiresVerification: authData.data?.requires_verification || false
-      }
-    })
+    const response = NextResponse.json(
+      createSuccessResponse({
+        userId: authData.user_id as string,
+        email: authData.email as string,
+        username: authData.username as string,
+        firstName: authData.first_name as string,
+        lastName: authData.last_name as string,
+        businessType: authData.business_type as 'banking' | 'retail',
+        role: authData.role as string,
+        isVerified: authData.is_verified as boolean,
+        requiresVerification: authData.requires_verification as boolean || false
+      }, 'Account created successfully')
+    );
 
     // Set secure HTTP-only cookie with JWT token
-    if (authData.data?.token) {
-      response.cookies.set('voca_auth_token', authData.data.token, {
+    if (authData.token) {
+      response.cookies.set('voca_auth_token', authData.token as string, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
         maxAge: 24 * 60 * 60, // 24 hours
         path: '/'
-      })
+      });
     }
 
-    return response
+    return response;
 
   } catch (error) {
-    const errorResult = handleApiError(error, 'Internal server error')
+    console.error('Signup error:', error);
     return NextResponse.json(
-      errorResult,
+      createErrorResponse('Internal server error'),
       { status: 500 }
-    )
+    );
   }
 }

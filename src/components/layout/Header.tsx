@@ -5,7 +5,10 @@ import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
 import { getInitials } from '@/lib/utils'
 import CreateRetailAgentModal from '@/components/modals/CreateRetailAgentModal'
+import { NotificationDropdown, NotificationModal } from '@/components/notifications'
+import { useNotifications } from '@/hooks/useNotifications'
 import { toast } from '@/utils/toast'
+import { Notification } from '@/types/notification'
 import {
   Bell,
   Search,
@@ -78,13 +81,23 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
   const notificationsRef = useRef<HTMLDivElement>(null)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
   const [showCreateAgentModal, setShowCreateAgentModal] = useState(false)
-  const [notifications] = useState([
-    { id: 1, type: 'conversation', message: 'New conversation from Sarah Johnson', time: '2 min ago' },
-    { id: 2, type: 'system', message: 'Amazon Connect integration updated', time: '1 hour ago' },
-    { id: 3, type: 'alert', message: 'High call volume detected', time: '3 hours ago' },
-  ])
-
+  
+  // Notification state
+  const {
+    notifications,
+    unreadCount,
+    isLoading,
+    hasMore,
+    filters,
+    markAsRead,
+    markAllAsRead,
+    deleteNotification,
+    updateFilters,
+    loadMore
+  } = useNotifications()
+  
   const [showNotifications, setShowNotifications] = useState(false)
+  const [showNotificationModal, setShowNotificationModal] = useState(false)
   const [showUserMenu, setShowUserMenu] = useState(false)
 
   // Close menus when clicking outside
@@ -103,6 +116,17 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
+
+  const handleNotificationClick = (notification: Notification) => {
+    setShowNotifications(false)
+    // Handle notification click - could navigate to specific page
+    console.log('Notification clicked:', notification)
+  }
+
+  const handleViewAllNotifications = () => {
+    setShowNotifications(false)
+    setShowNotificationModal(true)
+  }
 
   const handleLogout = async () => {
     setIsLoggingOut(true)
@@ -199,46 +223,22 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
               className="relative p-2 rounded-lg hover:bg-gray-100"
             >
               <Bell className="w-5 h-5 text-gray-600" />
-              {notifications.length > 0 && (
+              {unreadCount > 0 && (
                 <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-                  {notifications.length}
+                  {unreadCount}
                 </span>
               )}
             </button>
 
             {/* Notifications Dropdown */}
             {showNotifications && (
-              <div className="absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-                <div className="p-4 border-b border-gray-200">
-                  <h3 className="text-sm font-semibold text-gray-900">Notifications</h3>
-                </div>
-                <div className="max-h-64 overflow-y-auto">
-                  {notifications.map((notification) => (
-                    <div
-                      key={notification.id}
-                      className="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer"
-                    >
-                      <div className="flex items-start space-x-3">
-                        <div className={cn(
-                          "w-2 h-2 rounded-full mt-2",
-                          notification.type === 'conversation' && "bg-purple-500",
-                          notification.type === 'system' && "bg-green-500",
-                          notification.type === 'alert' && "bg-red-500"
-                        )}></div>
-                        <div className="flex-1">
-                          <p className="text-sm text-gray-900">{notification.message}</p>
-                          <p className="text-xs text-gray-500 mt-1">{notification.time}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="p-4 border-t border-gray-200">
-                  <button className="text-sm text-purple-600 hover:text-purple-700">
-                    View all notifications
-                  </button>
-                </div>
-              </div>
+              <NotificationDropdown
+                notifications={notifications}
+                unreadCount={unreadCount}
+                onNotificationClick={handleNotificationClick}
+                onViewAll={handleViewAllNotifications}
+                onMarkAllAsRead={markAllAsRead}
+              />
             )}
           </div>
 
@@ -303,6 +303,21 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
         isOpen={showCreateAgentModal}
         onClose={() => setShowCreateAgentModal(false)}
         onSubmit={handleCreateAgent}
+      />
+
+      {/* Notification Modal */}
+      <NotificationModal
+        isOpen={showNotificationModal}
+        onClose={() => setShowNotificationModal(false)}
+        notifications={notifications}
+        onMarkAsRead={markAsRead}
+        onDelete={deleteNotification}
+        onMarkAllAsRead={markAllAsRead}
+        onFilterChange={updateFilters}
+        filters={filters}
+        isLoading={isLoading}
+        hasMore={hasMore}
+        onLoadMore={loadMore}
       />
     </header>
   )

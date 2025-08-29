@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { buildApiUrl } from '@/config/api';
+import { makeAuthenticatedApiCall, createErrorResponse } from '@/lib/api';
 
 export async function GET(
   request: NextRequest,
@@ -7,41 +7,24 @@ export async function GET(
 ) {
   try {
     const { agentId } = await params;
-
-    // Get the authorization token from cookies
     const token = request.cookies.get('voca_auth_token')?.value;
+
     if (!token) {
       return NextResponse.json(
-        { error: 'Authentication required' },
+        createErrorResponse('Authentication required'),
         { status: 401 }
       );
     }
 
-    // Forward the request to the backend agent service
-    const response = await fetch(
-      buildApiUrl('AGENT', `/v1/agent/agents/${agentId}`),
-      {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await makeAuthenticatedApiCall('AGENT', `/agents/${agentId}`, token, {
+      method: 'GET'
+    });
 
-    const result = await response.json();
-
-    if (!response.ok) {
-      return NextResponse.json(
-        { error: result.message || 'Failed to fetch agent' },
-        { status: response.status }
-      );
-    }
-
-    return NextResponse.json(result);
+    return NextResponse.json(response);
   } catch (error) {
     console.error('Error fetching agent:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      createErrorResponse('Failed to fetch agent'),
       { status: 500 }
     );
   }
@@ -54,43 +37,25 @@ export async function PUT(
   try {
     const { agentId } = await params;
     const agentData = await request.json();
-
-    // Get the authorization token from cookies
     const token = request.cookies.get('voca_auth_token')?.value;
+
     if (!token) {
       return NextResponse.json(
-        { error: 'Authentication required' },
+        createErrorResponse('Authentication required'),
         { status: 401 }
       );
     }
 
-    // Forward the request to the backend agent service
-    const response = await fetch(
-      buildApiUrl('AGENT', `/v1/agent/agents/${agentId}`),
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify(agentData),
-      }
-    );
+    const response = await makeAuthenticatedApiCall('AGENT', `/agents/${agentId}`, token, {
+      method: 'PUT',
+      body: JSON.stringify(agentData)
+    });
 
-    const result = await response.json();
-
-    if (!response.ok) {
-      return NextResponse.json(
-        { error: result.message || 'Failed to update agent' },
-        { status: response.status }
-      );
-    }
-
-    return NextResponse.json(result);
+    return NextResponse.json(response);
   } catch (error) {
     console.error('Error updating agent:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      createErrorResponse('Failed to update agent'),
       { status: 500 }
     );
   }
@@ -102,41 +67,24 @@ export async function DELETE(
 ) {
   try {
     const { agentId } = await params;
-
-    // Get the authorization token from cookies
     const token = request.cookies.get('voca_auth_token')?.value;
+
     if (!token) {
       return NextResponse.json(
-        { error: 'Authentication required' },
+        createErrorResponse('Authentication required'),
         { status: 401 }
       );
     }
 
-    // Forward the request to the backend agent service
-    const response = await fetch(
-      buildApiUrl('AGENT', `/v1/agent/agents/${agentId}`),
-      {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await makeAuthenticatedApiCall('AGENT', `/agents/${agentId}`, token, {
+      method: 'DELETE'
+    });
 
-    const result = await response.json();
-
-    if (!response.ok) {
-      return NextResponse.json(
-        { error: result.message || 'Failed to delete agent' },
-        { status: response.status }
-      );
-    }
-
-    return NextResponse.json(result);
+    return NextResponse.json(response);
   } catch (error) {
     console.error('Error deleting agent:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      createErrorResponse('Failed to delete agent'),
       { status: 500 }
     );
   }

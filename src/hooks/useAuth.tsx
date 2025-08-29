@@ -7,8 +7,7 @@ import {
   useContext,
   ReactNode,
 } from "react";
-import { useRouter } from "next/navigation";
-import { apiService } from "@/services/apiService";
+import { useRouter, usePathname } from "next/navigation";
 
 interface User {
   userId: string;
@@ -48,12 +47,36 @@ interface SignupData {
   agreeToMarketing: boolean;
 }
 
+// Define protected routes that require authentication
+const protectedRoutes = [
+  '/dashboard',
+  '/conversations',
+  '/customers',
+  '/analytics',
+  '/integrations',
+  '/settings',
+  '/billing'
+];
+
+// Define auth routes (login, signup)
+const authRoutes = [
+  '/login',
+  '/signup'
+];
+
+const publicRoutes = [
+  '/contact/health',
+  '/contact/create'
+];
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [hasCheckedAuth, setHasCheckedAuth] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   const checkAuth = async () => {
     try {
@@ -80,6 +103,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(null);
     } finally {
       setLoading(false);
+      setHasCheckedAuth(true);
     }
   };
 
@@ -102,7 +126,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(normalizedUser);
         return { success: true };
       } else {
-        return { success: false, error: data.error };
+        return { success: false, error: data.message || data.error || 'Login failed' };
       }
     } catch (error) {
       console.error("Login failed:", error);
@@ -137,7 +161,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(normalizedUser);
         return { success: true };
       } else {
-        return { success: false, error: data.error };
+        return { success: false, error: data.message || data.error || 'Signup failed' };
       }
     } catch (error) {
       console.error("Signup failed:", error);
@@ -197,8 +221,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    checkAuth();
-  }, []);
+    // Check if current route is protected or auth route
+    const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
+    const isAuthRoute = authRoutes.some(route => pathname.startsWith(route));
+    const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route));
+    
+    console.log(`useAuth: pathname=${pathname}, isProtectedRoute=${isProtectedRoute}, isAuthRoute=${isAuthRoute}, isPublicRoute=${isPublicRoute}`);
+    
+    // Only check auth if we're on a protected route or auth route
+    if (isProtectedRoute || isAuthRoute) {
+      console.log('useAuth: Calling checkAuth for protected/auth route');
+      checkAuth();
+    } else {
+      // For public routes, just set loading to false without checking auth
+      console.log('useAuth: Public route, skipping auth check');
+      setLoading(false);
+      setHasCheckedAuth(true);
+    }
+  }, [pathname]);
 
   const value = {
     user,

@@ -1,80 +1,54 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { makeAuthenticatedApiCall, API_ENDPOINTS, ApiResponse } from '@/lib/api-utils';
+import { makeAuthenticatedApiCall, createErrorResponse } from '@/lib/api';
 
-// GET /api/catalog/stores - Get user's stores
 export async function GET(request: NextRequest) {
   try {
-    // Get token from cookies (set by login)
     const token = request.cookies.get('voca_auth_token')?.value;
-    
+
     if (!token) {
       return NextResponse.json(
-        { status: 'error', message: 'Authentication required' },
+        createErrorResponse('Authentication required'),
         { status: 401 }
       );
     }
 
-    // Call backend catalog service
-    const response = await makeAuthenticatedApiCall('CATALOG', API_ENDPOINTS.CATALOG.MY_STORE, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    }) as ApiResponse;
+    const response = await makeAuthenticatedApiCall('CATALOG', '/stores/my-store', token, {
+      method: 'GET'
+    });
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error('Get stores error:', error);
+    console.error('Get my store error:', error);
     return NextResponse.json(
-      { status: 'error', message: 'Failed to fetch stores' },
+      createErrorResponse('Failed to fetch store'),
       { status: 500 }
     );
   }
 }
 
-// POST /api/catalog/stores - Create a new store
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { store_name, description, website_url, logo_url } = body;
-
-    // Validate input
-    if (!store_name) {
-      return NextResponse.json(
-        { status: 'error', message: 'Store name is required' },
-        { status: 400 }
-      );
-    }
-
-    // Get token from cookies
     const token = request.cookies.get('voca_auth_token')?.value;
-    
+
     if (!token) {
       return NextResponse.json(
-        { status: 'error', message: 'Authentication required' },
+        createErrorResponse('Authentication required'),
         { status: 401 }
       );
     }
 
-    // Call backend catalog service
-    const response = await makeAuthenticatedApiCall('CATALOG', API_ENDPOINTS.CATALOG.STORES, {
+    const body = await request.json();
+
+    const response = await makeAuthenticatedApiCall('CATALOG', '/stores', token, {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        store_name,
-        description: description || '',
-        website_url: website_url || '',
-        logo_url: logo_url || ''
-      })
-    }) as ApiResponse;
+      body: JSON.stringify(body)
+    });
 
     return NextResponse.json(response);
   } catch (error) {
     console.error('Create store error:', error);
     return NextResponse.json(
-      { status: 'error', message: 'Failed to create store' },
+      createErrorResponse('Failed to create store'),
       { status: 500 }
     );
   }

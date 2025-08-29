@@ -74,6 +74,8 @@ function LoginPageContent() {
     
     try {
       const result = await login(formData.email, formData.password)
+
+      console.log('result', result);
       
       if (result.success) {
         setLoginSuccess(true)

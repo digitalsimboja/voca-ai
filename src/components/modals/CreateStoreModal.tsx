@@ -72,6 +72,7 @@ export default function CreateStoreModal({
   };
 
   const checkStoreNameAvailability = async (name: string) => {
+    
     if (!name.trim()) {
       setNameAvailable(null);
       return;
@@ -114,7 +115,7 @@ export default function CreateStoreModal({
     
     // Only allow letters, numbers, underscores, and hyphens
     const filteredValue = sanitizedValue.replace(/[^a-zA-Z0-9_-]/g, '');
-    
+
     setStoreName(filteredValue);
     
     if (filteredValue.trim()) {

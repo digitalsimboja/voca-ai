@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { buildApiUrl } from '@/config/api';
+import { makeAuthenticatedApiCall, createErrorResponse } from '@/lib/api';
 
 export async function GET(
   request: NextRequest,
@@ -7,41 +7,32 @@ export async function GET(
 ) {
   try {
     const { storeId } = await params;
-
-    // Get the authorization token from cookies
     const token = request.cookies.get('voca_auth_token')?.value;
+
     if (!token) {
       return NextResponse.json(
-        { error: 'Authentication required' },
+        createErrorResponse('Authentication required'),
         { status: 401 }
       );
     }
 
-    // Forward the request to the backend agent service
-    const response = await fetch(
-      buildApiUrl('AGENT', `/v1/agent/stores/${storeId}/agents`),
-      {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await makeAuthenticatedApiCall('AGENT', `/stores/${storeId}/agents`, token, {
+      method: 'GET'
+    });
 
-    const result = await response.json();
-
-    if (!response.ok) {
-      return NextResponse.json(
-        { error: result.message || 'Failed to fetch store agents' },
-        { status: response.status }
-      );
+    // Extract agents from the nested structure if they exist
+    if (response.status === 'success' && response.data && typeof response.data === 'object' && 'agents' in response.data) {
+      return NextResponse.json({
+        ...response,
+        data: response.data.agents
+      });
     }
 
-    return NextResponse.json(result);
+    return NextResponse.json(response);
   } catch (error) {
     console.error('Error fetching store agents:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      createErrorResponse('Failed to fetch store agents'),
       { status: 500 }
     );
   }

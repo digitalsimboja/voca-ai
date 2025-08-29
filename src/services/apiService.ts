@@ -1,6 +1,6 @@
 import { ProductCatalog, BackendCatalog } from '@/types/catalog';
-import { Agent } from '@/lib/types';
-import { ApiResponse } from '@/lib/api-utils';
+import { Agent, Store } from '@/lib/types';
+import { ApiResponse } from '@/lib/api';
 import { SocialMediaAgentData } from '@/types/agent';
 
 // Integration types
@@ -133,6 +133,23 @@ export const apiService = {
       return {
         status: 'error',
         message: 'Failed to create store',
+        data: null
+      };
+    }
+  },
+
+  async updateStore(storeId: string, storeData: Partial<Store>): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall(`/catalog/stores/${storeId}`, {
+        method: 'PUT',
+        body: JSON.stringify(storeData),
+      });
+      return response;
+    } catch (error) {
+      console.error('Update store error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to update store',
         data: null
       };
     }
@@ -425,9 +442,8 @@ export const apiService = {
   // Store name availability check
   async checkStoreNameAvailability(storeName: string): Promise<ApiResponse> {
     try {
-      const response = await makeApiCall('/catalog/stores/check-name', {
-        method: 'POST',
-        body: JSON.stringify({ name: storeName }),
+      const response = await makeApiCall(`/catalog/stores/check-name?store_name=${encodeURIComponent(storeName)}`, {
+        method: 'GET',
       });
       return response;
     } catch (error) {
@@ -1308,6 +1324,103 @@ export const apiService = {
       return {
         status: 'error',
         message: 'Failed to run health check',
+        data: null
+      };
+    }
+  },
+
+  // Notification API calls
+  async getNotifications(params?: {
+    status?: string;
+    notification_type?: string;
+    limit?: number;
+    offset?: number;
+  }): Promise<ApiResponse> {
+    try {
+      const queryParams = new URLSearchParams();
+      if (params?.status) queryParams.append('status', params.status);
+      if (params?.notification_type) queryParams.append('notification_type', params.notification_type);
+      if (params?.limit) queryParams.append('limit', params.limit.toString());
+      if (params?.offset) queryParams.append('offset', params.offset.toString());
+
+      const endpoint = `/notifications${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      const response = await makeApiCall(endpoint, { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get notifications error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch notifications',
+        data: null
+      };
+    }
+  },
+
+  async getNotificationById(id: string): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall(`/notifications/${id}`, { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get notification by ID error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch notification',
+        data: null
+      };
+    }
+  },
+
+  async getUnreadNotificationCount(): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall('/notifications/count', { method: 'GET' });
+      return response;
+    } catch (error) {
+      console.error('Get unread notification count error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to fetch unread count',
+        data: null
+      };
+    }
+  },
+
+  async markNotificationAsRead(id: string): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall(`/notifications/${id}`, { method: 'PUT' });
+      return response;
+    } catch (error) {
+      console.error('Mark notification as read error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to mark notification as read',
+        data: null
+      };
+    }
+  },
+
+  async markAllNotificationsAsRead(): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall('/notifications/read-all', { method: 'PUT' });
+      return response;
+    } catch (error) {
+      console.error('Mark all notifications as read error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to mark all notifications as read',
+        data: null
+      };
+    }
+  },
+
+  async deleteNotification(id: string): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall(`/notifications/${id}`, { method: 'DELETE' });
+      return response;
+    } catch (error) {
+      console.error('Delete notification error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to delete notification',
         data: null
       };
     }

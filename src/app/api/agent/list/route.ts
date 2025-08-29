@@ -1,29 +1,34 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { buildApiUrl, getAuthHeaders } from '@/config/api';
+import { makeAuthenticatedApiCall, createErrorResponse } from '@/lib/api';
 
 export async function GET(request: NextRequest) {
   try {
     const token = request.cookies.get('voca_auth_token')?.value;
     if (!token) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+      return NextResponse.json(
+        createErrorResponse('Authentication required'),
+        { status: 401 }
+      );
     }
 
-    const response = await fetch(buildApiUrl('AGENT', '/v1/agent/agents'), {
-      method: 'GET',
-      headers: getAuthHeaders(token),
+    const response = await makeAuthenticatedApiCall('AGENT', '/agents', token, {
+      method: 'GET'
     });
 
-    const result = await response.json();
-
-    if (!response.ok) {
-      return NextResponse.json({ error: result.message || 'Failed to fetch agents' }, { status: response.status });
+    // Extract agents from the nested structure if they exist
+    if (response.status === 'success' && response.data && typeof response.data === 'object' && 'agents' in response.data) {
+      return NextResponse.json({
+        ...response,
+        data: response.data.agents
+      });
     }
 
-    const agents = Array.isArray(result.data) ? result.data : Array.isArray(result.data?.agents) ? result.data.agents : [];
-
-    return NextResponse.json({ status: 'success', message: result.message || 'Agents retrieved', data: agents });
+    return NextResponse.json(response);
   } catch (error) {
     console.error('Error fetching agents:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json(
+      createErrorResponse('Failed to fetch agents'),
+      { status: 500 }
+    );
   }
 }

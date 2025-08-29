@@ -1,69 +1,66 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { makeAuthenticatedApiCall, API_ENDPOINTS, ApiResponse } from '@/lib/api-utils';
+import { makeAuthenticatedApiCall, createErrorResponse } from '@/lib/api';
 
-// GET /api/catalog/stores/[storeId]/agents - Get agents for a store
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ storeId: string }> }
 ) {
   try {
+    const resolvedParams = await params;
+    const { storeId } = resolvedParams;
+
     const token = request.cookies.get('voca_auth_token')?.value;
-    
+
     if (!token) {
       return NextResponse.json(
-        { status: 'error', message: 'Authentication required' },
+        createErrorResponse('Authentication required'),
         { status: 401 }
       );
     }
 
-    const resolvedParams = await params;
-    const response = await makeAuthenticatedApiCall('CATALOG', API_ENDPOINTS.CATALOG.STORE_AGENTS, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    }, { store_id: resolvedParams.storeId }) as ApiResponse;
+    const response = await makeAuthenticatedApiCall('CATALOG', `/stores/${storeId}/agents`, token, {
+      method: 'GET'
+    });
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error('Get agents error:', error);
+    console.error('Get store agents error:', error);
     return NextResponse.json(
-      { status: 'error', message: 'Failed to fetch agents' },
+      createErrorResponse('Failed to fetch store agents'),
       { status: 500 }
     );
   }
 }
 
-// POST /api/catalog/stores/[storeId]/agents - Create a new agent
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ storeId: string }> }
 ) {
   try {
-    const body = await request.json();
+    const resolvedParams = await params;
+    const { storeId } = resolvedParams;
+
     const token = request.cookies.get('voca_auth_token')?.value;
-    
+
     if (!token) {
       return NextResponse.json(
-        { status: 'error', message: 'Authentication required' },
+        createErrorResponse('Authentication required'),
         { status: 401 }
       );
     }
 
-    const resolvedParams = await params;
-    const response = await makeAuthenticatedApiCall('CATALOG', API_ENDPOINTS.CATALOG.STORE_AGENTS, {
+    const body = await request.json();
+
+    const response = await makeAuthenticatedApiCall('CATALOG', `/stores/${storeId}/agents`, token, {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      },
       body: JSON.stringify(body)
-    }, { store_id: resolvedParams.storeId }) as ApiResponse;
+    });
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error('Create agent error:', error);
+    console.error('Create store agent error:', error);
     return NextResponse.json(
-      { status: 'error', message: 'Failed to create agent' },
+      createErrorResponse('Failed to create store agent'),
       { status: 500 }
     );
   }

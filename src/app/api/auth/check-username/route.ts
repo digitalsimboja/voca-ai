@@ -1,70 +1,61 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { API_CONFIG, buildApiUrl, getAuthHeaders, handleApiError } from '@/config/api'
+import { NextRequest, NextResponse } from 'next/server';
+import { 
+  makePublicApiCall,
+  createErrorResponse,
+  createSuccessResponse
+} from '@/lib/api';
 
 export async function POST(request: NextRequest) {
   try {
     // Parse the request body
-    const body = await request.json()
+    const body = await request.json();
     
     // Validate required fields
-    const { username } = body
-
-    console.log('username', username)
+    const { username } = body;
     
     if (!username) {
       return NextResponse.json(
-        { error: 'Username is required' },
+        createErrorResponse('Username is required'),
         { status: 400 }
-      )
+      );
     }
 
     // Validate username format
-    const usernameRegex = /^[a-zA-Z0-9_-]{4,20}$/
+    const usernameRegex = /^[a-zA-Z0-9_-]{4,20}$/;
     if (!usernameRegex.test(username)) {
       return NextResponse.json(
-        { error: 'Username must be 4-20 characters long and contain only letters, numbers, underscores, and hyphens' },
+        createErrorResponse('Username must be 4-20 characters long and contain only letters, numbers, underscores, and hyphens'),
         { status: 400 }
-      )
+      );
     }
 
-    // Call the auth service to check username availability
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.TIMEOUT)
-
-    const authResponse = await fetch(buildApiUrl('AUTH', '/v1/auth/check-username'), {
+    // Call the auth service to check username availability using the new api-utils
+    const authResponse = await makePublicApiCall('AUTH', '/check-username', {
       method: 'POST',
-      headers: getAuthHeaders(),
-      body: JSON.stringify({ username: username.toLowerCase().trim() }),
-      signal: controller.signal
-    })
+      body: JSON.stringify({ username: username.toLowerCase().trim() })
+    });
 
-    clearTimeout(timeoutId)
-
-    if (!authResponse.ok) {
-      const errorData = await authResponse.json().catch(() => ({}))
-      
+    if (authResponse.status === 'error') {
       return NextResponse.json(
-        { error: 'Username check failed', details: errorData.message || errorData.error },
-        { status: authResponse.status }
-      )
+        createErrorResponse(authResponse.message || 'Username check failed'),
+        { status: 400 }
+      );
     }
 
-    const authData = await authResponse.json()
+    const authData = authResponse.data as Record<string, unknown>;
 
-    return NextResponse.json({
-      success: true,
-      message: 'Username availability checked',
-      data: {
-        username: authData.data?.username,
-        available: authData.data?.available
-      }
-    })
+    return NextResponse.json(
+      createSuccessResponse({
+        username: authData.username as string,
+        available: authData.available as boolean
+      }, 'Username availability checked')
+    );
 
   } catch (error) {
-    const errorResult = handleApiError(error, 'Internal server error')
+    console.error('Check username error:', error);
     return NextResponse.json(
-      errorResult,
+      createErrorResponse('Internal server error'),
       { status: 500 }
-    )
+    );
   }
 }

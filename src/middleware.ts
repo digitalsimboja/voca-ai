@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { buildApiUrl, API_ENDPOINTS, getAuthHeaders } from '@/config/api'
+import { buildApiUrl, getAuthHeaders } from '@/lib/api'
 
 // Define protected routes
 const protectedRoutes = [
@@ -9,7 +9,15 @@ const protectedRoutes = [
   '/analytics',
   '/integrations',
   '/settings',
-  '/billing'
+  '/billing',
+  '/notifications',
+  '/orders',
+  '/products',
+  '/users',
+  '/agents',
+  '/settings',
+  '/billing',
+  '/orders',
 ]
 
 // Define auth routes (should redirect if already authenticated)
@@ -18,11 +26,20 @@ const authRoutes = [
   '/signup'
 ]
 
+const publicRoutes = [
+  '/contact'
+];
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   
   // Check if the route is protected
-  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route))
+  const isProtectedRoute = protectedRoutes.some(route => {
+    // Handle exact matches and dynamic routes
+    if (route === pathname) return true
+    if (pathname.startsWith(route + '/')) return true
+    return false
+  })
   const isAuthRoute = authRoutes.some(route => pathname.startsWith(route))
   
   // Get token from cookies
@@ -39,11 +56,11 @@ export async function middleware(request: NextRequest) {
   if (isAuthRoute && token) {
     try {
       // Verify token with auth service
-      const authResponse = await fetch(buildApiUrl('AUTH', API_ENDPOINTS.AUTH.VERIFY), {
+      const authResponse = await fetch(buildApiUrl('AUTH', '/verify'), {
         method: 'POST',
         headers: {
-          ...getAuthHeaders(),
-          'Authorization': `Bearer ${token}`
+          ...getAuthHeaders(token),
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ token })
       })
@@ -61,11 +78,11 @@ export async function middleware(request: NextRequest) {
   // For protected routes with token, verify it
   if (isProtectedRoute && token) {
     try {
-      const authResponse = await fetch(buildApiUrl('AUTH', API_ENDPOINTS.AUTH.VERIFY), {
+      const authResponse = await fetch(buildApiUrl('AUTH', '/verify'), {
         method: 'POST',
         headers: {
-          ...getAuthHeaders(),
-          'Authorization': `Bearer ${token}`
+          ...getAuthHeaders(token),
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ token })
       })

@@ -4,7 +4,6 @@ import { useState } from 'react'
 import Sidebar from './Sidebar'
 import Header from './Header'
 import { X } from 'lucide-react'
-import ProtectedRoute from '@/components/auth/ProtectedRoute'
 
 interface MainLayoutProps {
   children: React.ReactNode
@@ -14,8 +13,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <ProtectedRoute>
-      <div className="flex h-screen bg-gray-50 overflow-hidden">
+    <div className="flex h-screen bg-gray-50 overflow-hidden">
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
         <>
@@ -63,6 +61,5 @@ export default function MainLayout({ children }: MainLayoutProps) {
         </main>
       </div>
     </div>
-    </ProtectedRoute>
   )
 }

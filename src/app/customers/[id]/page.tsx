@@ -11,12 +11,8 @@ import {
   Phone,
   Mail,
   MessageSquare,
-  Calendar,
   MapPin,
   Building,
-  User,
-  Edit,
-  MoreVertical,
   Loader2,
   Package,
   DollarSign,
@@ -207,14 +203,6 @@ export default function CustomerDetailPage() {
           </div>
           <div className="flex items-center gap-2">
             <Button
-              onClick={() => router.push(`/customers/${customer.id}/edit`)}
-              variant="outline"
-              size="sm"
-            >
-              <Edit className="w-4 h-4 mr-2" />
-              Edit
-            </Button>
-            <Button
               onClick={() => router.push(`/customers/${customer.id}/call`)}
               size="sm"
             >
@@ -334,13 +322,13 @@ export default function CustomerDetailPage() {
             <div className="space-y-4">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-gray-600">First Order:</span>
-                <span className="font-medium">
+                <span className="font-medium text-gray-600">
                   {firstOrderDate ? firstOrderDate.toLocaleDateString() : 'No orders yet'}
                 </span>
               </div>
               <div className="flex items-center justify-between text-sm">
                 <span className="text-gray-600">Last Order:</span>
-                <span className="font-medium">
+                <span className="font-medium text-gray-600">
                   {lastOrderDate ? lastOrderDate.toLocaleDateString() : 'No orders yet'}
                 </span>
               </div>
@@ -348,7 +336,7 @@ export default function CustomerDetailPage() {
                 <span className="text-gray-600">Order Statuses:</span>
                 <div className="flex gap-1">
                                      {displayOrderStatuses.map((status, index) => (
-                     <Badge key={index} variant="default" size="sm">
+                     <Badge key={index} variant="info" size="sm">
                        {status}
                      </Badge>
                    ))}

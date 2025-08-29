@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { ProductCatalog } from '@/types/catalog'
 import { apiService } from '@/services/apiService'
-import { Card, CardHeader, CardContent } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { toast } from '@/utils/toast'
@@ -12,11 +11,8 @@ import {
   ShoppingCart,
   Package,
   Star,
-  MapPin,
   Phone,
-  MessageCircle,
   Instagram,
-  Facebook,
   ArrowLeft,
   Truck,
   Shield,

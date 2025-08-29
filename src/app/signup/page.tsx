@@ -173,15 +173,6 @@ function SignupPageContent() {
     if (name === "password") {
       setPasswordStrength(validatePasswordStrength(value));
     }
-
-    // Check username availability when username field changes
-    if (name === "username") {
-      const debounceTimeout = setTimeout(() => {
-        checkUsernameAvailability(value);
-      }, 500); // Debounce for 500ms
-
-      return () => clearTimeout(debounceTimeout);
-    }
   };
 
   const handleBusinessTypeSelect = (businessType: BusinessType) => {
@@ -198,6 +189,7 @@ function SignupPageContent() {
     }
 
     setUsernameStatus("checking");
+    console.log("Checking username availability for:", username);
 
     try {
       const response = await fetch("/api/auth/check-username", {
@@ -209,10 +201,14 @@ function SignupPageContent() {
       });
 
       const data = await response.json();
+      console.log("Username check response:", { status: response.status, data });
 
-      if (response.ok && data.success) {
-        setUsernameStatus(data.data.available ? "available" : "taken");
+      if (response.ok && data.status === "success") {
+        const status = data.data.available ? "available" : "taken";
+        console.log("Setting username status to:", status);
+        setUsernameStatus(status);
       } else {
+        console.log("Username check failed - setting status to idle");
         setUsernameStatus("idle");
       }
     } catch (error) {
@@ -220,6 +216,22 @@ function SignupPageContent() {
       setUsernameStatus("idle");
     }
   };
+
+  // Username availability check with debouncing
+  useEffect(() => {
+    const username = formData.username;
+    
+    if (!username || username.length < 4) {
+      setUsernameStatus("idle");
+      return;
+    }
+
+    const debounceTimeout = setTimeout(() => {
+      checkUsernameAvailability(username);
+    }, 500); // Debounce for 500ms
+
+    return () => clearTimeout(debounceTimeout);
+  }, [formData.username]);
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -260,6 +272,8 @@ function SignupPageContent() {
       setIsLoading(false);
     }
   };
+
+  console.log(usernameStatus);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -440,7 +454,13 @@ function SignupPageContent() {
                     Username is already taken
                   </p>
                 )}
-                <p className="mt-1 text-xs text-gray-500">
+                <p className={`mt-1 text-xs ${
+                  usernameStatus === "available" 
+                    ? "text-green-600" 
+                    : usernameStatus === "taken" 
+                    ? "text-red-600" 
+                    : "text-gray-500"
+                }`}>
                   This will be your unique identifier on the platform
                 </p>
               </div>

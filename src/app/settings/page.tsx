@@ -33,7 +33,8 @@ export default function SettingsPage() {
   const { businessType: detectedBusinessType } = useBusinessType();
   const [activeTab, setActiveTab] = useState("general");
 
-  React.useEffect(() => {
+  // Handle URL parameter on mount
+  useEffect(() => {
     if (typeof window !== "undefined") {
       const urlParams = new URLSearchParams(window.location.search);
       const tabParam = urlParams.get("tab");
@@ -53,38 +54,19 @@ export default function SettingsPage() {
     }
   }, []);
 
-  const [originalSettings, setOriginalSettings] = useState<SettingsType & { agents: Agent[] }>({
-    organization: {
-      name: "Voca AI Solutions",
-      industry: "microfinance",
-      timezone: "America/New_York",
-      supportedLanguages: ["English", "Igbo", "Yoruba", "Hausa"],
-      businessHours: {
-        start: "09:00",
-        end: "17:00",
-        timezone: "America/New_York",
-      },
-    },
-    autoResponse: {
-      enabled: true,
-      message:
-        "Thank you for contacting us. An AI agent will assist you shortly.",
-      delay: 30,
-    },
-    routingRules: [],
-    security: {
-      twoFactorAuth: true,
-      sessionTimeout: 30,
-      ipWhitelist: ["192.168.1.0/24", "10.0.0.0/8"],
-      auditLogging: true,
-    },
-    notifications: {
-      sms: false,
-      webhook: true,
-      webhookUrl: "https://api.vocaai.com/webhook/notifications",
-    },
-    agents: [],
-  });
+  // Handle tab changes and update URL
+  const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId);
+    
+    // Update URL without page reload
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      url.searchParams.set("tab", tabId);
+      window.history.pushState({}, "", url.toString());
+    }
+  };
+
+
 
   const [settings, setSettings] = useState<SettingsType & { agents: Agent[] }>({
     organization: {
@@ -146,16 +128,17 @@ export default function SettingsPage() {
             agents: settings.agents,
           };
           setSettings(newSettings);
-          setOriginalSettings(newSettings);
         }
 
         // Only get user-specific agents
         if (user?.userId) {
           const agentsResult = await apiService.getAgentsByUserId();
+          console.log("Agents API response:", agentsResult);
           if (agentsResult.status === 'success' && agentsResult.data) {
             const agents = Array.isArray(agentsResult.data)
               ? agentsResult.data
               : [agentsResult.data];
+            console.log("Processed agents:", agents);
             setSettings((prev) => ({
               ...prev,
               agents: agents.filter(
@@ -215,8 +198,6 @@ export default function SettingsPage() {
         agentData as unknown as Omit<Agent, "id" | "createdAt" | "updatedAt">
       );
 
-      console.log("Create agent result:", result);
-
       if (result.status === 'success' && result.data) {
         // Show success message
         toast.success("Agent created successfully!");
@@ -225,14 +206,11 @@ export default function SettingsPage() {
         await new Promise((resolve) => setTimeout(resolve, 100));
 
         const agentsResult = await apiService.getAgentsByUserId();
-        console.log("Get user agents result:", agentsResult);
 
         if (agentsResult.status === 'success' && agentsResult.data) {
           const agents = Array.isArray(agentsResult.data)
             ? agentsResult.data
             : [agentsResult.data];
-
-          console.log("Setting agents:", agents);
 
           setSettings((prev) => {
             const newSettings = {
@@ -345,7 +323,6 @@ export default function SettingsPage() {
       const result = await apiService.updateSettings(settingsData);
       
       if (result.status === 'success') {
-        setOriginalSettings(settings);
         setHasUnsavedChanges(false);
         toast.success('Settings saved successfully!');
       } else {
@@ -465,7 +442,7 @@ export default function SettingsPage() {
 
         {/* Tabs - add horizontal scroll on small screens */}
         <div className="overflow-x-auto">
-          <SettingsTabs activeTab={activeTab} onTabChange={setActiveTab} />
+          <SettingsTabs activeTab={activeTab} onTabChange={handleTabChange} />
         </div>
 
         {/* Tab Content */}
@@ -473,7 +450,6 @@ export default function SettingsPage() {
           {activeTab === "general" && (
             <GeneralSettings
               settings={settings}
-              originalSettings={originalSettings}
               onSettingsChange={handleSettingsChange}
             />
           )}

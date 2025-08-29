@@ -1,62 +1,58 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { API_CONFIG, buildApiUrl, API_ENDPOINTS, getAuthHeaders, handleApiError } from '@/config/api'
+import { NextRequest, NextResponse } from 'next/server';
+import { 
+  makeAuthenticatedApiCall,
+  createErrorResponse,
+  createSuccessResponse
+} from '@/lib/api';
 
 export async function POST(request: NextRequest) {
   try {
     // Get token from cookies
-    const token = request.cookies.get('voca_auth_token')?.value
+    const token = request.cookies.get('voca_auth_token')?.value;
 
     if (!token) {
       return NextResponse.json(
-        { error: 'No active session found' },
+        createErrorResponse('No active session found'),
         { status: 401 }
-      )
+      );
     }
 
-    // Call the auth service to logout
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.TIMEOUT)
-
-    await fetch(buildApiUrl('AUTH', API_ENDPOINTS.AUTH.LOGOUT), {
+    // Call the auth service to logout using the new api-utils
+    const response = await makeAuthenticatedApiCall('AUTH', '/logout', token, {
       method: 'POST',
-      headers: getAuthHeaders(token),
-      body: JSON.stringify({ token }),
-      signal: controller.signal
-    })
-
-    clearTimeout(timeoutId)
+      body: JSON.stringify({ token })
+    });
 
     // Create response
-    const response = NextResponse.json({
-      success: true,
-      message: 'Logout successful'
-    })
+    const nextResponse = NextResponse.json(
+      createSuccessResponse(null, 'Logout successful')
+    );
 
     // Clear the auth cookie
-    response.cookies.set('voca_auth_token', '', {
+    nextResponse.cookies.set('voca_auth_token', '', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 0,
       path: '/'
-    })
+    });
 
     // Clear any additional cookies if needed
-    response.cookies.set('voca_user_data', '', {
+    nextResponse.cookies.set('voca_user_data', '', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 0,
       path: '/'
-    })
+    });
 
-    return response
+    return nextResponse;
 
   } catch (error) {
-    const errorResult = handleApiError(error, 'Internal server error')
+    console.error('Logout error:', error);
     return NextResponse.json(
-      errorResult,
+      createErrorResponse('Internal server error'),
       { status: 500 }
-    )
+    );
   }
 }

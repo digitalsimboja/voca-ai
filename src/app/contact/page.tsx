@@ -121,6 +121,7 @@ export default function ContactPage() {
     
     try {
       // Send data to backend API
+
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
