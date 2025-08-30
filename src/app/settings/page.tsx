@@ -254,6 +254,7 @@ export default function SettingsPage() {
     try {
       const result = await apiService.deleteAgent(selectedAgentForDelete.id);
       if (result.status === 'success') {
+        // Update the local agents state immediately
         setSettings((prev) => ({
           ...prev,
           agents:
@@ -261,6 +262,7 @@ export default function SettingsPage() {
               (agent) => agent.id !== selectedAgentForDelete.id
             ) || [],
         }));
+        
         toast.success(
           `Agent "${selectedAgentForDelete.name}" deleted successfully`
         );
@@ -438,6 +440,26 @@ export default function SettingsPage() {
             setSelectedAgentForDetails(null);
           }}
           agent={selectedAgentForDetails}
+          onAgentUpdate={(updatedAgent) => {
+            // Update the agent in the settings
+            const updatedAgents = settings.agents?.map((a) =>
+              a.id === updatedAgent.id ? updatedAgent : a
+            ) || [];
+            setSettings({
+              ...settings,
+              agents: updatedAgents,
+            });
+            setShowDetailsModal(false);
+            setSelectedAgentForDetails(null);
+          }}
+          onAgentDelete={(agentId) => {
+            // Trigger the delete flow
+            const agent = settings.agents?.find((a) => a.id === agentId);
+            if (agent) {
+              setSelectedAgentForDelete(agent);
+              setShowDeleteModal(true);
+            }
+          }}
         />
 
         {/* Tabs - add horizontal scroll on small screens */}

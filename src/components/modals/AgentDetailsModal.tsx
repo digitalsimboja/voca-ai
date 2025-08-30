@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   User,
   MessageSquare,
@@ -7,22 +7,79 @@ import {
   Database,
   Settings,
   Activity,
+  Save,
+  Edit3,
+  Trash2,
 } from 'lucide-react';
 import { Agent } from '@/lib/types';
 import { formatDate } from '@/lib/utils';
+import { apiService } from '@/services/apiService';
+import { toast } from '@/utils/toast';
 
 interface AgentDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
   agent: Agent | null;
+  onAgentUpdate?: (updatedAgent: Agent) => void;
+  onAgentDelete?: (agentId: string) => void;
 }
 
 export default function AgentDetailsModal({
   isOpen,
   onClose,
   agent,
+  onAgentUpdate,
+  onAgentDelete,
 }: AgentDetailsModalProps) {
-  if (!isOpen || !agent) return null;
+  const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [editedAgent, setEditedAgent] = useState<Agent | null>(null);
+
+  useEffect(() => {
+    if (agent) {
+      setEditedAgent({ ...agent });
+    }
+  }, [agent]);
+
+  const handleSave = async () => {
+    if (!editedAgent) return;
+    
+    setIsSaving(true);
+    try {
+      const response = await apiService.updateAgent(editedAgent.id, {
+        name: editedAgent.name,
+        role: editedAgent.role,
+        status: editedAgent.status,
+        channels: editedAgent.channels,
+        languages: editedAgent.languages,
+        agentData: editedAgent.agentData,
+      });
+
+      if (response.status === 'success') {
+        toast.success('Agent updated successfully!');
+        setIsEditing(false);
+        if (onAgentUpdate) {
+          onAgentUpdate(editedAgent);
+        }
+      } else {
+        toast.error(response.message || 'Failed to update agent');
+      }
+    } catch (error) {
+      console.error('Error updating agent:', error);
+      toast.error('An error occurred while updating the agent');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleCancel = () => {
+    if (agent) {
+      setEditedAgent({ ...agent });
+    }
+    setIsEditing(false);
+  };
+
+  if (!isOpen || !agent || !editedAgent) return null;
 
   return (
     <div className="fixed inset-0 bg-gradient-to-br from-black/70 via-black/50 to-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-3 md:p-4">
@@ -35,20 +92,75 @@ export default function AgentDetailsModal({
                 <User className="w-5 h-5 sm:w-5.5 sm:h-5.5 md:w-6 md:h-6 text-white" />
               </div>
               <div className="min-w-0">
-                <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-semibold truncate">
-                  {agent.name}
-                </h3>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editedAgent.name}
+                    onChange={(e) => setEditedAgent({ ...editedAgent, name: e.target.value })}
+                    className="text-sm sm:text-base md:text-lg lg:text-xl font-semibold bg-white/20 rounded px-2 py-1 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50"
+                    placeholder="Agent name"
+                  />
+                ) : (
+                  <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-semibold truncate">
+                    {editedAgent.name}
+                  </h3>
+                )}
                 <p className="text-[10px] sm:text-xs md:text-sm text-purple-100 truncate">
-                  {agent.role} • {agent.businessType}
+                  {editedAgent.role} • {editedAgent.businessType}
                 </p>
               </div>
             </div>
-            <button
-              onClick={onClose}
-              className="text-white/80 hover:text-white text-base sm:text-lg transition-transform duration-200 hover:scale-110 bg-white/10 rounded-full w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center"
-            >
-              ✕
-            </button>
+            <div className="flex items-center space-x-2">
+              {isEditing ? (
+                <>
+                  <button
+                    onClick={handleSave}
+                    disabled={isSaving}
+                    className="flex items-center space-x-1 text-white/90 hover:text-white text-sm transition-colors bg-white/20 px-3 py-1.5 rounded-lg hover:bg-white/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <Save className="w-4 h-4" />
+                    <span>{isSaving ? 'Saving...' : 'Save'}</span>
+                  </button>
+                  <button
+                    onClick={handleCancel}
+                    disabled={isSaving}
+                    className="text-white/80 hover:text-white text-sm transition-colors bg-white/10 px-3 py-1.5 rounded-lg hover:bg-white/20 disabled:opacity-50"
+                  >
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="flex items-center space-x-1 text-white/90 hover:text-white text-sm transition-colors bg-white/20 px-3 py-1.5 rounded-lg hover:bg-white/30"
+                  >
+                    <Edit3 className="w-4 h-4" />
+                    <span>Edit</span>
+                  </button>
+                  {onAgentDelete && (
+                    <button
+                      onClick={() => {
+                        if (agent && onAgentDelete) {
+                          onAgentDelete(agent.id);
+                          onClose();
+                        }
+                      }}
+                      className="flex items-center space-x-1 text-white/80 hover:text-red-200 text-sm transition-colors bg-red-500/20 px-3 py-1.5 rounded-lg hover:bg-red-500/30"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                      <span>Delete</span>
+                    </button>
+                  )}
+                </>
+              )}
+              <button
+                onClick={onClose}
+                className="text-white/80 hover:text-white text-base sm:text-lg transition-transform duration-200 hover:scale-110 bg-white/10 rounded-full w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center"
+              >
+                ✕
+              </button>
+            </div>
           </div>
         </div>
 
@@ -62,17 +174,29 @@ export default function AgentDetailsModal({
                 <Activity className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600" />
                 <h4 className="text-xs sm:text-sm font-semibold text-gray-900">Status</h4>
               </div>
-              <span
-                className={`px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs md:text-sm font-medium ${
-                  agent.status === 'active'
-                    ? 'bg-green-100 text-green-500'
-                    : agent.status === 'training'
-                    ? 'bg-yellow-100 text-yellow-700'
-                    : 'bg-gray-100 text-gray-600'
-                }`}
-              >
-                {agent.status.charAt(0).toUpperCase() + agent.status.slice(1)}
-              </span>
+              {isEditing ? (
+                <select
+                  value={editedAgent.status}
+                  onChange={(e) => setEditedAgent({ ...editedAgent, status: e.target.value as 'active' | 'inactive' | 'training' })}
+                  className="px-2 sm:px-2.5 py-0.5 sm:py-1 rounded text-[10px] sm:text-xs md:text-sm font-medium border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                >
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                  <option value="training">Training</option>
+                </select>
+              ) : (
+                <span
+                  className={`px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs md:text-sm font-medium ${
+                    editedAgent.status === 'active'
+                      ? 'bg-green-100 text-green-500'
+                      : editedAgent.status === 'training'
+                      ? 'bg-yellow-100 text-yellow-700'
+                      : 'bg-gray-100 text-gray-600'
+                  }`}
+                >
+                  {editedAgent.status.charAt(0).toUpperCase() + editedAgent.status.slice(1)}
+                </span>
+              )}
             </div>
 
             {/* Created */}
@@ -104,16 +228,39 @@ export default function AgentDetailsModal({
               <MessageSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600" />
               <h4 className="text-xs sm:text-sm font-semibold text-gray-900">Communication Channels</h4>
             </div>
-            <div className="flex flex-wrap gap-1.5 sm:gap-2">
-              {agent.channels.map((channel) => (
-                <span
-                  key={channel}
-                  className="px-2 sm:px-2.5 py-0.5 sm:py-1 bg-purple-100 text-purple-700 rounded-full text-[10px] sm:text-xs md:text-sm font-medium border border-purple-200"
-                >
-                  {channel.replace('_', ' ')}
-                </span>
-              ))}
-            </div>
+            {isEditing ? (
+              <div className="space-y-2">
+                {['voice', 'whatsapp', 'instagram_dm', 'facebook_messenger'].map((channel) => (
+                  <label key={channel} className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      checked={editedAgent.channels.includes(channel)}
+                      onChange={(e) => {
+                        const newChannels = e.target.checked
+                          ? [...editedAgent.channels, channel]
+                          : editedAgent.channels.filter(c => c !== channel);
+                        setEditedAgent({ ...editedAgent, channels: newChannels });
+                      }}
+                      className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                    />
+                    <span className="text-xs sm:text-sm text-gray-700 capitalize">
+                      {channel.replace('_', ' ')}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                {editedAgent.channels.map((channel) => (
+                  <span
+                    key={channel}
+                    className="px-2 sm:px-2.5 py-0.5 sm:py-1 bg-purple-100 text-purple-700 rounded-full text-[10px] sm:text-xs md:text-sm font-medium border border-purple-200"
+                  >
+                    {channel.replace('_', ' ')}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Languages */}
@@ -122,16 +269,39 @@ export default function AgentDetailsModal({
               <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600" />
               <h4 className="text-xs sm:text-sm font-semibold text-gray-900">Supported Languages</h4>
             </div>
-            <div className="flex flex-wrap gap-1.5 sm:gap-2">
-              {agent.languages.map((language) => (
-                <span
-                  key={language}
-                  className="px-2 sm:px-2.5 py-0.5 sm:py-1 bg-green-100 text-green-500 rounded-full text-[10px] sm:text-xs md:text-sm font-medium border border-green-200"
-                >
-                  {language}
-                </span>
-              ))}
-            </div>
+            {isEditing ? (
+              <div className="space-y-2">
+                {['English', 'Igbo', 'Yoruba', 'Hausa', 'French', 'Spanish'].map((language) => (
+                  <label key={language} className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      checked={editedAgent.languages.includes(language)}
+                      onChange={(e) => {
+                        const newLanguages = e.target.checked
+                          ? [...editedAgent.languages, language]
+                          : editedAgent.languages.filter(l => l !== language);
+                        setEditedAgent({ ...editedAgent, languages: newLanguages });
+                      }}
+                      className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                    />
+                    <span className="text-xs sm:text-sm text-gray-700">
+                      {language}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                {editedAgent.languages.map((language) => (
+                  <span
+                    key={language}
+                    className="px-2 sm:px-2.5 py-0.5 sm:py-1 bg-green-100 text-green-500 rounded-full text-[10px] sm:text-xs md:text-sm font-medium border border-green-200"
+                  >
+                    {language}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Knowledge Base */}
@@ -282,13 +452,33 @@ export default function AgentDetailsModal({
 
         {/* Footer */}
         <div className="bg-white p-2 sm:p-3 md:p-4 border-t border-gray-200">
-          <div className="flex items-center justify-end">
-            <button
-              onClick={onClose}
-              className="px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base text-gray-700 bg-white font-semibold border border-gray-200 rounded-md hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 font-medium shadow-sm hover:shadow-md"
-            >
-              Close
-            </button>
+          <div className="flex items-center justify-end space-x-2">
+            {isEditing ? (
+              <>
+                <button
+                  onClick={handleCancel}
+                  disabled={isSaving}
+                  className="px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base text-gray-700 bg-white font-semibold border border-gray-200 rounded-md hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 font-medium shadow-sm hover:shadow-md disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSave}
+                  disabled={isSaving}
+                  className="px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base text-white bg-purple-600 font-semibold border border-purple-600 rounded-md hover:bg-purple-700 hover:border-purple-700 transition-all duration-200 font-medium shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-1"
+                >
+                  <Save className="w-4 h-4" />
+                  <span>{isSaving ? 'Saving...' : 'Save Changes'}</span>
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={onClose}
+                className="px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base text-gray-700 bg-white font-semibold border border-gray-200 rounded-md hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 font-medium shadow-sm hover:shadow-md"
+              >
+                Close
+              </button>
+            )}
           </div>
         </div>
       </div>

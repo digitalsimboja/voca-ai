@@ -328,6 +328,23 @@ export const apiService = {
   },
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async checkExistingAgent(): Promise<ApiResponse> {
+    try {
+      const response = await makeApiCall('/agent/check-existing-agent', {
+        method: 'GET',
+      });
+      return response;
+    } catch (error) {
+      console.error('Check existing agent error:', error);
+      return {
+        status: 'error',
+        message: 'Failed to check existing agent',
+        data: null
+      };
+    }
+  },
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async createAgent(agentData: any): Promise<ApiResponse> {
     try {
       const response = await makeApiCall('/agent/create', {

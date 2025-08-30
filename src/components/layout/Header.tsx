@@ -7,6 +7,7 @@ import { getInitials } from '@/lib/utils'
 import CreateRetailAgentModal from '@/components/modals/CreateRetailAgentModal'
 import { NotificationDropdown, NotificationModal } from '@/components/notifications'
 import { useNotifications } from '@/hooks/useNotifications'
+import { useExistingAgent } from '@/hooks/useExistingAgent'
 import { toast } from '@/utils/toast'
 import { Notification } from '@/types/notification'
 import {
@@ -19,7 +20,8 @@ import {
   MessageCircle,
   Mail,
   LogOut,
-  Menu
+  Menu,
+  AlertCircle
 } from 'lucide-react'
 
 interface HeaderProps {
@@ -81,6 +83,7 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
   const notificationsRef = useRef<HTMLDivElement>(null)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
   const [showCreateAgentModal, setShowCreateAgentModal] = useState(false)
+  const { hasExistingAgent, isLoading: isCheckingAgent } = useExistingAgent()
   
   // Notification state
   const {
@@ -150,9 +153,19 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
         setShowCreateAgentModal(false)
         toast.success('AI Agent created successfully!', { duration: 4000 })
         console.log('Agent created successfully:', response.data)
+        // Refresh the page to update the UI
+        window.location.reload()
       } else {
-        toast.error(response.message || 'Failed to create agent', { duration: 5000 })
-        console.error('Failed to create agent:', response.message)
+        // Check if it's a 409 conflict (agent already exists)
+        if (response.error_code === 'AGENT_ALREADY_EXISTS') {
+          toast.error('You already have an agent. Only one agent per vendor is allowed.', { duration: 5000 })
+          setShowCreateAgentModal(false)
+          // Refresh the page to update the UI
+          window.location.reload()
+        } else {
+          toast.error(response.message || 'Failed to create agent', { duration: 5000 })
+          console.error('Failed to create agent:', response.message)
+        }
       }
     } catch (error) {
       console.error('Error creating agent:', error)
@@ -187,20 +200,35 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
         <div className="flex items-center space-x-2 lg:space-x-4">
           {/* Action Buttons */}
           <div className="hidden sm:flex items-center space-x-3">
+            {hasExistingAgent ? (
+              <div className="flex items-center space-x-2 bg-yellow-50 border border-yellow-200 text-yellow-800 px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg text-sm lg:text-sm font-medium">
+                <AlertCircle className="w-4 h-4 lg:w-4 lg:h-4" />
+                <span>Agent Exists</span>
+              </div>
+            ) : (
+              <button 
+                onClick={() => setShowCreateAgentModal(true)}
+                disabled={isCheckingAgent}
+                className="flex items-center space-x-2 bg-purple-600 text-white px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg hover:bg-purple-700 transition-all duration-200 shadow-md hover:shadow-lg text-sm lg:text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Plus className="w-4 h-4 lg:w-4 lg:h-4" />
+                <span>{isCheckingAgent ? 'Checking...' : 'Create Agent'}</span>
+              </button>
+            )}
+          </div>
+          {hasExistingAgent ? (
+            <div className="sm:hidden flex items-center bg-yellow-50 border border-yellow-200 text-yellow-800 p-2 rounded-lg">
+              <AlertCircle className="w-4 h-4" />
+            </div>
+          ) : (
             <button 
               onClick={() => setShowCreateAgentModal(true)}
-              className="flex items-center space-x-2 bg-purple-600 text-white px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg hover:bg-purple-700 transition-all duration-200 shadow-md hover:shadow-lg text-sm lg:text-sm font-medium"
+              disabled={isCheckingAgent}
+              className="sm:hidden flex items-center bg-purple-600 text-white p-2 rounded-lg hover:bg-purple-700 transition-all duration-200 shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Plus className="w-4 h-4 lg:w-4 lg:h-4" />
-              <span>Create Agent</span>
+              <Plus className="w-4 h-4" />
             </button>
-          </div>
-          <button 
-            onClick={() => setShowCreateAgentModal(true)}
-            className="sm:hidden flex items-center bg-purple-600 text-white p-2 rounded-lg hover:bg-purple-700 transition-all duration-200 shadow-md"
-          >
-            <Plus className="w-4 h-4" />
-          </button>
+          )}
 
           {/* Channel Status */}
           <div className="hidden md:flex items-center space-x-2">

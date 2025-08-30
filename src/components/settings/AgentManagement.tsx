@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/Card";
-import { User, Trash2 } from "lucide-react";
+import { User, Trash2, AlertCircle, Eye } from "lucide-react";
 import { Agent, Settings as SettingsType } from "@/lib/types";
+import { useExistingAgent } from "@/hooks/useExistingAgent";
 
 interface AgentManagementProps {
   agents: Agent[];
@@ -22,6 +23,17 @@ export default function AgentManagement({
   onShowAgentDetails,
   onConnectKnowledgeBase,
 }: AgentManagementProps) {
+  const { existingAgent, hasExistingAgent, isLoading, refetch } = useExistingAgent();
+
+  // Refetch existing agent status when agents array changes
+  useEffect(() => {
+    refetch();
+  }, [agents.length, refetch]);
+
+  // Determine if we should show the "no agents" state based on both the hook and local agents array
+  const shouldShowNoAgents = (!agents || agents.length === 0) && !hasExistingAgent;
+  const shouldShowExistingAgent = (!agents || agents.length === 0) && hasExistingAgent && existingAgent;
+
   return (
     <div className="space-y-4">
       <Card>
@@ -30,13 +42,23 @@ export default function AgentManagement({
             <h3 className="text-base sm:text-lg font-semibold text-gray-900">
               Agent Management
             </h3>
-            <button
-              onClick={onShowCreateAgent}
-              className="flex items-center justify-center space-x-2 bg-green-400 text-white px-3 py-2 rounded-md hover:bg-green-500 transition-colors text-sm w-full sm:w-auto"
-            >
-              <User className="w-4 h-4" />
-              <span>Create Agent</span>
-            </button>
+            {hasExistingAgent || (agents && agents.length > 0) ? (
+              <div className="flex items-center space-x-2 bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-2">
+                <AlertCircle className="w-4 h-4 text-yellow-600" />
+                <span className="text-sm text-yellow-800">
+                  You already have an agent
+                </span>
+              </div>
+            ) : (
+              <button
+                onClick={onShowCreateAgent}
+                disabled={isLoading}
+                className="flex items-center justify-center space-x-2 bg-green-400 text-white px-3 py-2 rounded-md hover:bg-green-500 transition-colors text-sm w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <User className="w-4 h-4" />
+                <span>{isLoading ? 'Checking...' : 'Create Agent'}</span>
+              </button>
+            )}
           </div>
         </CardHeader>
         <CardContent className="pt-1.5">
@@ -95,6 +117,16 @@ export default function AgentManagement({
                       />
                       <div className="w-8 h-4 bg-gray-200 rounded-full peer peer-checked:bg-green-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:after:translate-x-full" />
                     </label>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onShowAgentDetails(agent);
+                      }}
+                      className="p-1 text-gray-400 hover:text-blue-600 transition-colors"
+                      title="View agent details"
+                    >
+                      <Eye className="w-4 h-4" />
+                    </button>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -167,41 +199,86 @@ export default function AgentManagement({
               </div>
             ))}
 
-            {/* Empty State */}
-            {(!agents || agents.length === 0) && (
+            {/* Empty State or Existing Agent Info */}
+            {shouldShowNoAgents || shouldShowExistingAgent ? (
               <div className="text-center py-8 sm:py-12">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <User className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
-                </div>
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
-                  No Agents Available
-                </h3>
-                <p className="text-gray-600 mb-6 text-sm max-w-sm mx-auto">
-                  You haven&apos;t created any AI agents yet. Create your first
-                  agent to start managing customer interactions and automate
-                  your business processes.
-                </p>
-                <button
-                  onClick={onShowCreateAgent}
-                  className="bg-purple-600 text-white px-4 py-2 sm:px-6 sm:py-2.5 rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium shadow-sm hover:shadow-md flex items-center mx-auto"
-                >
-                  <User className="w-4 h-4 mr-2" />
-                  Create Your First Agent
-                </button>
-                <div className="mt-6 p-3 sm:p-4 bg-purple-50 rounded-lg border border-purple-100 text-left">
-                  <h4 className="text-sm font-medium text-purple-900 mb-2">
-                    What can AI agents do?
-                  </h4>
-                  <ul className="text-xs text-purple-800 space-y-1">
-                    <li>• Handle customer inquiries 24/7</li>
-                    <li>• Process orders and track deliveries</li>
-                    <li>• Provide product recommendations</li>
-                    <li>• Manage social media interactions</li>
-                    <li>• Support multiple languages</li>
-                  </ul>
-                </div>
+                {shouldShowExistingAgent ? (
+                  // Show existing agent information
+                  <div className="max-w-md mx-auto">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <AlertCircle className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-600" />
+                    </div>
+                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
+                      You Already Have an Agent
+                    </h3>
+                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6 text-left">
+                      <h4 className="font-medium text-yellow-900 mb-2">
+                        {existingAgent?.name}
+                      </h4>
+                      <p className="text-sm text-yellow-800 mb-3">
+                        {existingAgent?.role} • {existingAgent?.businessType}
+                      </p>
+                      <p className="text-xs text-yellow-700">
+                        Created: {existingAgent?.createdAt ? new Date(existingAgent.createdAt).toLocaleDateString() : "Unknown"}
+                      </p>
+                    </div>
+                    <p className="text-gray-600 mb-6 text-sm">
+                      You can enhance your agent's capabilities by updating its knowledge base and settings.
+                    </p>
+                    <button
+                      onClick={() => existingAgent && onShowAgentDetails(existingAgent)}
+                      className="bg-purple-600 text-white px-4 py-2 sm:px-6 sm:py-2.5 rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium shadow-sm hover:shadow-md flex items-center mx-auto"
+                    >
+                      <User className="w-4 h-4 mr-2" />
+                      Manage My Agent
+                    </button>
+                    <div className="mt-6 p-3 sm:p-4 bg-purple-50 rounded-lg border border-purple-100 text-left">
+                      <h4 className="text-sm font-medium text-purple-900 mb-2">
+                        One Agent Per Vendor
+                      </h4>
+                      <p className="text-xs text-purple-800">
+                        Each vendor can only have one AI agent. You can continuously enhance your agent's capabilities by updating its knowledge base, adding new channels, and improving its responses.
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  // Show create agent option
+                  <>
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <User className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
+                    </div>
+                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
+                      No Agents Available
+                    </h3>
+                    <p className="text-gray-600 mb-6 text-sm max-w-sm mx-auto">
+                      You haven&apos;t created any AI agents yet. Create your first
+                      agent to start managing customer interactions and automate
+                      your business processes.
+                    </p>
+                    <button
+                      onClick={onShowCreateAgent}
+                      disabled={isLoading}
+                      className="bg-purple-600 text-white px-4 py-2 sm:px-6 sm:py-2.5 rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium shadow-sm hover:shadow-md flex items-center mx-auto disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <User className="w-4 h-4 mr-2" />
+                      {isLoading ? 'Checking...' : 'Create Your First Agent'}
+                    </button>
+                    <div className="mt-6 p-3 sm:p-4 bg-purple-50 rounded-lg border border-purple-100 text-left">
+                      <h4 className="text-sm font-medium text-purple-900 mb-2">
+                        What can AI agents do?
+                      </h4>
+                      <ul className="text-xs text-purple-800 space-y-1">
+                        <li>• Handle customer inquiries 24/7</li>
+                        <li>• Process orders and track deliveries</li>
+                        <li>• Provide product recommendations</li>
+                        <li>• Manage social media interactions</li>
+                        <li>• Support multiple languages</li>
+                      </ul>
+                    </div>
+                  </>
+                )}
               </div>
-            )}
+            ) : null}
           </div>
         </CardContent>
       </Card>
