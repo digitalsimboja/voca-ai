@@ -21,7 +21,8 @@ import {
   Mail,
   LogOut,
   Menu,
-  AlertCircle
+  AlertCircle,
+  CheckCircle
 } from 'lucide-react'
 
 interface HeaderProps {
@@ -201,9 +202,9 @@ export default function Header({ onMobileMenuClick }: HeaderProps) {
           {/* Action Buttons */}
           <div className="hidden sm:flex items-center space-x-3">
             {hasExistingAgent ? (
-              <div className="flex items-center space-x-2 bg-yellow-50 border border-yellow-200 text-yellow-800 px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg text-sm lg:text-sm font-medium">
-                <AlertCircle className="w-4 h-4 lg:w-4 lg:h-4" />
-                <span>Agent Exists</span>
+              <div className="flex items-center space-x-2 bg-green-50 border border-green-200 text-green-800 px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg text-sm lg:text-sm font-medium">
+                <CheckCircle className="w-4 h-4 lg:w-4 lg:h-4" />
+                <span>Agent: Active</span>
               </div>
             ) : (
               <button 
