@@ -11,7 +11,7 @@ import {
   IntegrationsStep,
 } from "./agent-creation";
 
-interface SocialMediaAgentData {
+interface RetailAgentData {
   profile: {
     name: string;
     role: string;
@@ -77,7 +77,7 @@ interface ValidationErrors {
   };
 }
 
-const initialData: SocialMediaAgentData = {
+const initialData: RetailAgentData = {
   profile: {
     name: "",
     role: "sales_assistant",
@@ -114,7 +114,7 @@ const initialData: SocialMediaAgentData = {
       voice: true,
     },
     languages: ["English", "Igbo", "Yoruba", "Hausa"],
-    responseTime: 5,
+    responseTime: 5, // in minutes
     autoResponses: true,
   },
   integrations: {
@@ -136,18 +136,18 @@ const initialData: SocialMediaAgentData = {
   },
 };
 
-interface Props {
+interface RetailAgentModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: SocialMediaAgentData) => void;
+  onSubmit: (data: RetailAgentData) => void;
 }
 
 export default function CreateRetailAgentModal({
   isOpen,
   onClose,
   onSubmit,
-}: Props) {
-  const [agent, setAgent] = useState<SocialMediaAgentData>(initialData);
+}: RetailAgentModalProps) {
+  const [agent, setAgent] = useState<RetailAgentData>(initialData);
   const [activeStep, setActiveStep] = useState(1);
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
     {}
@@ -168,10 +168,10 @@ export default function CreateRetailAgentModal({
             ...errors.profile,
             name: "Agent name is required",
           };
-        } else if (agent.profile.name.trim().length < 3) {
+        } else if (agent.profile.name.trim().length < 4) {
           errors.profile = {
             ...errors.profile,
-            name: "Agent name must be at least 3 characters",
+            name: "Agent name must be at least 4 characters",
           };
         }
 

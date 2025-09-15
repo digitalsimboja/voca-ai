@@ -189,7 +189,6 @@ function SignupPageContent() {
     }
 
     setUsernameStatus("checking");
-    console.log("Checking username availability for:", username);
 
     try {
       const response = await fetch("/api/auth/check-username", {
@@ -272,8 +271,6 @@ function SignupPageContent() {
       setIsLoading(false);
     }
   };
-
-  console.log(usernameStatus);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">

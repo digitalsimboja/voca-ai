@@ -192,8 +192,6 @@ export default function SettingsPage() {
     }
 
     try {
-      console.log("Creating agent with data:", agentData);
-
       const result = await apiService.createAgent(
         agentData as unknown as Omit<Agent, "id" | "createdAt" | "updatedAt">
       );
