@@ -369,7 +369,7 @@ export default function SettingsPage() {
               className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors flex items-center gap-2 ${
                 isSaving || !hasUnsavedChanges
                   ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  : 'bg-purple-600 text-white hover:bg-purple-700'
+                  : 'bg-voca-cyan text-white hover:bg-voca-dark'
               }`}
             >
               {isSaving ? (

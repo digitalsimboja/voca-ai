@@ -216,7 +216,7 @@ export default function CreateMicrofinanceAgentModal({ isOpen, onClose, onSubmit
                       profile: { ...agent.profile, name: e.target.value }
                     })}
                     placeholder="Enter agent name"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                   />
                 </div>
                 
@@ -230,7 +230,7 @@ export default function CreateMicrofinanceAgentModal({ isOpen, onClose, onSubmit
                       ...agent,
                       profile: { ...agent.profile, role: e.target.value }
                     })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                   >
                     <option value="">Select role</option>
                     <option value="loan_officer">Loan Officer</option>
@@ -254,7 +254,7 @@ export default function CreateMicrofinanceAgentModal({ isOpen, onClose, onSubmit
                       profile: { ...agent.profile, department: e.target.value }
                     })}
                     placeholder="Enter department"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                   />
                 </div>
                 
@@ -411,7 +411,7 @@ export default function CreateMicrofinanceAgentModal({ isOpen, onClose, onSubmit
                       })}
                       min="1"
                       max="20"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                     />
                   </div>
                 </div>
@@ -439,7 +439,7 @@ export default function CreateMicrofinanceAgentModal({ isOpen, onClose, onSubmit
                       ...agent,
                       ai: { ...agent.ai, model: e.target.value }
                     })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                   >
                     <option value="gpt-4">GPT-4 (Most Capable)</option>
                     <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Balanced)</option>
@@ -458,7 +458,7 @@ export default function CreateMicrofinanceAgentModal({ isOpen, onClose, onSubmit
                       ...agent,
                       ai: { ...agent.ai, personality: e.target.value }
                     })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                   >
                     <option value="professional">Professional</option>
                     <option value="friendly">Friendly</option>
@@ -480,7 +480,7 @@ export default function CreateMicrofinanceAgentModal({ isOpen, onClose, onSubmit
                     })}
                     placeholder="Enter knowledge base URLs or file paths (one per line)"
                     rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                   />
                 </div>
                 
@@ -522,7 +522,7 @@ export default function CreateMicrofinanceAgentModal({ isOpen, onClose, onSubmit
                       ...agent,
                       routing: { ...agent.routing, priority: e.target.value }
                     })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                   >
                     <option value="low">Low</option>
                     <option value="normal">Normal</option>
@@ -547,7 +547,7 @@ export default function CreateMicrofinanceAgentModal({ isOpen, onClose, onSubmit
                     })}
                     min="5"
                     max="300"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                   />
                 </div>
               </div>
@@ -637,8 +637,8 @@ export default function CreateMicrofinanceAgentModal({ isOpen, onClose, onSubmit
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <Database className="w-5 h-5 text-purple-600" />
+                    <div className="w-10 h-10 bg-voca-light rounded-lg flex items-center justify-center">
+                      <Database className="w-5 h-5 text-voca-cyan" />
                     </div>
                     <div>
                       <h4 className="text-sm font-medium text-gray-900">CRM Integration</h4>
@@ -658,7 +658,7 @@ export default function CreateMicrofinanceAgentModal({ isOpen, onClose, onSubmit
                       })}
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-voca-cyan rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-voca-cyan"></div>
                   </label>
                 </div>
                 
@@ -677,7 +677,7 @@ export default function CreateMicrofinanceAgentModal({ isOpen, onClose, onSubmit
                             crm: { ...agent.integrations.crm, system: e.target.value }
                           }
                         })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                       >
                         <option value="">Select CRM</option>
                         <option value="salesforce">Salesforce</option>
@@ -702,7 +702,7 @@ export default function CreateMicrofinanceAgentModal({ isOpen, onClose, onSubmit
                           }
                         })}
                         placeholder="Enter API key"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                       />
                     </div>
                   </div>
@@ -721,7 +721,7 @@ export default function CreateMicrofinanceAgentModal({ isOpen, onClose, onSubmit
             </button>
             <button
               onClick={handleSubmit}
-              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+              className="px-4 py-2 bg-voca-cyan text-white rounded-lg hover:bg-voca-dark transition-colors"
             >
               Create Agent
             </button>

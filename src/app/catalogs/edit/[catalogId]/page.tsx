@@ -217,7 +217,7 @@ export default function EditCatalogPage() {
           <button
             onClick={handleSubmit}
             disabled={!catalog.name.trim() || isSaving}
-            className="flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors text-sm bg-purple-600 text-white hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+            className="flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors text-sm bg-voca-cyan text-white hover:bg-voca-dark disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
             <Save className="w-4 h-4" />
             <span>{isSaving ? "Saving..." : "Save Changes"}</span>
@@ -243,7 +243,7 @@ export default function EditCatalogPage() {
                     type="text"
                     value={catalog.name}
                     onChange={(e) => updateCatalog("name", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent text-sm"
                     placeholder="e.g., Premium Herbal Tea Pack"
                   />
                 </div>
@@ -256,7 +256,7 @@ export default function EditCatalogPage() {
                     value={catalog.description}
                     onChange={(e) => updateCatalog("description", e.target.value)}
                     rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent text-sm"
                     placeholder="Describe your product..."
                   />
                 </div>
@@ -292,7 +292,7 @@ export default function EditCatalogPage() {
                         />
                         <label
                           htmlFor="main-image-upload"
-                          className="text-sm text-gray-600 cursor-pointer hover:text-purple-600"
+                          className="text-sm text-gray-600 cursor-pointer hover:text-voca-cyan"
                         >
                           Click to upload image
                         </label>
@@ -307,7 +307,7 @@ export default function EditCatalogPage() {
                     id="isPublic"
                     checked={catalog.isPublic}
                     onChange={(e) => updateCatalog("isPublic", e.target.checked)}
-                    className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                    className="rounded border-gray-300 text-voca-cyan focus:ring-voca-cyan"
                   />
                   <label htmlFor="isPublic" className="text-sm text-gray-700">
                     Make this catalog publicly accessible
@@ -388,7 +388,7 @@ export default function EditCatalogPage() {
                                 />
                                 <label
                                   htmlFor={`tier-image-${tierIndex}`}
-                                  className="text-xs text-gray-600 cursor-pointer hover:text-purple-600"
+                                  className="text-xs text-gray-600 cursor-pointer hover:text-voca-cyan"
                                 >
                                   Upload image
                                 </label>
@@ -415,7 +415,7 @@ export default function EditCatalogPage() {
                                     updatePricingTier(tierIndex, "packs", parseInt(value));
                                   }
                                 }}
-                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent text-sm"
                                 placeholder="1"
                               />
                             </div>
@@ -434,7 +434,7 @@ export default function EditCatalogPage() {
                                     updatePricingTier(tierIndex, "price", parseInt(value));
                                   }
                                 }}
-                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+                                className="w-full px-2 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent text-sm"
                                 placeholder="0"
                               />
                             </div>
@@ -448,7 +448,7 @@ export default function EditCatalogPage() {
                               type="text"
                               value={tier.description || ""}
                               onChange={(e) => updatePricingTier(tierIndex, "description", e.target.value)}
-                              className="w-full px-2 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+                              className="w-full px-2 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent text-sm"
                               placeholder="e.g., Perfect for trying out"
                             />
                           </div>
@@ -466,7 +466,7 @@ export default function EditCatalogPage() {
                               </span>
                             </label>
                             <div className="text-right">
-                              <div className="text-sm font-bold text-purple-600">
+                              <div className="text-sm font-bold text-voca-cyan">
                                 ₦{tier.price.toLocaleString()}
                               </div>
                             </div>
@@ -513,7 +513,7 @@ export default function EditCatalogPage() {
                           <span className="text-sm font-medium text-gray-900">
                             {tier.packs} Pack{tier.packs > 1 ? "s" : ""}
                           </span>
-                          <span className="text-sm font-bold text-purple-600">
+                          <span className="text-sm font-bold text-voca-cyan">
                             ₦{tier.price.toLocaleString()}
                           </span>
                         </div>

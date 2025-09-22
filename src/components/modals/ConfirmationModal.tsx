@@ -51,9 +51,9 @@ export default function ConfirmationModal({
         };
       case 'info':
         return {
-          header: 'bg-gradient-to-r from-purple-600 via-purple-500 to-purple-600',
-          button: 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800',
-          icon: 'text-purple-100'
+          header: 'bg-gradient-to-r from-voca-cyan via-voca-cyan to-voca-cyan',
+          button: 'bg-gradient-to-r from-voca-cyan to-voca-dark hover:from-voca-dark hover:to-voca-dark',
+          icon: 'text-voca-light'
         };
       default:
         return {

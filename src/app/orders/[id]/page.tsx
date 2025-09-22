@@ -74,7 +74,7 @@ export default function OrderDetailPage() {
       <MainLayout>
         <div className="flex items-center justify-center h-64">
           <div className="flex items-center space-x-2">
-            <Loader2 className="w-6 h-6 animate-spin text-purple-600" />
+            <Loader2 className="w-6 h-6 animate-spin text-voca-cyan" />
             <span className="text-gray-600 text-sm sm:text-base">Loading order details...</span>
           </div>
         </div>
@@ -96,7 +96,7 @@ export default function OrderDetailPage() {
             </p>
             <button
               onClick={() => router.push('/orders')}
-              className="inline-flex items-center space-x-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm sm:text-base"
+              className="inline-flex items-center space-x-2 bg-voca-cyan text-white px-4 py-2 rounded-lg hover:bg-voca-dark transition-colors text-sm sm:text-base"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to Orders</span>
@@ -114,7 +114,7 @@ export default function OrderDetailPage() {
     <MainLayout>
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Hero Header */}
-        <div className="bg-white border-l-4 border-purple-600 rounded-xl shadow-sm p-6 flex flex-col lg:flex-row lg:items-center lg:justify-between">
+        <div className="bg-white border-l-4 border-voca-cyan rounded-xl shadow-sm p-6 flex flex-col lg:flex-row lg:items-center lg:justify-between">
           <div className="space-y-1">
             <h1 className="text-2xl font-bold text-gray-900">Order #{order.order_number}</h1>
             <p className="text-gray-500">Placed on {orderDate.toLocaleDateString()}</p>
@@ -125,11 +125,11 @@ export default function OrderDetailPage() {
             </Badge>
             <button 
               onClick={() => setIsChatCollapsed(false)}
-              className="px-4 py-2 rounded-lg border border-purple-600 text-purple-600 hover:bg-purple-50 flex items-center"
+              className="px-4 py-2 rounded-lg border border-voca-cyan text-voca-cyan hover:bg-voca-light flex items-center"
             >
               <MessageSquare className="w-4 h-4 mr-2" /> Chat
             </button>
-            <button className="px-4 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 flex items-center">
+            <button className="px-4 py-2 rounded-lg bg-voca-cyan text-white hover:bg-voca-dark flex items-center">
               <Edit className="w-4 h-4 mr-2" /> Edit
             </button>
           </div>
@@ -144,7 +144,7 @@ export default function OrderDetailPage() {
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-gray-900">Order Summary</h2>
                 <div className="text-right">
-                  <div className="text-2xl font-bold text-purple-600">₦{order.total_amount.toLocaleString()}</div>
+                  <div className="text-2xl font-bold text-voca-cyan">₦{order.total_amount.toLocaleString()}</div>
                 </div>
               </div>
 
@@ -152,8 +152,8 @@ export default function OrderDetailPage() {
                 {order.items.map((item, index) => (
                   <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                     <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                        <Package className="w-6 h-6 text-purple-600" />
+                      <div className="w-12 h-12 bg-voca-light rounded-lg flex items-center justify-center">
+                        <Package className="w-6 h-6 text-voca-cyan" />
                       </div>
                       <div>
                         <div className="font-semibold text-gray-900">{item.name}</div>
@@ -179,7 +179,7 @@ export default function OrderDetailPage() {
                   return (
                     <div key={step.key} className="flex-1 flex flex-col items-center">
                       <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                        isCompleted ? 'bg-purple-600 text-white' : 'bg-gray-100 text-gray-400'
+                        isCompleted ? 'bg-voca-cyan text-white' : 'bg-gray-100 text-gray-400'
                       }`}>
                         <Icon className="w-5 h-5" />
                       </div>
@@ -200,21 +200,21 @@ export default function OrderDetailPage() {
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Customer & Order Info</h3>
               <div className="space-y-4">
                 <div className="flex items-center space-x-3">
-                  <User className="w-5 h-5 text-purple-600" />
+                  <User className="w-5 h-5 text-voca-cyan" />
                   <span className="font-medium text-gray-900">{order.customer_name}</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <Mail className="w-5 h-5 text-purple-600" />
+                  <Mail className="w-5 h-5 text-voca-cyan" />
                   <span className="text-gray-700">{order.customer_email}</span>
                 </div>
                 {order.customer_phone && (
                   <div className="flex items-center space-x-3">
-                    <Phone className="w-5 h-5 text-purple-600" />
+                    <Phone className="w-5 h-5 text-voca-cyan" />
                     <span className="text-gray-700">{order.customer_phone}</span>
                   </div>
                 )}
                 <div className="flex items-start space-x-3">
-                  <MapPin className="w-5 h-5 text-purple-600 mt-1" />
+                  <MapPin className="w-5 h-5 text-voca-cyan mt-1" />
                   <span className="text-gray-700">{order.delivery_address}</span>
                 </div>
               </div>

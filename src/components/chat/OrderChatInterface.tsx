@@ -191,7 +191,7 @@ export default function OrderChatInterface({
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <MessageSquare className="w-5 h-5 text-purple-600" />
+              <MessageSquare className="w-5 h-5 text-voca-cyan" />
               <h3 className="text-lg font-semibold text-gray-900">Order Support Chat</h3>
               <Badge variant="success" size="sm">
                 {messages.length > 1 ? `${messages.length - 1} messages` : 'New'}
@@ -216,7 +216,7 @@ export default function OrderChatInterface({
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <MessageSquare className="w-5 h-5 text-purple-600" />
+            <MessageSquare className="w-5 h-5 text-voca-cyan" />
             <h3 className="text-lg font-semibold text-gray-900">Order Support Chat</h3>
             <Badge variant="success" size="sm">
               {agentName || 'AI Assistant'}
@@ -249,13 +249,13 @@ export default function OrderChatInterface({
               <div
                 className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
                   message.role === 'user'
-                    ? 'bg-purple-600 text-white'
+                    ? 'bg-voca-cyan text-white'
                     : 'bg-gray-100 text-gray-900'
                 }`}
               >
                 <div className="flex items-start space-x-2">
                   {message.role === 'assistant' && (
-                    <Bot className="w-4 h-4 text-purple-600 mt-0.5 flex-shrink-0" />
+                    <Bot className="w-4 h-4 text-voca-cyan mt-0.5 flex-shrink-0" />
                   )}
                   {message.role === 'user' && (
                     <User className="w-4 h-4 text-white mt-0.5 flex-shrink-0" />
@@ -263,7 +263,7 @@ export default function OrderChatInterface({
                   <div className="flex-1">
                     <p className="text-sm">{message.content}</p>
                     <p className={`text-xs mt-1 ${
-                      message.role === 'user' ? 'text-purple-100' : 'text-gray-500'
+                      message.role === 'user' ? 'text-voca-light' : 'text-gray-500'
                     }`}>
                       {new Date(message.timestamp).toLocaleTimeString()}
                     </p>
@@ -277,7 +277,7 @@ export default function OrderChatInterface({
             <div className="flex justify-start">
               <div className="bg-gray-100 text-gray-900 max-w-xs lg:max-w-md px-4 py-2 rounded-lg">
                 <div className="flex items-center space-x-2">
-                  <Bot className="w-4 h-4 text-purple-600" />
+                  <Bot className="w-4 h-4 text-voca-cyan" />
                   <div className="flex space-x-1">
                     <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
                     <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
@@ -300,13 +300,13 @@ export default function OrderChatInterface({
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Ask about your order..."
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
               disabled={isLoading}
             />
             <Button
               onClick={sendMessage}
               disabled={!inputMessage.trim() || isLoading}
-              className="bg-purple-600 hover:bg-purple-700 text-white px-4"
+              className="bg-voca-cyan hover:bg-voca-dark text-white px-4"
             >
               {isLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />

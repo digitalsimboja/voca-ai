@@ -18,7 +18,7 @@ export function Badge({
     success: 'bg-green-100 text-green-600',
     warning: 'bg-yellow-100 text-yellow-800',
     error: 'bg-red-100 text-red-800',
-    info: 'bg-purple-100 text-purple-800',
+    info: 'bg-voca-light text-voca-dark',
   }
 
   const sizeStyles = {

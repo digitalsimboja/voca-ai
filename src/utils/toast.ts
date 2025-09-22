@@ -25,7 +25,7 @@ class ToastManager {
     const typeStyles = {
       success: 'bg-green-500 text-white border-l-4 border-green-400',
       error: 'bg-red-500 text-white border-l-4 border-red-600',
-      info: 'bg-purple-500 text-white border-l-4 border-purple-600',
+      info: 'bg-voca-cyan text-white border-l-4 border-voca-cyan',
       warning: 'bg-yellow-500 text-white border-l-4 border-yellow-600'
     };
 

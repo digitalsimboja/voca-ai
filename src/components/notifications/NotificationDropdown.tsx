@@ -79,7 +79,7 @@ export default function NotificationDropdown({
         <div className="flex items-center justify-between">
           <button
             onClick={onViewAll}
-            className="text-sm text-purple-600 hover:text-purple-700 font-medium transition-colors"
+            className="text-sm text-voca-cyan hover:text-voca-dark font-medium transition-colors"
           >
             View all notifications
           </button>

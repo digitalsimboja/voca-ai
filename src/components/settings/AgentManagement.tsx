@@ -66,14 +66,14 @@ export default function AgentManagement({
             {agents?.map((agent) => (
               <div
                 key={agent.id}
-                className="border border-gray-200 rounded-lg p-3 sm:p-4 hover:shadow-md hover:border-purple-300 transition-all cursor-pointer group"
+                className="border border-gray-200 rounded-lg p-3 sm:p-4 hover:shadow-md hover:border-voca-cyan transition-all cursor-pointer group"
                 onClick={() => onShowAgentDetails(agent)}
               >
                 {/* Top Row */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
                   <div className="flex items-center space-x-2">
-                    <div className="w-8 h-8 sm:w-9 sm:h-9 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <User className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 bg-voca-light rounded-lg flex items-center justify-center">
+                      <User className="w-4 h-4 sm:w-5 sm:h-5 text-voca-cyan" />
                     </div>
                     <div>
                       <h4 className="text-sm sm:text-base font-medium text-gray-900">
@@ -183,7 +183,7 @@ export default function AgentManagement({
                           e.stopPropagation();
                           onConnectKnowledgeBase(agent.id);
                         }}
-                        className="text-purple-600 hover:text-purple-700 text-xs font-medium"
+                        className="text-voca-cyan hover:text-voca-dark text-xs font-medium"
                       >
                         {agent.knowledgeBase ? "Manage" : "Connect"}
                       </button>
@@ -227,16 +227,16 @@ export default function AgentManagement({
                     </p>
                     <button
                       onClick={() => existingAgent && onShowAgentDetails(existingAgent)}
-                      className="bg-purple-600 text-white px-4 py-2 sm:px-6 sm:py-2.5 rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium shadow-sm hover:shadow-md flex items-center mx-auto"
+                      className="bg-voca-cyan text-white px-4 py-2 sm:px-6 sm:py-2.5 rounded-lg hover:bg-voca-dark transition-colors text-sm font-medium shadow-sm hover:shadow-md flex items-center mx-auto"
                     >
                       <User className="w-4 h-4 mr-2" />
                       Manage My Agent
                     </button>
-                    <div className="mt-6 p-3 sm:p-4 bg-purple-50 rounded-lg border border-purple-100 text-left">
-                      <h4 className="text-sm font-medium text-purple-900 mb-2">
+                    <div className="mt-6 p-3 sm:p-4 bg-voca-light rounded-lg border border-voca-light text-left">
+                      <h4 className="text-sm font-medium text-voca-dark mb-2">
                         One Agent Per Vendor
                       </h4>
-                      <p className="text-xs text-purple-800">
+                      <p className="text-xs text-voca-dark">
                         Each vendor can only have one AI agent. You can continuously enhance your agent's capabilities by updating its knowledge base, adding new channels, and improving its responses.
                       </p>
                     </div>
@@ -258,16 +258,16 @@ export default function AgentManagement({
                     <button
                       onClick={onShowCreateAgent}
                       disabled={isLoading}
-                      className="bg-purple-600 text-white px-4 py-2 sm:px-6 sm:py-2.5 rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium shadow-sm hover:shadow-md flex items-center mx-auto disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="bg-voca-cyan text-white px-4 py-2 sm:px-6 sm:py-2.5 rounded-lg hover:bg-voca-dark transition-colors text-sm font-medium shadow-sm hover:shadow-md flex items-center mx-auto disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <User className="w-4 h-4 mr-2" />
                       {isLoading ? 'Checking...' : 'Create Your First Agent'}
                     </button>
-                    <div className="mt-6 p-3 sm:p-4 bg-purple-50 rounded-lg border border-purple-100 text-left">
-                      <h4 className="text-sm font-medium text-purple-900 mb-2">
+                    <div className="mt-6 p-3 sm:p-4 bg-voca-light rounded-lg border border-voca-light text-left">
+                      <h4 className="text-sm font-medium text-voca-dark mb-2">
                         What can AI agents do?
                       </h4>
-                      <ul className="text-xs text-purple-800 space-y-1">
+                      <ul className="text-xs text-voca-dark space-y-1">
                         <li>• Handle customer inquiries 24/7</li>
                         <li>• Process orders and track deliveries</li>
                         <li>• Provide product recommendations</li>

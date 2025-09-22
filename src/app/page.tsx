@@ -27,12 +27,12 @@ const features = [
     description:
       "Handle phone calls, WhatsApp, SMS, and Social Media seamlessly with unified conversation management.",
     icon: Phone,
-    color: "bg-purple-500",
+    color: "bg-voca-cyan",
   },
   {
     name: "AI-Driven Conversations",
     description:
-      "Natural, human-like conversations powered by Amazon Bedrock with context awareness.",
+      "Natural, human-like conversations with context awareness.",
     icon: Cpu,
     color: "bg-green-500",
   },
@@ -41,12 +41,12 @@ const features = [
     description:
       "Automatically route customers to the right department or agent based on conversation context.",
     icon: Settings,
-    color: "bg-purple-500",
+    color: "bg-voca-cyan",
   },
   {
-    name: "Scalable AWS Architecture",
+    name: "Scalable Architecture",
     description:
-      "Built on AWS infrastructure for enterprise-grade scalability, security, and reliability.",
+      "Built for enterprise-grade scalability, security, and reliability.",
     icon: Cloud,
     color: "bg-orange-500",
   },
@@ -79,8 +79,8 @@ const useCases = [
       "Account balance inquiries",
       "Loan application status updates",
     ],
-    color: "bg-purple-50 border-purple-200",
-    iconColor: "bg-purple-500",
+    color: "bg-voca-light border-voca-light",
+    iconColor: "bg-voca-cyan",
   },
   {
     title: "Online Retailers",
@@ -104,7 +104,7 @@ const howItWorks = [
     step: "01",
     title: "Connect Your Systems",
     description:
-      "Integrate with your CRM, payment systems, and existing infrastructure through our AWS-powered APIs.",
+      "Integrate with your CRM, payment systems, and existing infrastructure through our APIs.",
     icon: Database,
   },
   {
@@ -141,7 +141,7 @@ const testimonials = [
   {
     content:
       "Our online store saw a 40% increase in sales after implementing Voca AI's intelligent customer support.",
-    author: "Opeyemi Ogundele",
+    author: "Opeyemi Olawale",
     role: "Operations Director",
     company: "RetailCorp Inc",
   },
@@ -157,16 +157,15 @@ const testimonials = [
 const pricingPlans = [
   {
     name: "Starter",
-    price: "$299",
+    price: "$0",
     period: "/month",
     description:
       "Perfect for small businesses getting started with AI phone agents.",
     features: [
-      "1 Agent",
       "Up to 1,000 calls/month",
-      "2 channels (Voice + SMS)",
+      "2 channels (Voice + whatsapp)",
       "Basic AI conversation flows",
-      "Email support",
+      "No Email support",
       "Standard integrations",
     ],
     cta: "Start Free Trial",
@@ -174,11 +173,10 @@ const pricingPlans = [
   },
   {
     name: "Professional",
-    price: "$799",
+    price: "$49",
     period: "/month",
     description: "Ideal for growing businesses with advanced AI capabilities.",
     features: [
-      "10 Agents",
       "Up to 10,000 calls/month",
       "All channels (Voice, SMS, WhatsApp, Social Media)",
       "Advanced AI with custom flows",
@@ -192,11 +190,10 @@ const pricingPlans = [
   {
     name: "Enterprise",
     price: "Custom",
-    period: "",
+    period: "Unlimited",
     description:
       "For large organizations with unlimited scale and custom requirements.",
     features: [
-      "Unlimited Agents",
       "Unlimited calls",
       "All channels and features",
       "Custom AI model training",
@@ -218,25 +215,22 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section className="relative isolate px-6 pt-14 lg:px-8">
-        <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
-          <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" />
-        </div>
 
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Meet the Future of Contact Centre —
-              <span className="text-purple-600">Voca AI Phone Agents</span>
+              The Future of Contact Centre —
+              <span className="text-voca-cyan">Voca AI</span>
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
               AI phone agents that sound human, respond to enquiries, resolve
-              problems, and grow your business — perfect for microfinance and
+              cases, and grow your business — perfect for microfinance and
               online retail.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link
                 href="#contact"
-                className="rounded-md bg-purple-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
+                className="rounded-md bg-voca-cyan px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-voca-cyan focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-voca-cyan"
               >
                 Get started
               </Link>
@@ -245,16 +239,12 @@ export default function HomePage() {
                 className="flex items-center space-x-2 text-sm font-semibold leading-6 text-gray-900"
               >
                 <Play className="h-5 w-5" />
-                <span className="text-purple-600 cursor-pointer hover:text-purple-500">
+                <span className="text-voca-cyan cursor-pointer hover:text-voca-cyan">
                   Watch demo
                 </span>
               </button>
             </div>
           </div>
-        </div>
-
-        <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
-          <div className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" />
         </div>
       </section>
 
@@ -262,10 +252,10 @@ export default function HomePage() {
       <section id="features" className="py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-base font-semibold leading-7 text-purple-600">
-              Voca AI Core Strengths
+            <h2 className="text-base font-semibold leading-7 text-voca-cyan">
+              Voca Core
             </h2>
-            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <p className="mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               Purpose-built for financial services and e-commerce
             </p>
             <p className="mt-6 text-lg leading-8 text-gray-600">
@@ -302,8 +292,8 @@ export default function HomePage() {
       <section id="use-cases" className="py-24 sm:py-32 bg-gray-50">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-base font-semibold leading-7 text-purple-600">
-              Enterprise Solutions
+            <h2 className="text-base font-semibold leading-7 text-voca-cyan">
+              Bespoke Solutions
             </h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               Tailored for your business needs
@@ -351,7 +341,7 @@ export default function HomePage() {
       <section id="how-it-works" className="py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-base font-semibold leading-7 text-purple-600">
+            <h2 className="text-base font-semibold leading-7 text-voca-cyan">
               Voca AI Implementation
             </h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -368,7 +358,7 @@ export default function HomePage() {
               {howItWorks.map((step, index) => (
                 <div key={step.step} className="relative">
                   <div className="flex items-center space-x-4 mb-6">
-                    <div className="h-12 w-12 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold">
+                    <div className="h-12 w-12 rounded-full bg-voca-cyan flex items-center justify-center text-white font-bold">
                       {step.step}
                     </div>
                     {index < howItWorks.length - 1 && (
@@ -390,11 +380,11 @@ export default function HomePage() {
       <section className="py-24 sm:py-32 bg-gray-50">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-base font-semibold leading-7 text-purple-600">
+            <h2 className="text-base font-semibold leading-7 text-voca-cyan">
               Customer Success
             </h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Trusted by industry leaders
+              Still wondering how? Hear directly from the users
             </p>
           </div>
 
@@ -421,7 +411,7 @@ export default function HomePage() {
                       {testimonial.author}
                     </p>
                     <p className="text-sm text-gray-500">{testimonial.role}</p>
-                    <p className="text-sm text-purple-600">
+                    <p className="text-sm text-voca-cyan">
                       {testimonial.company}
                     </p>
                   </div>
@@ -436,7 +426,7 @@ export default function HomePage() {
       {/* <section id="pricing" className="py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-base font-semibold leading-7 text-purple-600">
+            <h2 className="text-base font-semibold leading-7 text-voca-cyan">
               Pricing
             </h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -455,13 +445,13 @@ export default function HomePage() {
                   key={plan.name}
                   className={`relative rounded-2xl border p-8 ${
                     plan.popular
-                      ? "border-purple-600 shadow-lg"
+                      ? "border-voca-cyan shadow-lg"
                       : "border-gray-200"
                   }`}
                 >
                   {plan.popular && (
                     <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-purple-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                      <span className="bg-voca-cyan text-white px-4 py-1 rounded-full text-sm font-semibold">
                         Most Popular
                       </span>
                     </div>
@@ -497,7 +487,7 @@ export default function HomePage() {
                       }}
                       className={`w-full rounded-lg px-4 py-2 font-semibold transition-colors ${
                         plan.popular
-                          ? "bg-purple-600 text-white hover:bg-purple-500"
+                          ? "bg-voca-cyan text-white hover:bg-voca-cyan"
                           : "bg-gray-100 text-gray-900 hover:bg-gray-200"
                       }`}
                     >
@@ -512,26 +502,26 @@ export default function HomePage() {
       </section> */}
 
       {/* CTA Section */}
-      <section id="contact" className="py-24 sm:py-32 bg-purple-800">
+      <section id="contact" className="py-24 sm:py-32 bg-voca-dark">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Ready to revolutionize your customer interactions?
             </h2>
-            <p className="mt-6 text-lg leading-8 text-purple-200">
-              Ready to leverage Voca AI to deliver exceptional customer
+            <p className="mt-6 text-lg leading-8 text-voca-light">
+              Leverage Voca AI to deliver exceptional customer
               experiences and drive business growth.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link
                 href="/login"
-                className="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-purple-800 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                className="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-voca-dark shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
                 Start free trial
               </Link>
               <Link
                 href="/contact"
-                className="text-sm font-semibold leading-6 text-white hover:text-purple-200"
+                className="text-sm font-semibold leading-6 text-white hover:text-voca-light"
               >
                 Contact sales <ArrowRight className="inline h-4 w-4 ml-1" />
               </Link>
@@ -539,7 +529,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       <Footer />
     </div>
   );

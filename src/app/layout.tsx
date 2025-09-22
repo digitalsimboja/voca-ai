@@ -6,7 +6,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Voca AI - AWS-Powered AI Phone Agent",
+  title: "Voca AI - AI Phone Agents",
   description: "Intelligent AI phone agent for Microfinance Banks and Online Retailers",
 };
 

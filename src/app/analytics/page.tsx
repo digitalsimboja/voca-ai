@@ -241,7 +241,7 @@ export default function AnalyticsPage() {
       <MainLayout>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-voca-cyan mx-auto mb-4"></div>
             <p className="text-gray-600">Loading analytics data...</p>
           </div>
         </div>
@@ -257,7 +257,7 @@ export default function AnalyticsPage() {
             <p className="text-red-600 mb-4">{error}</p>
             <button 
               onClick={fetchAnalyticsData}
-              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+              className="px-4 py-2 bg-voca-cyan text-white rounded-lg hover:bg-voca-dark"
             >
               Retry
             </button>
@@ -290,14 +290,14 @@ export default function AnalyticsPage() {
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent text-sm"
             >
               <option value="24h">Last 24 hours</option>
               <option value="7d">Last 7 days</option>
               <option value="30d">Last 30 days</option>
               <option value="90d">Last 90 days</option>
             </select>
-            <button className="flex items-center justify-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg bg-purple-500 hover:bg-purple-50 text-sm">
+            <button className="flex items-center justify-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg bg-voca-cyan hover:bg-voca-light text-sm">
               <Download className="w-4 h-4" />
               <span className="text-sm">Export</span>
             </button>
@@ -323,8 +323,8 @@ export default function AnalyticsPage() {
                     )}
                   </p>
                 </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-voca-light rounded-lg flex items-center justify-center">
+                  <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 text-voca-cyan" />
                 </div>
               </div>
             </CardContent>
@@ -371,8 +371,8 @@ export default function AnalyticsPage() {
                     )}
                   </p>
                 </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Users className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-voca-light rounded-lg flex items-center justify-center">
+                  <Users className="w-5 h-5 sm:w-6 sm:h-6 text-voca-cyan" />
                 </div>
               </div>
             </CardContent>
@@ -426,8 +426,8 @@ export default function AnalyticsPage() {
                       )}
                     </p>
                   </div>
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                    <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-voca-light rounded-lg flex items-center justify-center">
+                    <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-voca-cyan" />
                   </div>
                 </div>
               </CardContent>
@@ -462,8 +462,8 @@ export default function AnalyticsPage() {
                       +5% from last period
                     </p>
                   </div>
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                    <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-voca-light rounded-lg flex items-center justify-center">
+                    <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6 text-voca-cyan" />
                   </div>
                 </div>
               </CardContent>
@@ -513,8 +513,8 @@ export default function AnalyticsPage() {
                     <p className="text-lg sm:text-2xl font-bold text-gray-900">{analyticsData.agent_analytics?.support_agents || 0}</p>
                     <p className="text-xs sm:text-sm text-gray-500">Customer support</p>
                   </div>
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                    <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-voca-light rounded-lg flex items-center justify-center">
+                    <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 text-voca-cyan" />
                   </div>
                 </div>
               </CardContent>
@@ -598,7 +598,7 @@ export default function AnalyticsPage() {
                     <div className="flex items-center space-x-2 sm:space-x-3">
                       <div className="w-16 sm:w-24 bg-gray-200 rounded-full h-2">
                         <div
-                          className="bg-purple-600 h-2 rounded-full"
+                          className="bg-voca-cyan h-2 rounded-full"
                           style={{ width: `${lang.percentage}%` }}
                         ></div>
                       </div>
@@ -651,7 +651,7 @@ export default function AnalyticsPage() {
               <select
                 value={selectedMetric}
                 onChange={(e) => setSelectedMetric(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent text-sm"
               >
                 <option value="conversations">Conversations</option>
                 <option value="duration">Duration</option>

@@ -16,8 +16,8 @@ export default function IntegrationSettings() {
             {/* AWS Settings */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between p-4 border border-gray-200 rounded-lg space-y-3 md:space-y-0">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Zap className="w-5 h-5 text-purple-600" />
+                <div className="w-10 h-10 bg-voca-light rounded-lg flex items-center justify-center">
+                  <Zap className="w-5 h-5 text-voca-cyan" />
                 </div>
                 <div>
                   <h4 className="text-sm font-medium text-gray-900">
@@ -28,7 +28,7 @@ export default function IntegrationSettings() {
                   </p>
                 </div>
               </div>
-              <button className="text-purple-600 hover:text-purple-700 text-sm font-medium w-full md:w-auto">
+              <button className="text-voca-cyan hover:text-voca-dark text-sm font-medium w-full md:w-auto">
                 Configure
               </button>
             </div>
@@ -48,7 +48,7 @@ export default function IntegrationSettings() {
                   </p>
                 </div>
               </div>
-              <button className="text-purple-600 hover:text-purple-700 text-sm font-medium w-full md:w-auto">
+              <button className="text-voca-cyan hover:text-voca-dark text-sm font-medium w-full md:w-auto">
                 Configure
               </button>
             </div>

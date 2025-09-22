@@ -55,7 +55,7 @@ function SignupPageContent() {
       id: "banking",
       title: "Microfinance Bank",
       description:
-        "Transform loan processing and customer support with intelligent AI agents",
+        "Use intelligent AI agents to simplify loan processing and improve customer support.",
       icon: CreditCard,
       features: [
         "24/7 loan inquiry support",
@@ -68,7 +68,7 @@ function SignupPageContent() {
       id: "retail",
       title: "Online Retailer",
       description:
-        "Enhance customer experience and boost sales with AI-powered support",
+        "Boost sales while giving customers a better experience through AI-driven support.",
       icon: ShoppingCart,
       features: [
         "Order status inquiries",
@@ -200,18 +200,14 @@ function SignupPageContent() {
       });
 
       const data = await response.json();
-      console.log("Username check response:", { status: response.status, data });
 
       if (response.ok && data.status === "success") {
         const status = data.data.available ? "available" : "taken";
-        console.log("Setting username status to:", status);
         setUsernameStatus(status);
       } else {
-        console.log("Username check failed - setting status to idle");
         setUsernameStatus("idle");
       }
     } catch (error) {
-      console.error("Username check failed:", error);
       setUsernameStatus("idle");
     }
   };
@@ -288,7 +284,7 @@ function SignupPageContent() {
 
         {/* Logo and Title */}
         <div className="text-center">
-          <div className="mx-auto h-12 w-12 bg-purple-600 rounded-lg flex items-center justify-center mb-4">
+          <div className="mx-auto h-12 w-12 bg-voca-cyan rounded-lg flex items-center justify-center mb-4">
             <span className="text-white font-bold text-xl">V</span>
           </div>
           <h2 className="text-3xl font-bold tracking-tight text-gray-900">
@@ -349,7 +345,7 @@ function SignupPageContent() {
                       required
                       value={formData.firstName}
                       onChange={handleInputChange}
-                      className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${
+                      className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-voca-cyan focus:border-voca-cyan sm:text-sm ${
                         errors.firstName ? "border-red-300" : "border-gray-300"
                       }`}
                       placeholder="Enter your first name"
@@ -381,7 +377,7 @@ function SignupPageContent() {
                       required
                       value={formData.lastName}
                       onChange={handleInputChange}
-                      className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${
+                      className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-voca-cyan focus:border-voca-cyan sm:text-sm ${
                         errors.lastName ? "border-red-300" : "border-gray-300"
                       }`}
                       placeholder="Enter your last name"
@@ -415,7 +411,7 @@ function SignupPageContent() {
                     required
                     value={formData.username}
                     onChange={handleInputChange}
-                    className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${
+                    className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-voca-cyan focus:border-voca-cyan sm:text-sm ${
                       errors.username
                         ? "border-red-300"
                         : usernameStatus === "available"
@@ -428,7 +424,7 @@ function SignupPageContent() {
                   />
                   <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                     {usernameStatus === "checking" && (
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-purple-600"></div>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-voca-cyan"></div>
                     )}
                     {usernameStatus === "available" && (
                       <CheckCircle className="h-4 w-4 text-green-400" />
@@ -482,7 +478,7 @@ function SignupPageContent() {
                     required
                     value={formData.email}
                     onChange={handleInputChange}
-                    className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${
+                    className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-voca-cyan focus:border-voca-cyan sm:text-sm ${
                       errors.email ? "border-red-300" : "border-gray-300"
                     }`}
                     placeholder="Enter your email"
@@ -513,7 +509,7 @@ function SignupPageContent() {
                     required
                     value={formData.companyName}
                     onChange={handleInputChange}
-                    className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${
+                    className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-voca-cyan focus:border-voca-cyan sm:text-sm ${
                       errors.companyName ? "border-red-300" : "border-gray-300"
                     }`}
                     placeholder="Enter your company name"
@@ -540,7 +536,7 @@ function SignupPageContent() {
                       }
                       className={`relative cursor-pointer rounded-lg border p-4 transition-all hover:shadow-md ${
                         formData.businessType === type.id
-                          ? "border-purple-500 bg-purple-50"
+                          ? "border-voca-cyan bg-voca-light"
                           : "border-gray-300 hover:border-gray-400"
                       }`}
                     >
@@ -548,7 +544,7 @@ function SignupPageContent() {
                         <div
                           className={`h-8 w-8 rounded-lg flex items-center justify-center ${
                             formData.businessType === type.id
-                              ? "bg-purple-500"
+                              ? "bg-voca-cyan"
                               : "bg-gray-100"
                           }`}
                         >
@@ -564,7 +560,7 @@ function SignupPageContent() {
                           <h3
                             className={`text-sm font-medium ${
                               formData.businessType === type.id
-                                ? "text-purple-900"
+                                ? "text-voca-dark"
                                 : "text-gray-900"
                             }`}
                           >
@@ -574,7 +570,7 @@ function SignupPageContent() {
                             {type.description}
                           </p>
                           <ul className="mt-2 space-y-1">
-                            {type.features.slice(0, 2).map((feature, index) => (
+                            {type.features.map((feature, index) => (
                               <li
                                 key={index}
                                 className="text-xs text-gray-600 flex items-center"
@@ -588,7 +584,7 @@ function SignupPageContent() {
                       </div>
                       {formData.businessType === type.id && (
                         <div className="absolute top-2 right-2">
-                          <div className="h-4 w-4 bg-purple-500 rounded-full flex items-center justify-center">
+                          <div className="h-4 w-4 bg-voca-cyan rounded-full flex items-center justify-center">
                             <CheckCircle className="h-3 w-3 text-white" />
                           </div>
                         </div>
@@ -624,7 +620,7 @@ function SignupPageContent() {
                       required
                       value={formData.password}
                       onChange={handleInputChange}
-                      className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${
+                      className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-voca-cyan focus:border-voca-cyan sm:text-sm ${
                         errors.password ? "border-red-300" : "border-gray-300"
                       }`}
                       placeholder="Create a password"
@@ -671,7 +667,7 @@ function SignupPageContent() {
                       required
                       value={formData.confirmPassword}
                       onChange={handleInputChange}
-                      className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${
+                      className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-voca-cyan focus:border-voca-cyan sm:text-sm ${
                         errors.confirmPassword
                           ? "border-red-300"
                           : "border-gray-300"
@@ -709,7 +705,7 @@ function SignupPageContent() {
                     type="checkbox"
                     checked={formData.agreeToTerms}
                     onChange={handleInputChange}
-                    className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded mt-1"
+                    className="h-4 w-4 text-voca-cyan focus:ring-voca-cyan border-gray-300 rounded mt-1"
                   />
                   <label
                     htmlFor="agreeToTerms"
@@ -718,14 +714,14 @@ function SignupPageContent() {
                     I agree to the{" "}
                     <Link
                       href="/terms"
-                      className="text-purple-600 hover:text-purple-500"
+                      className="text-voca-cyan hover:text-voca-cyan"
                     >
                       Terms of Service
                     </Link>{" "}
                     and{" "}
                     <Link
                       href="/privacy"
-                      className="text-purple-600 hover:text-purple-500"
+                      className="text-voca-cyan hover:text-voca-cyan"
                     >
                       Privacy Policy
                     </Link>
@@ -742,7 +738,7 @@ function SignupPageContent() {
                     type="checkbox"
                     checked={formData.agreeToMarketing}
                     onChange={handleInputChange}
-                    className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded mt-1"
+                    className="h-4 w-4 text-voca-cyan focus:ring-voca-cyan border-gray-300 rounded mt-1"
                   />
                   <label
                     htmlFor="agreeToMarketing"
@@ -759,7 +755,7 @@ function SignupPageContent() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-voca-cyan hover:bg-voca-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-voca-cyan disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   {isLoading ? (
                     <div className="flex items-center">
@@ -790,7 +786,7 @@ function SignupPageContent() {
             <div className="mt-6 text-center">
               <Link
                 href="/login"
-                className="font-medium text-purple-600 hover:text-purple-500"
+                className="font-medium text-voca-cyan hover:text-voca-cyan"
               >
                 Sign in to your account
               </Link>
@@ -803,11 +799,11 @@ function SignupPageContent() {
       <div className="mt-8 text-center">
         <p className="text-xs text-gray-500">
           By creating an account, you agree to our{" "}
-          <Link href="/terms" className="text-purple-600 hover:text-purple-500">
+          <Link href="/terms" className="text-voca-cyan hover:text-voca-cyan">
             Terms of Service
           </Link>{" "}
           and{" "}
-          <Link href="/privacy" className="text-purple-600 hover:text-purple-500">
+          <Link href="/privacy" className="text-voca-cyan hover:text-voca-cyan">
             Privacy Policy
           </Link>
         </p>
@@ -822,7 +818,7 @@ export default function SignupPage() {
       fallback={
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-voca-cyan mx-auto"></div>
             <p className="mt-4 text-gray-600">Voca AI</p>
             <p className="mt-4 text-gray-600">Loading...</p>
           </div>

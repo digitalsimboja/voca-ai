@@ -278,7 +278,7 @@ export default function DashboardPage() {
       <MainLayout>
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-voca-cyan mx-auto"></div>
             <p className="mt-4 text-gray-600">Loading dashboard...</p>
           </div>
         </div>
@@ -292,7 +292,7 @@ export default function DashboardPage() {
       <MainLayout>
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-voca-cyan mx-auto"></div>
             <p className="mt-4 text-gray-600">Redirecting to login...</p>
           </div>
         </div>
@@ -308,7 +308,7 @@ export default function DashboardPage() {
             <p className="text-red-600 mb-4">{error}</p>
             <button
               onClick={fetchDashboardData}
-              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+              className="px-4 py-2 bg-voca-cyan text-white rounded-lg hover:bg-voca-dark"
             >
               Retry
             </button>
@@ -345,7 +345,7 @@ export default function DashboardPage() {
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent text-sm"
             >
               <option value="24h">Last 24 hours</option>
               <option value="7d">Last 7 days</option>
@@ -409,8 +409,8 @@ export default function DashboardPage() {
                     )}
                   </p>
                 </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-voca-light rounded-lg flex items-center justify-center">
+                  <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-voca-cyan" />
                 </div>
               </div>
             </CardContent>
@@ -482,8 +482,8 @@ export default function DashboardPage() {
                     )}
                   </p>
                 </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Activity className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-voca-light rounded-lg flex items-center justify-center">
+                  <Activity className="w-5 h-5 sm:w-6 sm:h-6 text-voca-cyan" />
                 </div>
               </div>
             </CardContent>
@@ -499,7 +499,7 @@ export default function DashboardPage() {
                   <p className="text-lg sm:text-2xl font-bold text-gray-900">
                     {dashboardData.overview.active_conversations || 0}
                   </p>
-                  <p className="text-xs sm:text-sm text-purple-600 flex items-center mt-1">
+                  <p className="text-xs sm:text-sm text-voca-cyan flex items-center mt-1">
                     <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                     Real-time
                   </p>
@@ -560,8 +560,8 @@ export default function DashboardPage() {
                     )}
                   </p>
                 </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Users className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-voca-light rounded-lg flex items-center justify-center">
+                  <Users className="w-5 h-5 sm:w-6 sm:h-6 text-voca-cyan" />
                 </div>
               </div>
             </CardContent>
@@ -619,8 +619,8 @@ export default function DashboardPage() {
                     )}
                   </p>
                 </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Users className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-voca-light rounded-lg flex items-center justify-center">
+                  <Users className="w-5 h-5 sm:w-6 sm:h-6 text-voca-cyan" />
                 </div>
               </div>
             </CardContent>
@@ -792,10 +792,10 @@ export default function DashboardPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <button
                 onClick={() => router.push("/conversations")}
-                className="flex items-center space-x-3 p-4 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors"
+                className="flex items-center space-x-3 p-4 bg-voca-light hover:bg-voca-light rounded-lg transition-colors"
               >
-                <MessageCircle className="w-6 h-6 text-purple-600" />
-                <span className="text-sm font-medium text-purple-900">
+                <MessageCircle className="w-6 h-6 text-voca-cyan" />
+                <span className="text-sm font-medium text-voca-dark">
                   View Conversations
                 </span>
               </button>
@@ -812,10 +812,10 @@ export default function DashboardPage() {
 
               <button
                 onClick={() => router.push("/customers")}
-                className="flex items-center space-x-3 p-4 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors"
+                className="flex items-center space-x-3 p-4 bg-voca-light hover:bg-voca-light rounded-lg transition-colors"
               >
-                <Users className="w-6 h-6 text-purple-600" />
-                <span className="text-sm font-medium text-purple-900">
+                <Users className="w-6 h-6 text-voca-cyan" />
+                <span className="text-sm font-medium text-voca-dark">
                   View Customers
                 </span>
               </button>

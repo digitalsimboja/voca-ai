@@ -75,8 +75,6 @@ function LoginPageContent() {
     try {
       const result = await login(formData.email, formData.password)
 
-      console.log('result', result);
-      
       if (result.success) {
         setLoginSuccess(true)
         const redirectTo = searchParams.get('redirect') || '/dashboard'
@@ -109,7 +107,7 @@ function LoginPageContent() {
 
         {/* Logo and Title */}
         <div className="text-center">
-          <div className="mx-auto h-12 w-12 bg-purple-600 rounded-lg flex items-center justify-center mb-4">
+          <div className="mx-auto h-12 w-12 bg-voca-cyan rounded-lg flex items-center justify-center mb-4">
             <span className="text-white font-bold text-xl">V</span>
           </div>
           <h2 className="text-3xl font-bold tracking-tight text-gray-900">
@@ -166,7 +164,7 @@ function LoginPageContent() {
                     required
                     value={formData.email}
                     onChange={handleInputChange}
-                    className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${
+                    className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-voca-cyan focus:border-voca-cyan sm:text-sm ${
                       errors.email ? 'border-red-300' : 'border-gray-300'
                     }`}
                     placeholder="Enter your email"
@@ -194,7 +192,7 @@ function LoginPageContent() {
                     required
                     value={formData.password}
                     onChange={handleInputChange}
-                    className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm ${
+                    className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-voca-cyan focus:border-voca-cyan sm:text-sm ${
                       errors.password ? 'border-red-300' : 'border-gray-300'
                     }`}
                     placeholder="Enter your password"
@@ -225,7 +223,7 @@ function LoginPageContent() {
                     type="checkbox"
                     checked={formData.rememberMe}
                     onChange={handleInputChange}
-                    className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+                    className="h-4 w-4 text-voca-cyan focus:ring-voca-cyan border-gray-300 rounded"
                   />
                   <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
                     Remember me
@@ -235,7 +233,7 @@ function LoginPageContent() {
                 <div className="text-sm">
                   <Link
                     href="/forgot-password"
-                    className="font-medium text-purple-600 hover:text-purple-500"
+                    className="font-medium text-voca-cyan hover:text-voca-cyan"
                   >
                     Forgot your password?
                   </Link>
@@ -247,7 +245,7 @@ function LoginPageContent() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-voca-cyan hover:bg-voca-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-voca-cyan disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   {isLoading ? (
                     <div className="flex items-center">
@@ -258,13 +256,6 @@ function LoginPageContent() {
                     'Sign in'
                   )}
                 </button>
-              </div>
-
-              {/* Demo Credentials */}
-              <div className="mt-4 p-4 bg-gray-50 rounded-md">
-                <p className="text-xs text-gray-600 mb-2 font-medium">Demo Credentials:</p>
-                <p className="text-xs text-gray-500">Email: demo@vocaai.com</p>
-                <p className="text-xs text-gray-500">Password: Admin@123</p>
               </div>
             </form>
           )}
@@ -283,7 +274,7 @@ function LoginPageContent() {
             <div className="mt-6 text-center">
               <Link
                 href="/signup"
-                className="font-medium text-purple-600 hover:text-purple-500"
+                className="font-medium text-voca-cyan hover:text-voca-cyan"
               >
                 Create your account
               </Link>
@@ -296,11 +287,11 @@ function LoginPageContent() {
       <div className="mt-8 text-center">
         <p className="text-xs text-gray-500">
           By signing in, you agree to our{' '}
-          <Link href="/terms" className="text-purple-600 hover:text-purple-500">
+          <Link href="/terms" className="text-voca-cyan hover:text-voca-cyan">
             Terms of Service
           </Link>{' '}
           and{' '}
-          <Link href="/privacy" className="text-purple-600 hover:text-purple-500">
+          <Link href="/privacy" className="text-voca-cyan hover:text-voca-cyan">
             Privacy Policy
           </Link>
         </p>
@@ -314,7 +305,7 @@ export default function LoginPage() {
     <Suspense fallback={
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-voca-cyan mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>

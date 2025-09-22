@@ -47,7 +47,7 @@ export default function SecuritySettings({
                   }
                   className="sr-only peer"
                 />
-                <div className="w-12 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full relative after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:after:translate-x-full peer-checked:bg-purple-600"></div>
+                <div className="w-12 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-voca-cyan rounded-full relative after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:after:translate-x-full peer-checked:bg-voca-cyan"></div>
               </label>
             </div>
 
@@ -62,7 +62,7 @@ export default function SecuritySettings({
                 onChange={(e) =>
                   updateSecurity({ sessionTimeout: parseInt(e.target.value) })
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent text-sm"
               />
             </div>
 
@@ -78,7 +78,7 @@ export default function SecuritySettings({
                 }
                 placeholder="Enter IP addresses or ranges (one per line)"
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm resize-y"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent text-sm resize-y"
               />
             </div>
           </div>

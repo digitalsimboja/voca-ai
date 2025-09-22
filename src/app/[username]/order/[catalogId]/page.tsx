@@ -164,7 +164,7 @@ export default function OrderPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-voca-cyan mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading order...</p>
         </div>
       </div>
@@ -278,7 +278,7 @@ export default function OrderPage() {
                     type="text"
                     value={formData.customerName}
                     onChange={(e) => handleInputChange('customerName', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                     placeholder="Enter your full name"
                   />
                 </div>
@@ -291,7 +291,7 @@ export default function OrderPage() {
                     type="email"
                     value={formData.customerEmail}
                     onChange={(e) => handleInputChange('customerEmail', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                     placeholder="Enter your email address"
                   />
                 </div>
@@ -304,7 +304,7 @@ export default function OrderPage() {
                     type="tel"
                     value={formData.customerPhone}
                     onChange={(e) => handleInputChange('customerPhone', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                     placeholder="Enter your phone number"
                   />
                 </div>
@@ -317,7 +317,7 @@ export default function OrderPage() {
                     value={formData.deliveryAddress}
                     onChange={(e) => handleInputChange('deliveryAddress', e.target.value)}
                     rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                     placeholder="Enter your complete delivery address"
                   />
                 </div>
@@ -326,7 +326,7 @@ export default function OrderPage() {
 
             <Button
               onClick={handleSubmitOrder}
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3"
+              className="w-full bg-voca-cyan hover:bg-voca-dark text-white py-3"
               size="lg"
             >
               <CheckCircle className="w-5 h-5 mr-2" />

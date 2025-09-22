@@ -188,7 +188,7 @@ export default function IntegrationsStep({
                   />
                   <div>
                     <div className="flex items-center mb-1">
-                      <Icon className="w-4 h-4 mr-2 text-purple-600 shrink-0" />
+                      <Icon className="w-4 h-4 mr-2 text-voca-cyan shrink-0" />
                       <span className="text-sm font-medium text-gray-700">
                         {label}
                       </span>

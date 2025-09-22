@@ -144,7 +144,7 @@ export default function NotificationModal({
               className={cn(
                 "flex items-center space-x-1 px-3 py-1.5 text-sm rounded-md transition-colors",
                 showFilters 
-                  ? "bg-purple-100 text-purple-700" 
+                  ? "bg-voca-light text-voca-dark" 
                   : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
               )}
             >
@@ -174,7 +174,7 @@ export default function NotificationModal({
                 <select
                   value={localFilters.status || 'all'}
                   onChange={(e) => handleFilterChange({ status: e.target.value as 'unread' | 'read' | 'archived' | 'all' })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                 >
                   {STATUS_OPTIONS.map(option => (
                     <option key={option.value} value={option.value}>
@@ -192,7 +192,7 @@ export default function NotificationModal({
                 <select
                   value={localFilters.notification_type || 'all'}
                   onChange={(e) => handleFilterChange({ notification_type: e.target.value as 'order' | 'conversation' | 'system' | 'billing' | 'customer' | 'agent' | 'all' })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                 >
                   {NOTIFICATION_TYPES.map(type => (
                     <option key={type.value} value={type.value}>
@@ -244,7 +244,7 @@ export default function NotificationModal({
                   <button
                     onClick={onLoadMore}
                     disabled={isLoading}
-                    className="px-4 py-2 text-sm text-purple-600 hover:text-purple-700 hover:bg-purple-50 rounded-md transition-colors disabled:opacity-50"
+                    className="px-4 py-2 text-sm text-voca-cyan hover:text-voca-dark hover:bg-voca-light rounded-md transition-colors disabled:opacity-50"
                   >
                     {isLoading ? 'Loading...' : 'Load more'}
                   </button>

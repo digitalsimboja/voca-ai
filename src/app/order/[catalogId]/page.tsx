@@ -139,7 +139,7 @@ export default function CustomerOrderPage() {
           </div>
           <button
             onClick={() => window.history.back()}
-            className="text-purple-600 hover:text-purple-800"
+            className="text-voca-cyan hover:text-voca-dark"
           >
             Go back
           </button>
@@ -164,7 +164,7 @@ export default function CustomerOrderPage() {
             </div>
             <button
               onClick={() => window.history.back()}
-              className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors"
+              className="w-full bg-voca-cyan text-white py-2 px-4 rounded-lg hover:bg-voca-dark transition-colors"
             >
               Back to Catalog
             </button>
@@ -231,7 +231,7 @@ export default function CustomerOrderPage() {
                       key={index}
                       className={`border rounded-lg p-4 cursor-pointer transition-colors ${
                         order.selectedTier === index
-                          ? 'border-purple-500 bg-purple-50'
+                          ? 'border-voca-cyan bg-voca-light'
                           : 'border-gray-200 hover:border-gray-300'
                       }`}
                       onClick={() => selectTier(index)}
@@ -254,7 +254,7 @@ export default function CustomerOrderPage() {
                             <div className="flex items-center space-x-3">
                               <div className={`w-4 h-4 rounded-full border-2 ${
                                 order.selectedTier === index
-                                  ? 'border-purple-500 bg-purple-500'
+                                  ? 'border-voca-cyan bg-voca-cyan'
                                   : 'border-gray-300'
                               }`}>
                                 {order.selectedTier === index && (
@@ -271,7 +271,7 @@ export default function CustomerOrderPage() {
                               </div>
                             </div>
                             <div className="text-right">
-                              <div className="text-lg font-bold text-purple-600">
+                              <div className="text-lg font-bold text-voca-cyan">
                                 ₦{tier.price.toLocaleString()}
                               </div>
                               {tier.discount && (
@@ -335,7 +335,7 @@ export default function CustomerOrderPage() {
                       type="text"
                       value={order.customerName}
                       onChange={(e) => updateOrder('customerName', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                       placeholder="Enter your full name"
                     />
                   </div>
@@ -348,7 +348,7 @@ export default function CustomerOrderPage() {
                       type="email"
                       value={order.customerEmail}
                       onChange={(e) => updateOrder('customerEmail', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                       placeholder="Enter your email address"
                     />
                   </div>
@@ -361,7 +361,7 @@ export default function CustomerOrderPage() {
                       type="tel"
                       value={order.customerPhone}
                       onChange={(e) => updateOrder('customerPhone', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                       placeholder="Enter your phone number"
                     />
                   </div>
@@ -374,7 +374,7 @@ export default function CustomerOrderPage() {
                       value={order.deliveryAddress}
                       onChange={(e) => updateOrder('deliveryAddress', e.target.value)}
                       rows={3}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                       placeholder="Enter your delivery address"
                     />
                   </div>
@@ -411,7 +411,7 @@ export default function CustomerOrderPage() {
                 <button
                   onClick={handleSubmitOrder}
                   disabled={!order.customerName || !order.customerPhone || !order.deliveryAddress}
-                  className="w-full py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors font-medium"
+                  className="w-full py-3 bg-voca-cyan text-white rounded-lg hover:bg-voca-dark disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors font-medium"
                 >
                   <ShoppingCart className="w-5 h-5 inline mr-2" />
                   Place Order

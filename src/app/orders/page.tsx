@@ -244,7 +244,7 @@ export default function OrdersPage() {
         {/* Loading */}
         {loading && (
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 animate-spin text-purple-600" />
+            <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 animate-spin text-voca-cyan" />
             <span className="ml-2 text-sm sm:text-base text-gray-600">
               Loading orders...
             </span>
@@ -295,7 +295,7 @@ export default function OrdersPage() {
             </div>
             <button
               onClick={() => (window.location.href = "/catalogs/create")}
-              className="flex items-center justify-center gap-1 sm:gap-2 bg-purple-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg hover:bg-purple-700 transition-colors text-xs sm:text-sm"
+              className="flex items-center justify-center gap-1 sm:gap-2 bg-voca-cyan text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg hover:bg-voca-dark transition-colors text-xs sm:text-sm"
             >
               <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span>Create Catalogue</span>
@@ -316,14 +316,14 @@ export default function OrdersPage() {
                       placeholder="Search orders by customer name, email, or order number..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-xs sm:text-sm"
+                      className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan text-xs sm:text-sm"
                     />
                   </div>
                 </div>
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-xs sm:text-sm"
+                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan text-xs sm:text-sm"
                 >
                   <option value="all">All Status</option>
                   <option value="pending">Pending</option>
@@ -354,8 +354,8 @@ export default function OrdersPage() {
                 label: "Total Orders",
                 value: statistics?.total_orders || 0,
                 icon: Package,
-                bg: "bg-purple-100",
-                color: "text-purple-600",
+                bg: "bg-voca-light",
+                color: "text-voca-cyan",
               },
               {
                 label: "Total Revenue",
@@ -368,8 +368,8 @@ export default function OrdersPage() {
                 label: "Avg Order Value",
                 value: `₦${averageOrderValue.toLocaleString()}`,
                 icon: Package,
-                bg: "bg-purple-100",
-                color: "text-purple-600",
+                bg: "bg-voca-light",
+                color: "text-voca-cyan",
               },
               {
                 label: "Pending Orders",

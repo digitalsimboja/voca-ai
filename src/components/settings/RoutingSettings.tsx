@@ -18,7 +18,7 @@ export default function RoutingSettings({ settings }: RoutingSettingsProps) {
             <h3 className="text-lg font-semibold text-gray-900">
               Routing Rules
             </h3>
-            <button className="w-full sm:w-auto bg-purple-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-purple-700 transition">
+            <button className="w-full sm:w-auto bg-voca-cyan text-white px-4 py-2 rounded-lg text-sm hover:bg-voca-dark transition">
               Add Rule
             </button>
           </div>

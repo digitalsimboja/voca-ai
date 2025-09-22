@@ -9,62 +9,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Custom brand colors
-        brand: {
-          purple: {
-            50: '#faf5ff',
-            100: '#f3e8ff',
-            200: '#e9d5ff',
-            300: '#d8b4fe',
-            400: '#c084fc',
-            500: '#a855f7',
-            600: '#9333ea',
-            700: '#7c3aed',
-            800: '#6b21a8',
-            900: '#581c87',
-            950: '#3b0764',
-          },
-          green: {
-            50: '#f0fdf4',
-            100: '#dcfce7',
-            200: '#bbf7d0',
-            300: '#86efac',
-            400: '#4ade80',
-            500: '#22c55e',
-            600: '#16a34a',
-            700: '#15803d',
-            800: '#166534',
-            900: '#14532d',
-            950: '#052e16',
-          },
-        },
-        // Override default blue with purple
-        blue: {
-          50: '#faf5ff',
-          100: '#f3e8ff',
-          200: '#e9d5ff',
-          300: '#d8b4fe',
-          400: '#c084fc',
-          500: '#a855f7',
-          600: '#9333ea',
-          700: '#7c3aed',
-          800: '#6b21a8',
-          900: '#581c87',
-          950: '#3b0764',
-        },
-        // Override default green with light green
-        green: {
-          50: '#f0fdf4',
-          100: '#dcfce7',
-          200: '#bbf7d0',
-          300: '#86efac',
-          400: '#4ade80',
-          500: '#22c55e',
-          600: '#16a34a',
-          700: '#15803d',
-          800: '#166534',
-          900: '#14532d',
-          950: '#052e16',
+        voca: {
+          cyan: "#06B6D4",     // 🔹 Primary brand color
+          dark: "#0F172A",     // Dark background
+          light: "#F8FAFC",    // Light background
+          accent: "#DB2777",   // Optional magenta accent
         },
       },
     },

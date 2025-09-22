@@ -102,7 +102,7 @@ export default function CatalogsPage() {
     return (
       <MainLayout>
         <div className="flex items-center justify-center min-h-[400px]">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-voca-cyan"></div>
         </div>
       </MainLayout>
     );
@@ -121,7 +121,7 @@ export default function CatalogsPage() {
           </div>
           <button
             onClick={handleCreateCatalog}
-            className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors font-medium"
+            className="inline-flex items-center px-4 py-2 bg-voca-cyan text-white rounded-md hover:bg-voca-dark transition-colors font-medium"
           >
             <Plus className="w-4 h-4 mr-2" />
             Create Catalog
@@ -144,7 +144,7 @@ export default function CatalogsPage() {
                 </p>
                 <button
                   onClick={handleCreateCatalog}
-                  className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors font-medium"
+                  className="inline-flex items-center px-4 py-2 bg-voca-cyan text-white rounded-md hover:bg-voca-dark transition-colors font-medium"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Create Your First Catalog
@@ -206,7 +206,7 @@ export default function CatalogsPage() {
                       <div className="flex space-x-1">
                         <button
                           onClick={() => handleViewCatalog(catalog.id)}
-                          className="p-1.5 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-md transition-colors"
+                          className="p-1.5 text-gray-600 hover:text-voca-cyan hover:bg-voca-light rounded-md transition-colors"
                           title="View catalog"
                         >
                           <Eye className="w-4 h-4" />
@@ -221,7 +221,7 @@ export default function CatalogsPage() {
                         {catalog.shareableLink && (
                           <button
                             onClick={() => handleCopyLink(catalog.shareableLink)}
-                            className="p-1.5 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-md transition-colors"
+                            className="p-1.5 text-gray-600 hover:text-voca-cyan hover:bg-voca-light rounded-md transition-colors"
                             title="Copy link"
                           >
                             <Copy className="w-4 h-4" />

@@ -119,7 +119,7 @@ export default function NotificationsPage() {
           <div className="flex items-center space-x-3">
             <Button
               onClick={() => setShowModal(true)}
-              className="bg-purple-600 hover:bg-purple-700"
+              className="bg-voca-cyan hover:bg-voca-dark"
             >
               <Bell className="w-4 h-4 mr-2" />
               View All
@@ -243,7 +243,7 @@ export default function NotificationsPage() {
           <CardContent>
             {isLoading && notifications.length === 0 ? (
               <div className="text-center py-12">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-voca-cyan mx-auto"></div>
                 <p className="mt-4 text-gray-600">Loading notifications...</p>
               </div>
             ) : notifications.length === 0 ? (

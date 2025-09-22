@@ -30,10 +30,10 @@ export default function OrderManagementStep({ agent, setAgent }: OrderManagement
         <div className="p-4 space-y-5">
           {/* Order Tracking & Auto Updates */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="bg-gradient-to-r from-purple-50 to-cyan-50 border border-purple-100 rounded-lg p-3">
+            <div className="bg-gradient-to-r from-voca-light to-cyan-50 border border-voca-light rounded-lg p-3">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center space-x-2">
-                  <MapPin className="w-4 h-4 text-purple-600" />
+                  <MapPin className="w-4 h-4 text-voca-cyan" />
                   <h4 className="text-sm font-semibold text-gray-900">
                     Order Tracking
                   </h4>
@@ -53,7 +53,7 @@ export default function OrderManagementStep({ agent, setAgent }: OrderManagement
                     }
                     className="sr-only peer"
                   />
-                  <div className="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:bg-purple-600 peer-focus:ring-2 peer-focus:ring-purple-300 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4"></div>
+                  <div className="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:bg-voca-cyan peer-focus:ring-2 peer-focus:ring-voca-cyan after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4"></div>
                 </label>
               </div>
               <p className="text-xs text-gray-600">
@@ -137,7 +137,7 @@ export default function OrderManagementStep({ agent, setAgent }: OrderManagement
           {/* Order Statuses */}
           <div>
             <label className="block text-xs font-semibold text-gray-700 mb-3 flex items-center">
-              <span className="w-1.5 h-1.5 bg-purple-500 rounded-full mr-1.5"></span>
+              <span className="w-1.5 h-1.5 bg-voca-cyan rounded-full mr-1.5"></span>
               Order Statuses to Track
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">

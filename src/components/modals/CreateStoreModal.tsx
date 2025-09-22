@@ -213,7 +213,7 @@ export default function CreateStoreModal({
       <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4 shadow-xl max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
-            <Store className="w-5 h-5 text-purple-600" />
+            <Store className="w-5 h-5 text-voca-cyan" />
             <h2 className="text-lg font-semibold text-gray-900">
               Create Your Store
             </h2>
@@ -237,7 +237,7 @@ export default function CreateStoreModal({
                 type="text"
                 value={storeName}
                 onChange={(e) => handleStoreNameChange(e.target.value)}
-                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm ${
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent text-sm ${
                   nameAvailable === false
                     ? "border-red-300"
                     : nameAvailable === true
@@ -249,7 +249,7 @@ export default function CreateStoreModal({
               />
               {isCheckingName && (
                 <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-purple-600"></div>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-voca-cyan"></div>
                 </div>
               )}
               {nameAvailable === true && !isCheckingName && (
@@ -297,7 +297,7 @@ export default function CreateStoreModal({
                   <select
                     value={selectedAgent}
                     onChange={(e) => setSelectedAgent(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm appearance-none bg-white"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent text-sm appearance-none bg-white"
                     disabled={isLoading}
                   >
                     <option value="">Select an agent (optional)</option>
@@ -309,8 +309,8 @@ export default function CreateStoreModal({
                   </select>
                 </div>
                 {selectedAgent && (
-                          <div className="bg-purple-50 border border-purple-200 rounded-lg p-2">
-          <p className="text-xs text-purple-700">
+                          <div className="bg-voca-light border border-voca-light rounded-lg p-2">
+          <p className="text-xs text-voca-dark">
                       Agent &quot;{availableAgents.find(a => a.id === selectedAgent)?.name}&quot; will be associated with your store
                     </p>
                   </div>
@@ -331,11 +331,11 @@ export default function CreateStoreModal({
             )}
           </div>
 
-                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
-          <h4 className="font-medium text-purple-900 mb-2 text-sm">
+                  <div className="bg-voca-light border border-voca-light rounded-lg p-3">
+          <h4 className="font-medium text-voca-dark mb-2 text-sm">
               What happens next:
             </h4>
-            <ul className="text-xs text-purple-800 space-y-1">
+            <ul className="text-xs text-voca-dark space-y-1">
               <li>• Your store will be created with this name</li>
               {selectedAgent && <li>• Your selected AI agent will be associated with the store</li>}
               <li>• You can then create catalogs for your store</li>
@@ -355,7 +355,7 @@ export default function CreateStoreModal({
           <button
             onClick={handleSubmit}
             disabled={isLoading || !storeName.trim() || nameAvailable === false}
-            className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 px-4 py-2 bg-voca-cyan text-white rounded-lg hover:bg-voca-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? "Creating..." : "Create Store"}
           </button>

@@ -103,7 +103,7 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
                 type="text"
                 value={settings.organization.name}
                 onChange={(e) => updateOrganization({ name: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
               />
             </div>
 
@@ -113,7 +113,7 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
               <select
                 value={settings.organization.industry}
                 onChange={(e) => updateOrganization({ industry: e.target.value as "microfinance" })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
               >
                 <option value="microfinance">Microfinance</option>
                 <option value="retail">Retail</option>
@@ -127,7 +127,7 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
               <select
                 value={settings.organization.timezone}
                 onChange={(e) => updateOrganization({ timezone: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
               >
                 <option value="America/New_York">Eastern Time</option>
                 <option value="America/Chicago">Central Time</option>
@@ -195,7 +195,7 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
                     <select
                       value={store.category}
                       onChange={(e) => updateStore('category', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                     >
                       <option value="general">General</option>
                       <option value="retail">Retail</option>
@@ -219,7 +219,7 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
                       value={store.description}
                       onChange={(e) => updateStore('description', e.target.value)}
                       rows={3}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                       placeholder="Describe your store..."
                     />
                   </div>
@@ -231,7 +231,7 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
                       type="url"
                       value={store.website_url}
                       onChange={(e) => updateStore('website_url', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                       placeholder="https://yourstore.com"
                     />
                   </div>
@@ -243,7 +243,7 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
                       type="url"
                       value={store.logo_url}
                       onChange={(e) => updateStore('logo_url', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                       placeholder="https://yourstore.com/logo.png"
                     />
                   </div>
@@ -255,7 +255,7 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
                       type="email"
                       value={store.contact_email}
                       onChange={(e) => updateStore('contact_email', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                       placeholder="contact@yourstore.com"
                     />
                   </div>
@@ -267,7 +267,7 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
                       type="tel"
                       value={store.contact_phone}
                       onChange={(e) => updateStore('contact_phone', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                       placeholder="+1234567890"
                     />
                   </div>
@@ -279,7 +279,7 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
                       value={store.address}
                       onChange={(e) => updateStore('address', e.target.value)}
                       rows={2}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                       placeholder="Enter your store address..."
                     />
                   </div>
@@ -290,7 +290,7 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
                   <button
                     onClick={handleUpdateStore}
                     disabled={isUpdatingStore}
-                    className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                    className="px-4 py-2 bg-voca-cyan text-white rounded-lg hover:bg-voca-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                   >
                     {isUpdatingStore ? 'Updating...' : 'Update Store'}
                   </button>
@@ -319,7 +319,7 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
                     businessHours: { ...settings.organization.businessHours, start: e.target.value },
                   })
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
               />
             </div>
 
@@ -334,7 +334,7 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
                     businessHours: { ...settings.organization.businessHours, end: e.target.value },
                   })
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
               />
             </div>
 
@@ -356,7 +356,7 @@ export default function GeneralSettings({ settings, onSettingsChange }: GeneralS
                   placeholder="Delay (seconds)"
                   value={settings.autoResponse.delay}
                   onChange={(e) => updateAutoResponse({ delay: parseInt(e.target.value) || 0 })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                 />
               </div>
             </div>

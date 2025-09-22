@@ -182,7 +182,7 @@ export default function CallCustomerPage() {
       case 'incoming':
         return 'text-green-400'
       case 'outgoing':
-        return 'text-purple-600'
+        return 'text-voca-cyan'
       case 'missed':
         return 'text-red-600'
       default:
@@ -195,7 +195,7 @@ export default function CallCustomerPage() {
       <MainLayout>
         <div className="space-y-4 sm:space-y-6">
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 animate-spin text-purple-600" />
+            <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 animate-spin text-voca-cyan" />
             <span className="ml-2 text-sm sm:text-base text-gray-600">
               Loading customer details...
             </span>
@@ -324,8 +324,8 @@ export default function CallCustomerPage() {
                   <p className="text-sm font-medium text-gray-600">Total Calls</p>
                   <p className="text-2xl font-bold text-gray-900">{callHistory.length}</p>
                 </div>
-                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Phone className="w-5 h-5 text-purple-600" />
+                <div className="w-10 h-10 bg-voca-light rounded-lg flex items-center justify-center">
+                  <Phone className="w-5 h-5 text-voca-cyan" />
                 </div>
               </div>
             </CardContent>
@@ -356,8 +356,8 @@ export default function CallCustomerPage() {
                     {callHistory.filter(call => call.type === 'incoming').length}
                   </p>
                 </div>
-                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <PhoneIncoming className="w-5 h-5 text-purple-600" />
+                <div className="w-10 h-10 bg-voca-light rounded-lg flex items-center justify-center">
+                  <PhoneIncoming className="w-5 h-5 text-voca-cyan" />
                 </div>
               </div>
             </CardContent>

@@ -25,7 +25,7 @@ const navigation = {
   ],
   support: [
     { name: 'Help Center', href: '/help' },
-    { name: 'Contact Support', href: '/support' },
+    { name: 'Contact Support', href: '/contact' },
     { name: 'Status', href: '/status' },
     { name: 'Security', href: '/security' },
     { name: 'Privacy Policy', href: '/privacy' },
@@ -70,14 +70,14 @@ export default function LandingFooter() {
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-voca-cyan rounded-lg flex items-center justify-center">
                 <Headphones className="w-5 h-5 text-white" />
               </div>
               <span className="text-xl font-bold text-white">Voca AI</span>
             </div>
             <p className="text-sm leading-6 text-gray-300">
               Intelligent AI phone agents for microfinance banks and online retailers. 
-              Transform customer service with AWS-powered voice AI that never sleeps.
+              Transform customer service with our voice AI that never sleeps.
             </p>
             <div className="flex space-x-6">
               {navigation.social.map((item) => (
@@ -182,7 +182,7 @@ export default function LandingFooter() {
               ))}
             </div>
             <p className="text-sm text-gray-300">
-              © 2025 Voca AI. All rights reserved.
+              © 2025 Voca AI | All rights reserved.
             </p>
           </div>
         </div>

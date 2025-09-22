@@ -46,7 +46,7 @@ export default function CustomerServiceStep({
       key: "facebook_messenger",
       label: "Facebook Messenger",
       icon: Facebook,
-      color: "text-purple-700",
+      color: "text-voca-dark",
     },
     {
       key: "voice",
@@ -62,9 +62,9 @@ export default function CustomerServiceStep({
   return (
     <StepLayout className="p-2 sm:p-3 max-w-3xl mx-auto">
       {/* Header */}
-      <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-2 sm:p-3 border-b border-gray-100">
+      <div className="bg-gradient-to-r from-voca-light to-pink-50 p-2 sm:p-3 border-b border-gray-100">
         <div className="flex items-center space-x-2">
-          <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-1 rounded-md">
+          <div className="bg-gradient-to-r from-voca-cyan to-pink-500 p-1 rounded-md">
             <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
           </div>
           <div>
@@ -84,7 +84,7 @@ export default function CustomerServiceStep({
           {/* Communication Channels */}
           <div>
             <h4 className="text-[10px] sm:text-xs md:text-sm font-semibold text-gray-900 mb-2 sm:mb-3 flex items-center">
-              <span className="w-1.5 h-1.5 bg-purple-500 rounded-full mr-1.5"></span>
+              <span className="w-1.5 h-1.5 bg-voca-cyan rounded-full mr-1.5"></span>
               Communication Channels
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
@@ -169,7 +169,7 @@ export default function CustomerServiceStep({
           {/* Response Time */}
           <div>
             <label className="block text-[10px] sm:text-xs md:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2 flex items-center">
-              <span className="w-1.5 h-1.5 bg-purple-500 rounded-full mr-1.5"></span>
+              <span className="w-1.5 h-1.5 bg-voca-cyan rounded-full mr-1.5"></span>
               Expected Response Time (minutes)
               <span className="text-red-500 ml-1">*</span>
             </label>
@@ -196,7 +196,7 @@ export default function CustomerServiceStep({
               }}
               min="1"
               max="60"
-              className={`w-full px-2 py-1.5 sm:px-3 sm:py-2 border rounded-md focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-200 text-[12px] sm:text-sm ${
+              className={`w-full px-2 py-1.5 sm:px-3 sm:py-2 border rounded-md focus:ring-2 focus:ring-voca-cyan/20 focus:border-voca-cyan transition-all duration-200 text-[12px] sm:text-sm ${
                 validationErrors.customerService?.responseTime
                   ? "border-red-300 focus:ring-red-500/20 focus:border-red-500"
                   : "border-gray-200"

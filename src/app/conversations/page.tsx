@@ -83,7 +83,7 @@ const Customers = () => {
       <MainLayout>
         <div className="space-y-4 sm:space-y-6">
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 animate-spin text-purple-600" />
+            <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 animate-spin text-voca-cyan" />
             <span className="ml-2 text-sm sm:text-base text-gray-600">
               Loading conversations...
             </span>
@@ -145,7 +145,7 @@ const Customers = () => {
           {/*
           <button
             onClick={() => (window.location.href = "/conversations/create")}
-            className="flex items-center justify-center gap-1 sm:gap-2 bg-purple-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg hover:bg-purple-700 transition-colors text-xs sm:text-sm"
+            className="flex items-center justify-center gap-1 sm:gap-2 bg-voca-cyan text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg hover:bg-voca-dark transition-colors text-xs sm:text-sm"
           >
             <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             <span>New Conversation</span>
@@ -163,17 +163,17 @@ const Customers = () => {
                   <input
                     type="text"
                     placeholder="Search conversations..."
-                    className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-xs sm:text-sm"
+                    className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan text-xs sm:text-sm"
                   />
                 </div>
               </div>
-              <select className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-xs sm:text-sm">
+              <select className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan text-xs sm:text-sm">
                 <option value="all">All Types</option>
                 <option value="chat">Chat</option>
                 <option value="support">Support</option>
                 <option value="sales">Sales</option>
               </select>
-              <select className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-xs sm:text-sm">
+              <select className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan text-xs sm:text-sm">
                 <option value="all">All Status</option>
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
@@ -189,8 +189,8 @@ const Customers = () => {
               label: "Total Conversations",
               value: statistics?.total_conversations || conversations.length,
               icon: MessageSquare,
-              bg: "bg-purple-100",
-              color: "text-purple-600",
+              bg: "bg-voca-light",
+              color: "text-voca-cyan",
             },
             {
               label: "Active Conversations",
@@ -203,8 +203,8 @@ const Customers = () => {
               label: "Total Messages",
               value: statistics?.total_messages || conversations.reduce((sum, c) => sum + c.messageCount, 0),
               icon: MessageSquare,
-              bg: "bg-purple-100",
-              color: "text-purple-600",
+              bg: "bg-voca-light",
+              color: "text-voca-cyan",
             },
             {
               label: "Avg Messages/Conversation",

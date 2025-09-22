@@ -41,9 +41,9 @@ export default function SocialMediaStep({
   return (
     <StepLayout>
         {/* Header */}
-        <div className="bg-gradient-to-r from-pink-50 to-purple-50 p-3 sm:p-4 border-b border-gray-100">
+        <div className="bg-gradient-to-r from-pink-50 to-voca-light p-3 sm:p-4 border-b border-gray-100">
           <div className="flex items-center space-x-2">
-            <div className="bg-gradient-to-r from-pink-500 to-purple-500 p-1.5 rounded-md">
+            <div className="bg-gradient-to-r from-pink-500 to-voca-cyan p-1.5 rounded-md">
               <Instagram className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
             <div>
@@ -166,10 +166,10 @@ export default function SocialMediaStep({
             </div>
 
             {/* TikTok */}
-            <div className="bg-gradient-to-r from-cyan-50 via-pink-50 to-purple-50 border border-cyan-100 rounded-lg p-3 sm:p-4 hover:shadow-md transition-all duration-200">
+            <div className="bg-gradient-to-r from-cyan-50 via-pink-50 to-voca-light border border-cyan-100 rounded-lg p-3 sm:p-4 hover:shadow-md transition-all duration-200">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
                 <div className="flex items-center space-x-2">
-                  <div className="bg-gradient-to-r from-cyan-500 via-pink-500 to-purple-500 p-1.5 rounded-md shadow-lg">
+                  <div className="bg-gradient-to-r from-cyan-500 via-pink-500 to-voca-cyan p-1.5 rounded-md shadow-lg">
                     <svg
                       className="w-3.5 h-3.5 text-white"
                       viewBox="0 0 24 24"
@@ -215,7 +215,7 @@ export default function SocialMediaStep({
                     }}
                     className="sr-only peer"
                   />
-                  <div className="w-9 h-5 sm:w-10 sm:h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-cyan-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-cyan-500 peer-checked:to-purple-500"></div>
+                  <div className="w-9 h-5 sm:w-10 sm:h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-cyan-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-cyan-500 peer-checked:to-voca-cyan"></div>
                 </label>
               </div>
 
@@ -223,7 +223,7 @@ export default function SocialMediaStep({
                 <div className="space-y-2 bg-white/60 rounded-md p-2 sm:p-3">
                   <div>
                     <label className="block text-xs font-semibold text-gray-700 mb-1 flex items-center">
-                      <span className="w-1.5 h-1.5 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full mr-1.5"></span>
+                      <span className="w-1.5 h-1.5 bg-gradient-to-r from-cyan-500 to-voca-cyan rounded-full mr-1.5"></span>
                       TikTok Username <span className="text-red-500 ml-1">*</span>
                     </label>
                     <div className="flex items-center">
@@ -275,10 +275,10 @@ export default function SocialMediaStep({
             </div>
 
             {/* Facebook */}
-            <div className="bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-100 rounded-lg p-3 sm:p-4 hover:shadow-md transition-all duration-200">
+            <div className="bg-gradient-to-r from-voca-light to-indigo-50 border border-voca-light rounded-lg p-3 sm:p-4 hover:shadow-md transition-all duration-200">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
                 <div className="flex items-center space-x-2">
-                  <div className="bg-gradient-to-r from-purple-500 to-indigo-500 p-1.5 rounded-md">
+                  <div className="bg-gradient-to-r from-voca-cyan to-indigo-500 p-1.5 rounded-md">
                     <Facebook className="w-3.5 h-3.5 text-white" />
                   </div>
                   <div>
@@ -320,7 +320,7 @@ export default function SocialMediaStep({
                     }}
                     className="sr-only peer"
                   />
-                  <div className="w-9 h-5 sm:w-10 sm:h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-purple-500 peer-checked:to-indigo-500"></div>
+                  <div className="w-9 h-5 sm:w-10 sm:h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-voca-cyan rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-voca-cyan peer-checked:to-indigo-500"></div>
                 </label>
               </div>
 
@@ -328,7 +328,7 @@ export default function SocialMediaStep({
                 <div className="space-y-2 bg-white/60 rounded-md p-2 sm:p-3">
                   <div>
                     <label className="block text-xs font-semibold text-gray-700 mb-1 flex items-center">
-                      <span className="w-1.5 h-1.5 bg-purple-500 rounded-full mr-1.5"></span>
+                      <span className="w-1.5 h-1.5 bg-voca-cyan rounded-full mr-1.5"></span>
                       Facebook Page Name <span className="text-red-500 ml-1">*</span>
                     </label>
                     <input
@@ -359,10 +359,10 @@ export default function SocialMediaStep({
                         }
                       }}
                       placeholder="Your Shop Name"
-                      className={`w-full px-2 py-1.5 border rounded-md focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-200 text-xs sm:text-sm ${
+                      className={`w-full px-2 py-1.5 border rounded-md focus:ring-2 focus:ring-voca-cyan/20 focus:border-voca-cyan transition-all duration-200 text-xs sm:text-sm ${
                         validationErrors.socialMedia?.facebook
                           ? "border-red-300 focus:ring-red-500/20 focus:border-red-500"
-                          : "border-purple-200"
+                          : "border-voca-light"
                       }`}
                     />
                     {validationErrors.socialMedia?.facebook && (
@@ -373,7 +373,7 @@ export default function SocialMediaStep({
                     )}
                   </div>
 
-                  <label className="flex items-center p-2 bg-purple-50 rounded-md border border-purple-100 hover:bg-purple-100 transition-colors cursor-pointer">
+                  <label className="flex items-center p-2 bg-voca-light rounded-md border border-voca-light hover:bg-voca-light transition-colors cursor-pointer">
                     <input
                       type="checkbox"
                       checked={agent.socialMedia.platforms.facebook.messenger}
@@ -392,7 +392,7 @@ export default function SocialMediaStep({
                           },
                         })
                       }
-                      className="mr-2 w-4 h-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+                      className="mr-2 w-4 h-4 text-voca-cyan focus:ring-voca-cyan border-gray-300 rounded"
                     />
                     <div>
                       <span className="text-xs font-medium text-gray-900">

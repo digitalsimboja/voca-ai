@@ -26,7 +26,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
           <div className="fixed inset-y-0 left-0 flex w-64 flex-col bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-40 lg:hidden">
             <div className="flex items-center justify-between p-4 border-b border-gray-200">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-voca-cyan rounded-lg flex items-center justify-center">
                   <span className="text-white font-bold">V</span>
                 </div>
                 <span className="text-lg font-semibold text-gray-900">Voca AI</span>

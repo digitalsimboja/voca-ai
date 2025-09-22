@@ -85,7 +85,7 @@ export default function AgentDetailsModal({
     <div className="fixed inset-0 bg-gradient-to-br from-black/70 via-black/50 to-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-3 md:p-4">
       <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-200">
         {/* Header */}
-        <div className="bg-gradient-to-r from-purple-600 via-purple-600 to-purple-600 p-2 sm:p-4 md:p-5 text-white sticky top-0 z-10">
+        <div className="bg-gradient-to-r from-voca-cyan via-voca-cyan to-voca-cyan p-2 sm:p-4 md:p-5 text-white sticky top-0 z-10">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 sm:space-x-3">
               <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
@@ -105,7 +105,7 @@ export default function AgentDetailsModal({
                     {editedAgent.name}
                   </h3>
                 )}
-                <p className="text-[10px] sm:text-xs md:text-sm text-purple-100 truncate">
+                <p className="text-[10px] sm:text-xs md:text-sm text-voca-light truncate">
                   {editedAgent.role} • {editedAgent.businessType}
                 </p>
               </div>
@@ -171,14 +171,14 @@ export default function AgentDetailsModal({
             {/* Status */}
             <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-2 sm:p-3 md:p-4 border border-gray-200">
               <div className="flex items-center space-x-1.5 sm:space-x-2 mb-1.5 sm:mb-2">
-                <Activity className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600" />
+                <Activity className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-voca-cyan" />
                 <h4 className="text-xs sm:text-sm font-semibold text-gray-900">Status</h4>
               </div>
               {isEditing ? (
                 <select
                   value={editedAgent.status}
                   onChange={(e) => setEditedAgent({ ...editedAgent, status: e.target.value as 'active' | 'inactive' | 'training' })}
-                  className="px-2 sm:px-2.5 py-0.5 sm:py-1 rounded text-[10px] sm:text-xs md:text-sm font-medium border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="px-2 sm:px-2.5 py-0.5 sm:py-1 rounded text-[10px] sm:text-xs md:text-sm font-medium border border-gray-300 focus:outline-none focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
                 >
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
@@ -202,7 +202,7 @@ export default function AgentDetailsModal({
             {/* Created */}
             <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-2 sm:p-3 md:p-4 border border-gray-200">
               <div className="flex items-center space-x-1.5 sm:space-x-2 mb-1.5 sm:mb-2">
-                <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600" />
+                <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-voca-cyan" />
                 <h4 className="text-xs sm:text-sm font-semibold text-gray-900">Created</h4>
               </div>
               <p className="text-[11px] sm:text-xs md:text-sm text-gray-700 break-words font-medium">
@@ -213,7 +213,7 @@ export default function AgentDetailsModal({
             {/* Last Active */}
             <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-2 sm:p-3 md:p-4 border border-gray-200">
               <div className="flex items-center space-x-1.5 sm:space-x-2 mb-1.5 sm:mb-2">
-                <Activity className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600" />
+                <Activity className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-voca-cyan" />
                 <h4 className="text-xs sm:text-sm font-semibold text-gray-900">Last Active</h4>
               </div>
               <p className="text-[11px] sm:text-xs md:text-sm text-gray-700 break-words font-medium">
@@ -225,7 +225,7 @@ export default function AgentDetailsModal({
           {/* Communication Channels */}
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-2 sm:p-3 md:p-4 border border-gray-200">
             <div className="flex items-center space-x-1.5 sm:space-x-2 mb-2">
-              <MessageSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600" />
+              <MessageSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-voca-cyan" />
               <h4 className="text-xs sm:text-sm font-semibold text-gray-900">Communication Channels</h4>
             </div>
             {isEditing ? (
@@ -241,7 +241,7 @@ export default function AgentDetailsModal({
                           : editedAgent.channels.filter(c => c !== channel);
                         setEditedAgent({ ...editedAgent, channels: newChannels });
                       }}
-                      className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                      className="w-4 h-4 text-voca-cyan border-gray-300 rounded focus:ring-voca-cyan"
                     />
                     <span className="text-xs sm:text-sm text-gray-700 capitalize">
                       {channel.replace('_', ' ')}
@@ -254,7 +254,7 @@ export default function AgentDetailsModal({
                 {editedAgent.channels.map((channel) => (
                   <span
                     key={channel}
-                    className="px-2 sm:px-2.5 py-0.5 sm:py-1 bg-purple-100 text-purple-700 rounded-full text-[10px] sm:text-xs md:text-sm font-medium border border-purple-200"
+                    className="px-2 sm:px-2.5 py-0.5 sm:py-1 bg-voca-light text-voca-dark rounded-full text-[10px] sm:text-xs md:text-sm font-medium border border-voca-light"
                   >
                     {channel.replace('_', ' ')}
                   </span>
@@ -266,7 +266,7 @@ export default function AgentDetailsModal({
           {/* Languages */}
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-2 sm:p-3 md:p-4 border border-gray-200">
             <div className="flex items-center space-x-1.5 sm:space-x-2 mb-2">
-              <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600" />
+              <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-voca-cyan" />
               <h4 className="text-xs sm:text-sm font-semibold text-gray-900">Supported Languages</h4>
             </div>
             {isEditing ? (
@@ -307,7 +307,7 @@ export default function AgentDetailsModal({
           {/* Knowledge Base */}
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-2 sm:p-3 md:p-4 border border-gray-200">
             <div className="flex items-center space-x-1.5 sm:space-x-2 mb-2">
-              <Database className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600" />
+              <Database className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-voca-cyan" />
               <h4 className="text-xs sm:text-sm font-semibold text-gray-900">Knowledge Base</h4>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2">
@@ -326,7 +326,7 @@ export default function AgentDetailsModal({
                   </p>
                 )}
               </div>
-              <button className="text-purple-600 hover:text-purple-700 text-xs sm:text-sm font-semibold whitespace-nowrap bg-purple-50 px-2 py-1 rounded-md border border-purple-200 hover:bg-purple-100 transition-colors">
+              <button className="text-voca-cyan hover:text-voca-dark text-xs sm:text-sm font-semibold whitespace-nowrap bg-voca-light px-2 py-1 rounded-md border border-voca-light hover:bg-voca-light transition-colors">
                 {agent.knowledgeBase ? 'Manage' : 'Connect'}
               </button>
             </div>
@@ -336,14 +336,14 @@ export default function AgentDetailsModal({
           {agent.agentData && (
             <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-2 sm:p-3 md:p-4 space-y-3 sm:space-y-4 border border-gray-200">
               <div className="flex items-center space-x-1.5 sm:space-x-2 mb-2">
-                <Settings className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600" />
+                <Settings className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-voca-cyan" />
                 <h4 className="text-xs sm:text-sm font-semibold text-gray-900">Agent Configuration</h4>
               </div>
 
               {/* Profile */}
               <div className="bg-white rounded-lg p-2 sm:p-3 border border-gray-200">
                 <h5 className="text-[10px] sm:text-xs font-semibold text-gray-900 mb-1 sm:mb-1.5 flex items-center">
-                  <span className="w-1.5 h-1.5 bg-purple-500 rounded-full mr-1.5"></span>
+                  <span className="w-1.5 h-1.5 bg-voca-cyan rounded-full mr-1.5"></span>
                   Profile
                 </h5>
                 <p className="text-xs sm:text-sm text-gray-700 break-words font-medium">
@@ -354,7 +354,7 @@ export default function AgentDetailsModal({
               {/* Social Media Platforms */}
               <div className="bg-white rounded-lg p-2 sm:p-3 border border-gray-200">
                 <h5 className="text-[10px] sm:text-xs font-semibold text-gray-900 mb-1 sm:mb-1.5 flex items-center">
-                  <span className="w-1.5 h-1.5 bg-purple-500 rounded-full mr-1.5"></span>
+                  <span className="w-1.5 h-1.5 bg-voca-cyan rounded-full mr-1.5"></span>
                   Social Media Platforms
                 </h5>
                 <div className="space-y-0.5 sm:space-y-1">
@@ -465,7 +465,7 @@ export default function AgentDetailsModal({
                 <button
                   onClick={handleSave}
                   disabled={isSaving}
-                  className="px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base text-white bg-purple-600 font-semibold border border-purple-600 rounded-md hover:bg-purple-700 hover:border-purple-700 transition-all duration-200 font-medium shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-1"
+                  className="px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base text-white bg-voca-cyan font-semibold border border-voca-cyan rounded-md hover:bg-voca-dark hover:border-voca-dark transition-all duration-200 font-medium shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-1"
                 >
                   <Save className="w-4 h-4" />
                   <span>{isSaving ? 'Saving...' : 'Save Changes'}</span>

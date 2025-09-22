@@ -14,10 +14,10 @@ export function ChangedFieldIndicator({
   const hasChanged = JSON.stringify(currentValue) !== JSON.stringify(originalValue);
   
   return (
-    <div className={`relative ${hasChanged ? 'ring-2 ring-purple-200 rounded-lg' : ''}`}>
+    <div className={`relative ${hasChanged ? 'ring-2 ring-voca-light rounded-lg' : ''}`}>
       {children}
       {hasChanged && (
-        <div className="absolute -top-1 -right-1 w-3 h-3 bg-purple-500 rounded-full border-2 border-white"></div>
+        <div className="absolute -top-1 -right-1 w-3 h-3 bg-voca-cyan rounded-full border-2 border-white"></div>
       )}
     </div>
   );

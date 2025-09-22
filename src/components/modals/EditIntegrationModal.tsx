@@ -103,7 +103,7 @@ export default function EditIntegrationModal({
     <div className="fixed inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60 backdrop-blur-md flex items-center justify-center z-50 p-1 sm:p-2">
       <div className="bg-gradient-to-br from-white via-gray-50 to-white rounded-xl w-full max-w-2xl shadow-2xl border border-gray-100 max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="bg-gradient-to-r from-purple-600 via-purple-500 to-purple-600 p-3 text-white relative overflow-hidden">
+        <div className="bg-gradient-to-r from-voca-cyan via-voca-cyan to-voca-cyan p-3 text-white relative overflow-hidden">
           <div className="absolute inset-0 bg-black/10"></div>
           <div className="relative z-10 flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -112,7 +112,7 @@ export default function EditIntegrationModal({
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-white">Edit Integration</h3>
-                <p className="text-sm text-purple-100">Update integration settings</p>
+                <p className="text-sm text-voca-light">Update integration settings</p>
               </div>
             </div>
             <button
@@ -141,7 +141,7 @@ export default function EditIntegrationModal({
                     id="name"
                     value={formData.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-voca-cyan focus:border-voca-cyan"
                     required
                     disabled={isLoading}
                   />
@@ -154,7 +154,7 @@ export default function EditIntegrationModal({
                     id="type"
                     value={formData.type}
                     onChange={(e) => handleInputChange('type', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-voca-cyan focus:border-voca-cyan"
                     required
                     disabled={isLoading}
                   >
@@ -183,7 +183,7 @@ export default function EditIntegrationModal({
                   type="checkbox"
                   checked={formData.is_active}
                   onChange={(e) => handleInputChange('is_active', e.target.checked)}
-                  className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-voca-cyan focus:ring-voca-cyan border-gray-300 rounded"
                   disabled={isLoading}
                 />
                 <span className="ml-2 text-sm text-gray-700">Active Integration</span>
@@ -200,7 +200,7 @@ export default function EditIntegrationModal({
                 value={configText}
                 onChange={(e) => setConfigText(e.target.value)}
                 rows={6}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 font-mono text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-voca-cyan focus:border-voca-cyan font-mono text-sm"
                 placeholder='{"key": "value"}'
                 disabled={isLoading}
               />
@@ -216,7 +216,7 @@ export default function EditIntegrationModal({
                 value={metadataText}
                 onChange={(e) => setMetadataText(e.target.value)}
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 font-mono text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-voca-cyan focus:border-voca-cyan font-mono text-sm"
                 placeholder='{"key": "value"}'
                 disabled={isLoading}
               />
@@ -237,7 +237,7 @@ export default function EditIntegrationModal({
             <button
               onClick={handleSubmit}
               disabled={isLoading}
-              className="px-4 py-2 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-md hover:from-purple-700 hover:to-purple-800 transition-all duration-200 font-medium shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+              className="px-4 py-2 bg-gradient-to-r from-voca-cyan to-voca-dark text-white rounded-md hover:from-voca-dark hover:to-voca-dark transition-all duration-200 font-medium shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
             >
               {isLoading ? (
                 <>

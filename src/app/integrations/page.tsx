@@ -328,7 +328,7 @@ export default function IntegrationsPage() {
           <p className="text-gray-600 mb-4">{error}</p>
           <button
             onClick={loadData}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-voca-cyan hover:bg-voca-dark"
           >
             <RefreshCw className="h-4 w-4 mr-2" />
             Try Again
@@ -367,7 +367,7 @@ export default function IntegrationsPage() {
             </button>
             <button
               onClick={handleCreateIntegration}
-              className="inline-flex items-center px-3 sm:px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 w-full sm:w-auto"
+              className="inline-flex items-center px-3 sm:px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-voca-cyan hover:bg-voca-dark w-full sm:w-auto"
             >
               <Plus className="h-4 w-4 mr-2" />
               Add Integration
@@ -380,8 +380,8 @@ export default function IntegrationsPage() {
           <div className="bg-white p-4 sm:p-6 rounded-lg shadow">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Wrench className="h-6 w-6 text-purple-600" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-voca-light rounded-lg flex items-center justify-center">
+                  <Wrench className="h-6 w-6 text-voca-cyan" />
                 </div>
               </div>
               <div className="ml-4">
@@ -447,7 +447,7 @@ export default function IntegrationsPage() {
                 <p className="text-gray-600 mb-4">Get started by adding your first integration.</p>
                 <button 
                   onClick={handleCreateIntegration}
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-voca-cyan hover:bg-voca-dark"
                 >
                   <Plus className="h-4 w-4 mr-2" />
                   Add Integration
@@ -547,7 +547,7 @@ export default function IntegrationsPage() {
                 disabled={syncing}
                 className="flex items-center space-x-3 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <RefreshCw className={`w-5 h-5 text-purple-600 ${syncing ? 'animate-spin' : ''}`} />
+                <RefreshCw className={`w-5 h-5 text-voca-cyan ${syncing ? 'animate-spin' : ''}`} />
                 <div className="text-left">
                   <p className="text-sm font-medium text-gray-900">Sync All Integrations</p>
                   <p className="text-xs text-gray-500">Refresh all connection statuses</p>
@@ -566,7 +566,7 @@ export default function IntegrationsPage() {
               </button>
               
               <button className="flex items-center space-x-3 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                <Settings className="w-5 h-5 text-purple-600" />
+                <Settings className="w-5 h-5 text-voca-cyan" />
                 <div className="text-left">
                   <p className="text-sm font-medium text-gray-900">Configure Webhooks</p>
                   <p className="text-xs text-gray-500">Set up notification endpoints</p>

@@ -90,7 +90,7 @@ export default function UserCatalogPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-voca-cyan mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading store...</p>
         </div>
       </div>
@@ -115,7 +115,7 @@ export default function UserCatalogPage() {
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center space-x-4">
-            <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center">
+            <div className="w-16 h-16 bg-voca-cyan rounded-full flex items-center justify-center">
               <span className="text-white font-bold text-xl">
                 {userProfile.displayName.charAt(0).toUpperCase()}
               </span>
@@ -140,7 +140,7 @@ export default function UserCatalogPage() {
                   href={`https://facebook.com/${userProfile.socialLinks.facebook}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+                  className="p-2 text-voca-cyan hover:bg-voca-light rounded-lg transition-colors"
                 >
                   <Facebook className="w-5 h-5" />
                 </a>
@@ -196,13 +196,13 @@ export default function UserCatalogPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-gray-500">Starting from</p>
-                    <p className="text-xl font-bold text-purple-600">
+                    <p className="text-xl font-bold text-voca-cyan">
                       {formatPrice(getLowestPrice(catalog))}
                     </p>
                   </div>
                   <button
                     onClick={() => router.push(`/${username}/catalog/${catalog.id}`)}
-                    className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium"
+                    className="bg-voca-cyan text-white px-4 py-2 rounded-lg hover:bg-voca-dark transition-colors text-sm font-medium"
                   >
                     View Details
                   </button>
