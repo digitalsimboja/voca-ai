@@ -112,7 +112,7 @@ export default function OrderDetailPage() {
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto space-y-8">
+      <div className="max-w-7xl mx-auto space-y-8 pb-20 sm:pb-8">
         {/* Hero Header */}
         <div className="bg-white border-l-4 border-voca-cyan rounded-xl shadow-sm p-6 flex flex-col lg:flex-row lg:items-center lg:justify-between">
           <div className="space-y-1">
@@ -248,8 +248,8 @@ export default function OrderDetailPage() {
         </div>
       </div>
 
-      {/* Floating AI Chat */}
-      <div className="fixed bottom-6 right-6 w-full max-w-md shadow-xl">
+      {/* AI Chat - Responsive Positioning */}
+      <div className="fixed bottom-4 left-0 right-0 sm:bottom-6 sm:right-6 sm:left-auto sm:w-full sm:max-w-md shadow-xl z-50">
         <OrderChatInterface
           orderId={order.id}
           orderNumber={order.order_number}

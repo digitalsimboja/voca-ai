@@ -342,14 +342,14 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
             <h2 className="text-base font-semibold leading-7 text-voca-cyan">
-              Voca AI Implementation
+              4 Easy Steps to Get Started
             </h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               From setup to scale in four simple steps
             </p>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Our proven implementation methodology ensures rapid deployment and
-              measurable ROI for your customer service transformation.
+              Our proven implementation guide ensures rapid deployment and
+              measurable ROI within minutes.
             </p>
           </div>
 

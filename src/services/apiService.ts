@@ -987,6 +987,7 @@ export const apiService = {
   },
 
   async createConversation(conversationData: {
+    id?: string;
     title?: string;
     type?: string;
     metadata?: Record<string, unknown>;

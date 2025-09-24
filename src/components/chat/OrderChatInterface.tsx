@@ -63,8 +63,50 @@ export default function OrderChatInterface({
 
   const initializeConversation = async () => {
     try {
-      // Create a new conversation for this order
+      // Use the order ID directly as the conversation ID (since order ID is already a UUID)
+      const deterministicConversationId = orderId
+      
+      // Validate that orderId is a valid UUID format
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+      if (!uuidRegex.test(orderId)) {
+        console.error('Order ID is not a valid UUID format:', orderId)
+        toast.error('Invalid order ID format')
+        return
+      }
+      
+      // First, try to get the existing conversation by ID
+      try {
+        const existingResponse = await apiService.getConversationDetails(deterministicConversationId)
+        if (existingResponse.status === 'success' && existingResponse.data) {
+          const existingConversation = existingResponse.data as { conversation: any }
+          setConversationId(existingConversation.conversation.id)
+          
+          // Load existing messages
+          const messagesResponse = await apiService.getConversationMessages(deterministicConversationId)
+          if (messagesResponse.status === 'success' && messagesResponse.data) {
+            const messagesData = messagesResponse.data as { messages: any[] }
+            const transformedMessages = messagesData.messages.map(msg => ({
+              id: msg.id,
+              content: msg.content,
+              role: msg.role,
+              timestamp: msg.createdAt,
+              type: msg.type || 'text'
+            }))
+            setMessages(transformedMessages)
+          } else {
+            // No messages yet, set empty array
+            setMessages([])
+          }
+          return
+        }
+      } catch (error) {
+        // Conversation doesn't exist, we'll create it
+        console.log('No existing conversation found, creating new one:', error)
+      }
+      
+      // Create a new conversation with deterministic ID
       const response = await apiService.createConversation({
+        id: deterministicConversationId, // Pass the deterministic ID
         title: `Order ${orderNumber} - ${customerName}`,
         type: 'order_support',
         metadata: {
@@ -89,10 +131,17 @@ export default function OrderChatInterface({
           type: 'text'
         }
         setMessages([welcomeMessage])
+      } else {
+        console.error('Failed to create conversation:', response.message)
+        toast.error('Failed to initialize chat. Please try again.')
+        setMessages([])
       }
     } catch (error) {
       console.error('Error initializing conversation:', error)
       toast.error('Failed to initialize chat')
+      // Set empty state to prevent UI issues
+      setConversationId('')
+      setMessages([])
     }
   }
 
@@ -187,13 +236,13 @@ export default function OrderChatInterface({
 
   if (isCollapsed) {
     return (
-      <Card className="w-full">
+      <Card className="w-full rounded-t-xl sm:rounded-xl">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <MessageSquare className="w-5 h-5 text-voca-cyan" />
-              <h3 className="text-lg font-semibold text-gray-900">Order Support Chat</h3>
-              <Badge variant="success" size="sm">
+            <div className="flex items-center space-x-2 min-w-0 flex-1">
+              <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 text-voca-cyan flex-shrink-0" />
+              <h3 className="text-sm sm:text-lg font-semibold text-gray-900 truncate">Order Support Chat</h3>
+              <Badge variant="success" size="sm" className="hidden sm:inline-flex">
                 {messages.length > 1 ? `${messages.length - 1} messages` : 'New'}
               </Badge>
             </div>
@@ -201,7 +250,7 @@ export default function OrderChatInterface({
               variant="ghost"
               size="sm"
               onClick={onToggleCollapse}
-              className="p-2"
+              className="p-1 sm:p-2 flex-shrink-0"
             >
               <ChevronUp className="w-4 h-4" />
             </Button>
@@ -212,13 +261,13 @@ export default function OrderChatInterface({
   }
 
   return (
-    <Card className="w-full">
+    <Card className="w-full rounded-t-xl sm:rounded-xl">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <MessageSquare className="w-5 h-5 text-voca-cyan" />
-            <h3 className="text-lg font-semibold text-gray-900">Order Support Chat</h3>
-            <Badge variant="success" size="sm">
+          <div className="flex items-center space-x-2 min-w-0 flex-1">
+            <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 text-voca-cyan flex-shrink-0" />
+            <h3 className="text-sm sm:text-lg font-semibold text-gray-900 truncate">Order Support Chat</h3>
+            <Badge variant="success" size="sm" className="hidden sm:inline-flex">
               {agentName || 'AI Assistant'}
             </Badge>
           </div>
@@ -227,27 +276,27 @@ export default function OrderChatInterface({
               variant="ghost"
               size="sm"
               onClick={onToggleCollapse}
-              className="p-2"
+              className="p-1 sm:p-2 flex-shrink-0"
             >
               <ChevronDown className="w-4 h-4" />
             </Button>
           </div>
         </div>
-        <p className="text-sm text-gray-600">
+        <p className="text-xs sm:text-sm text-gray-600 mt-1">
           Chat with {agentName || 'our AI assistant'} about order {orderNumber}
         </p>
       </CardHeader>
       
       <CardContent className="p-0">
         {/* Messages */}
-        <div className="h-96 overflow-y-auto p-4 space-y-4">
+        <div className="h-64 sm:h-80 md:h-96 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4">
           {messages.map((message) => (
             <div
               key={message.id}
               className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                className={`max-w-[85%] sm:max-w-xs lg:max-w-md px-3 sm:px-4 py-2 rounded-lg ${
                   message.role === 'user'
                     ? 'bg-voca-cyan text-white'
                     : 'bg-gray-100 text-gray-900'
@@ -255,13 +304,13 @@ export default function OrderChatInterface({
               >
                 <div className="flex items-start space-x-2">
                   {message.role === 'assistant' && (
-                    <Bot className="w-4 h-4 text-voca-cyan mt-0.5 flex-shrink-0" />
+                    <Bot className="w-3 h-3 sm:w-4 sm:h-4 text-voca-cyan mt-0.5 flex-shrink-0" />
                   )}
                   {message.role === 'user' && (
-                    <User className="w-4 h-4 text-white mt-0.5 flex-shrink-0" />
+                    <User className="w-3 h-3 sm:w-4 sm:h-4 text-white mt-0.5 flex-shrink-0" />
                   )}
-                  <div className="flex-1">
-                    <p className="text-sm">{message.content}</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs sm:text-sm break-words">{message.content}</p>
                     <p className={`text-xs mt-1 ${
                       message.role === 'user' ? 'text-voca-light' : 'text-gray-500'
                     }`}>
@@ -275,13 +324,13 @@ export default function OrderChatInterface({
           
           {isLoading && (
             <div className="flex justify-start">
-              <div className="bg-gray-100 text-gray-900 max-w-xs lg:max-w-md px-4 py-2 rounded-lg">
+              <div className="bg-gray-100 text-gray-900 max-w-[85%] sm:max-w-xs lg:max-w-md px-3 sm:px-4 py-2 rounded-lg">
                 <div className="flex items-center space-x-2">
-                  <Bot className="w-4 h-4 text-voca-cyan" />
+                  <Bot className="w-3 h-3 sm:w-4 sm:h-4 text-voca-cyan flex-shrink-0" />
                   <div className="flex space-x-1">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                   </div>
                 </div>
               </div>
@@ -292,7 +341,7 @@ export default function OrderChatInterface({
         </div>
 
         {/* Input */}
-        <div className="border-t p-4">
+        <div className="border-t p-3 sm:p-4">
           <div className="flex space-x-2">
             <input
               type="text"
@@ -300,13 +349,13 @@ export default function OrderChatInterface({
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Ask about your order..."
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
+              className="flex-1 px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-voca-cyan focus:border-transparent"
               disabled={isLoading}
             />
             <Button
               onClick={sendMessage}
               disabled={!inputMessage.trim() || isLoading}
-              className="bg-voca-cyan hover:bg-voca-dark text-white px-4"
+              className="bg-voca-cyan hover:bg-voca-dark text-white px-3 sm:px-4 py-2 flex-shrink-0"
             >
               {isLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -315,7 +364,7 @@ export default function OrderChatInterface({
               )}
             </Button>
           </div>
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-gray-500 mt-2 hidden sm:block">
             Press Enter to send, Shift+Enter for new line
           </p>
         </div>
