@@ -31,8 +31,7 @@ const features = [
   },
   {
     name: "AI-Driven Conversations",
-    description:
-      "Natural, human-like conversations with context awareness.",
+    description: "Natural, human-like conversations with context awareness.",
     icon: Cpu,
     color: "bg-green-500",
   },
@@ -70,7 +69,7 @@ const useCases = [
   {
     title: "Microfinance Banks",
     description:
-      "Transform loan processing and customer support with intelligent AI agents.",
+    "Streamline loan processing and enhance customer support with intelligent AI agents.",
     icon: CreditCard,
     benefits: [
       "24/7 loan inquiry support",
@@ -90,7 +89,7 @@ const useCases = [
     benefits: [
       "Order status inquiries",
       "Return and refund processing",
-      "Product recommendations",
+      "Product recommendations and enquiries",
       "Delivery tracking updates",
       "Upsell and cross-sell opportunities",
     ],
@@ -102,9 +101,9 @@ const useCases = [
 const howItWorks = [
   {
     step: "01",
-    title: "Connect Your Systems",
+    title: "Integrate Your Systems",
     description:
-      "Integrate with your CRM, payment systems, and existing infrastructure through our APIs.",
+      "Connect your social media platforms, CRM, payment systems, and existing infrastructure through our APIs.",
     icon: Database,
   },
   {
@@ -215,7 +214,6 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section className="relative isolate px-6 pt-14 lg:px-8">
-
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
@@ -223,9 +221,8 @@ export default function HomePage() {
               <span className="text-voca-cyan">Voca AI</span>
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              AI phone agents that sound human, respond to enquiries, resolve
-              cases, and grow your business — perfect for microfinance and
-              online retail.
+              Omni-channel AI agent orchestration platform for conversational
+              AI for social commerce
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link
@@ -259,8 +256,8 @@ export default function HomePage() {
               Purpose-built for financial services and e-commerce
             </p>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Voca AI delivers intelligent conversations that understand
-              industry-specific needs and customer expectations.
+              Voca AI delivers exceptional customer experience with zero human
+              intervention.
             </p>
           </div>
           <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
@@ -506,11 +503,11 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Ready to revolutionize your customer interactions?
+              Ready to revolutionize your customer experience?
             </h2>
             <p className="mt-6 text-lg leading-8 text-voca-light">
-              Leverage Voca AI to deliver exceptional customer
-              experiences and drive business growth.
+              Leverage Voca AI to deliver exceptional customer engagements and
+              drive business growth.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link

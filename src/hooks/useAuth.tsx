@@ -20,6 +20,20 @@ interface User {
   isVerified: boolean;
 }
 
+interface SignupData {
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  companyName: string;
+  businessType: "banking" | "retail";
+  agreeToTerms: boolean;
+  agreeToMarketing: boolean;
+}
+
+
 interface AuthContextType {
   user: User | null;
   loading: boolean;
@@ -34,18 +48,6 @@ interface AuthContextType {
   checkAuth: () => Promise<void>;
 }
 
-interface SignupData {
-  firstName: string;
-  lastName: string;
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  companyName: string;
-  businessType: "banking" | "retail";
-  agreeToTerms: boolean;
-  agreeToMarketing: boolean;
-}
 
 // Define protected routes that require authentication
 const protectedRoutes = [

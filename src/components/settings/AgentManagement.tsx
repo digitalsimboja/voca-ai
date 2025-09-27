@@ -252,8 +252,7 @@ export default function AgentManagement({
                     </h3>
                     <p className="text-gray-600 mb-6 text-sm max-w-sm mx-auto">
                       You haven&apos;t created any AI agents yet. Create your first
-                      agent to start managing customer interactions and automate
-                      your business processes.
+                      agent to automate your customer engagemtns.
                     </p>
                     <button
                       onClick={onShowCreateAgent}
