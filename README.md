@@ -2,7 +2,7 @@
 
 Voca AI is an intelligent AI phone agent built on AWS, designed to help Microfinance Banks and Online Retailers manage customer service efficiently, reduce operational costs, and deliver personalized customer experiences.
 
-![Voca AI Dashboard](https://raw.githubusercontent.com/digitalsimboja/voca-ai/main/public/assets/voca-ai.png)
+![Voca AI Dashboard](public/assets/voca-ai.png)
 
 
 ## Features
