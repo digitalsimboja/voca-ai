@@ -1,83 +1,55 @@
-# Voca AI - AWS-Powered AI Phone Agent
+# Voca AI - Omnichannel AI Agent Platform
 
-Voca AI is an intelligent AI phone agent built on AWS, designed to help Microfinance Banks and Online Retailers manage customer service efficiently, reduce operational costs, and deliver personalized customer experiences.
+Voca AI is an intelligent omnichannel AI agent platform designed to help Microfinance Banks and Online Retailers manage customer service efficiently, reduce operational costs, and deliver personalized customer experiences across multiple communication channels.
 
 ![Voca AI Dashboard](public/assets/voca-ai.png)
-
 
 ## Features
 
 ### Core Strengths
 
-- **Voice & Multichannel Support**
-  - Real-time phone call handling with Amazon Connect
-  - Seamless integration with WhatsApp, SMS, and email for omnichannel engagement
+- **Omnichannel Support**
+  - Voice calls, WhatsApp, SMS, and social media integration
+  - Unified conversation management across all channels
 
 - **AI-Driven Conversations**
-  - Amazon Bedrock for natural, human-like customer conversations
+  - Natural, human-like customer conversations with context awareness
   - Customizable conversation flows for banking and e-commerce needs
 
 - **Intelligent Routing & Task Automation**
   - Directs customer queries to the right department or agent
   - Automates repetitive tasks such as account balance checks, loan application status, and order tracking
 
-- **Scalable & Secure AWS Architecture**
-  - Built with Amazon Connect, Lambda, DynamoDB, S3, and Amazon Bedrock
-  - Security-first approach with AWS IAM and encryption
+- **Scalable Architecture**
+  - Built with modern web technologies and cloud-ready infrastructure
+  - Security-first approach with authentication and authorization
 
 - **Multilingual Capability**
   - Supports multiple languages to serve diverse customer bases
 
-## 🏗️ Architecture
+## Architecture
 
 ### Frontend
-- **Next.js 14** with App Router
+- **Next.js 15** with App Router
+- **React 19** for modern UI components
 - **TypeScript** for type safety
 - **Tailwind CSS** for styling
 - **Lucide React** for icons
 - **Recharts** for data visualization
 
-### Backend (Planned)
-- **AWS Lambda** for serverless functions
-- **Amazon Connect** for voice calls
-- **Amazon Bedrock** for AI conversations
-- **DynamoDB** for data storage
-- **Amazon S3** for file storage
-- **AWS IAM** for security
+### Backend API
+- **Next.js API Routes** for server-side functionality
+- **RESTful API** design for integrations
+- **Authentication & Authorization** system
+- **Real-time notifications** support
 
-## 📁 Project Structure
 
-```
-voca-ai/
-├── src/
-│   ├── app/                    # Next.js App Router pages
-│   │   ├── dashboard/          # Dashboard page
-│   │   ├── conversations/      # Conversations management
-│   │   ├── customers/          # Customer management
-│   │   ├── analytics/          # Analytics and reporting
-│   │   ├── integrations/       # AWS integrations
-│   │   ├── settings/           # Organization settings
-│   │   └── api/                # API routes (planned)
-│   ├── components/             # Reusable components
-│   │   ├── ui/                 # UI components (Card, Badge, etc.)
-│   │   ├── layout/             # Layout components (Sidebar, Header)
-│   │   └── features/           # Feature-specific components
-│   ├── lib/                    # Utility functions
-│   ├── types/                  # TypeScript type definitions
-│   ├── hooks/                  # Custom React hooks
-│   └── utils/                  # Helper functions
-├── public/                     # Static assets
-├── .env.local                  # Environment variables
-└── package.json                # Dependencies and scripts
-```
-
-## 🛠️ Getting Started
+## Getting Started
 
 ### Prerequisites
 
 - Node.js 18+ 
 - npm or yarn
-- AWS Account (for future backend integration)
 
 ### Installation
 
@@ -102,21 +74,12 @@ voca-ai/
    NEXT_PUBLIC_BASE_URL=http://localhost:3000
    NEXT_PUBLIC_API_BASE_URL=http://localhost:3000/api
    
-   # AWS Configuration (for future integration)
-   AWS_REGION=us-east-1
-   AWS_ACCESS_KEY_ID=your-access-key
-   AWS_SECRET_ACCESS_KEY=your-secret-key
-   
-   # Amazon Connect Configuration
-   AMAZON_CONNECT_INSTANCE_ID=your-connect-instance-id
-   AMAZON_CONNECT_PHONE_NUMBER=+1234567890
-   
-   # Amazon Bedrock Configuration
-   BEDROCK_MODEL_ID=anthropic.claude-3-sonnet-20240229-v1:0
-   
    # Database Configuration
-   DYNAMODB_TABLE_NAME=voca-ai-interactions
-   S3_BUCKET_NAME=voca-ai-storage
+   DATABASE_URL=your-database-url
+   
+   # Authentication
+   NEXTAUTH_SECRET=your-secret-key
+   NEXTAUTH_URL=http://localhost:3000
    
    # Feature Flags
    ENABLE_MULTILINGUAL=true
@@ -132,80 +95,103 @@ voca-ai/
 5. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
-## 📱 Pages Overview
+## Pages Overview
 
 ### Dashboard
 - Overview of key metrics and performance indicators
 - Real-time conversation monitoring
 - Channel distribution and recent activity
+- Agent performance statistics
 
 ### Conversations
 - Manage and monitor customer interactions
 - Filter by status, channel, and search terms
 - View conversation details and transcripts
+- Agent assignment and routing
 
 ### Customers
 - Customer database management
 - Contact information and interaction history
 - Customer segmentation and tagging
+- Individual customer profiles and call history
 
 ### Analytics
 - Detailed performance insights
 - Channel performance metrics
 - Sentiment analysis and trends
 - Language distribution statistics
+- Revenue and conversion tracking
 
 ### Integrations
-- AWS service configuration
 - Third-party service connections
+- API configuration and management
 - Integration health monitoring
+- Webhook management
 
 ### Settings
 - Organization configuration
+- Agent management and creation
 - Routing rules and automation
 - Security and notification preferences
+- User profile management
 
-## 🎯 Use Cases
+### Catalogs
+- Product catalog management
+- Store creation and configuration
+- Product listing and categorization
+- Public catalog viewing
+
+### Orders
+- Order management and tracking
+- Order history and status updates
+- Customer order inquiries
+- Order processing workflows
+
+## Use Cases
 
 ### For Microfinance Banks
 - 24/7 customer service for loan inquiries
 - Account information and payment reminders
 - KYC verification and loan eligibility checks
 - Reduce branch queues with automated support
+- Loan application processing and status updates
 
 ### For Online Retailers/Vendors
 - Handle order inquiries and tracking
 - Process returns and refunds
-- Upsell and cross-sell based on purchase history
-- Proactive delivery updates and promotions
+- Product recommendations and inquiries
+- Delivery tracking updates
+- Upsell and cross-sell opportunities
+- Customer support across multiple channels
 
-## 🔧 Development
+## Development
 
 ### Available Scripts
 
 ```bash
 npm run dev          # Start development server
+npm run dev:turbo    # Start development server with Turbopack
 npm run build        # Build for production
 npm run start        # Start production server
 npm run lint         # Run ESLint
-npm run type-check   # Run TypeScript type checking
 ```
 
 ### Code Style
 
 - **TypeScript**: Strict mode enabled
 - **ESLint**: Configured with Next.js rules
-- **Prettier**: Code formatting
 - **Tailwind CSS**: Utility-first styling
+- **Component-based architecture**: Reusable and maintainable components
 
 ### Component Guidelines
 
 - Use TypeScript interfaces for props
-- Implement responsive design
+- Implement responsive design with Tailwind CSS
 - Follow accessibility best practices
 - Use semantic HTML elements
+- Implement proper error handling and loading states
 
-## 🚀 Deployment
+## Deployment
 
 ### Vercel (Recommended)
 
@@ -213,67 +199,70 @@ npm run type-check   # Run TypeScript type checking
 2. Configure environment variables in Vercel dashboard
 3. Deploy automatically on push to main branch
 
-### AWS Amplify
+### Manual Deployment
 
-1. Connect your repository to AWS Amplify
-2. Configure build settings
-3. Set environment variables
-4. Deploy to AWS infrastructure
+1. Build the application:
+   ```bash
+   npm run build
+   ```
 
-## 🔒 Security
+2. Start the production server:
+   ```bash
+   npm run start
+   ```
+
+## Security
 
 - Environment variables for sensitive data
-- AWS IAM roles and policies
+- Authentication and authorization system
 - Input validation and sanitization
 - HTTPS enforcement
 - Regular security updates
+- Protected API routes
 
-## 📊 Monitoring & Analytics
+## Monitoring & Analytics
 
 - Real-time conversation monitoring
 - Performance metrics tracking
 - Error logging and alerting
-- Customer satisfaction surveys
+- Customer satisfaction tracking
 - Integration health checks
+- User activity monitoring
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🆘 Support
+## Support
 
 For support and questions:
 - Create an issue in the GitHub repository
 - Contact the development team
 - Check the documentation
 
-## 🔮 Roadmap
+## Roadmap
 
 ### Phase 1 (Current)
-- ✅ Frontend UI/UX implementation
-- ✅ Mock data and components
-- ✅ Basic routing and navigation
+- Frontend UI/UX implementation
+- Authentication and user management
+- Basic agent creation and management
+- Conversation handling
+- Order and catalog management
 
 ### Phase 2 (Next)
-- 🔄 AWS backend integration
-- 🔄 Amazon Connect setup
-- 🔄 Amazon Bedrock integration
-- 🔄 DynamoDB implementation
+- Advanced AI integration
+- Real-time communication features
+- Advanced analytics and reporting
+- Mobile responsiveness improvements
+- Performance optimizations
 
 ### Phase 3 (Future)
-- 📋 Advanced AI features
-- 📋 Multi-language support
-- 📋 Advanced analytics
-- 📋 Mobile app development
+- Advanced AI features and customization
+- Multi-language support expansion
+- Advanced analytics and insights
+- Mobile app development
+- Enterprise features and integrations
 
 ---
 
-**Built with ❤️ for better customer experiences**
+**Built for better customer experiences**
