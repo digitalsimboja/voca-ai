@@ -2,8 +2,8 @@
 
 Voca AI is an intelligent omnichannel AI agent platform designed to help Microfinance Banks and Online Retailers manage customer service efficiently, reduce operational costs, and deliver personalized customer experiences across multiple communication channels.
 
-![Voca AI Dashboard](public/assets/voca-ai.png)
 
+<img width="1691" height="913" alt="voca-ai" src="https://github.com/user-attachments/assets/0f1f7175-4655-4358-885d-e1b30701fd60" />
 ## Features
 
 ### Core Strengths
