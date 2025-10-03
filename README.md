@@ -4,6 +4,8 @@ Voca AI is an intelligent omnichannel AI agent platform designed to help Microfi
 
 
 <img width="1691" height="913" alt="voca-ai" src="https://github.com/user-attachments/assets/0f1f7175-4655-4358-885d-e1b30701fd60" />
+
+
 ## Features
 
 ### Core Strengths
@@ -242,14 +244,14 @@ For support and questions:
 
 ## Roadmap
 
-### Phase 1 (Current)
+### Phase 1 
 - Frontend UI/UX implementation
 - Authentication and user management
 - Basic agent creation and management
 - Conversation handling
 - Order and catalog management
 
-### Phase 2 (Next)
+### Phase 2 (Current)
 - Advanced AI integration
 - Real-time communication features
 - Advanced analytics and reporting
